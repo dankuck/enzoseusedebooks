@@ -1,6 +1,7 @@
 <template>
     <div id="canvas-div">
         <easel-canvas
+            ref="canvas"
             id="canvas"
             :width="canvas.width"
             :height="canvas.height"
@@ -24,6 +25,10 @@ export default {
         Lobby,
     },
     mounted() {
+        // In a future version of vue-easeljs, this will be handled automatically.
+        // https://github.com/dankuck/vue-easeljs/issues/28
+        this.$refs.canvas.component.enableMouseOver();
+
         this.resizer = () => {
             const parent = this.$el.parentNode;
             this.canvas.width = parent.offsetWidth;

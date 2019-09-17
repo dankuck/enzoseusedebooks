@@ -86,6 +86,75 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./app/BigPlant.vue":
+/*!**************************!*\
+  !*** ./app/BigPlant.vue ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BigPlant.vue?vue&type=template&id=1eb8cba7& */ "./app/BigPlant.vue?vue&type=template&id=1eb8cba7&");
+/* harmony import */ var _BigPlant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BigPlant.vue?vue&type=script&lang=js& */ "./app/BigPlant.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BigPlant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/BigPlant.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/BigPlant.vue?vue&type=script&lang=js&":
+/*!***************************************************!*\
+  !*** ./app/BigPlant.vue?vue&type=script&lang=js& ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_BigPlant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./BigPlant.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_BigPlant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/BigPlant.vue?vue&type=template&id=1eb8cba7&":
+/*!*********************************************************!*\
+  !*** ./app/BigPlant.vue?vue&type=template&id=1eb8cba7& ***!
+  \*********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./BigPlant.vue?vue&type=template&id=1eb8cba7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=template&id=1eb8cba7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BigPlant_vue_vue_type_template_id_1eb8cba7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/EnzoText.vue":
 /*!**************************!*\
   !*** ./app/EnzoText.vue ***!
@@ -329,6 +398,63 @@ const app = new Vue({
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['x', 'y'],
+    data() {
+        return {
+            animation: 'rest'
+        };
+    },
+    methods: {
+        shakePlant() {
+            this.animation = 'rustleAndRest';
+        },
+        restPlant() {
+            if (this.animation !== 'rest') {
+                this.animation = 'rest';
+                this.$emit('shake');
+            }
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/EnzoText.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/EnzoText.vue?vue&type=script&lang=js& ***!
@@ -383,6 +509,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -394,6 +521,10 @@ const pixelWidth = 350,
         Lobby: _Lobby__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
+        // In a future version of vue-easeljs, this will be handled automatically.
+        // https://github.com/dankuck/vue-easeljs/issues/28
+        this.$refs.canvas.component.enableMouseOver();
+
         this.resizer = () => {
             const parent = this.$el.parentNode;
             this.canvas.width = parent.offsetWidth;
@@ -434,22 +565,7 @@ const pixelWidth = 350,
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BigPlant */ "./app/BigPlant.vue");
 //
 //
 //
@@ -474,7 +590,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        BigPlant: _BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
+    },
     data() {
         return {
             showMessage: false,
@@ -484,15 +604,9 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     methods: {
-        shakePlant() {
-            this.plant.animation = 'rustleAndRest';
-        },
-        restPlant() {
-            if (this.plant.animation !== 'rest') {
-                this.plant.animation = 'rest';
-                this.showMessage = true;
-                setTimeout(() => this.showMessage = false, 2000);
-            }
+        checkPlant() {
+            this.showMessage = true;
+            setTimeout(() => this.showMessage = false, 2000);
         }
     }
 });
@@ -8748,6 +8862,58 @@ exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || t
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=template&id=1eb8cba7&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=template&id=1eb8cba7& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-sprite-sheet",
+    {
+      attrs: {
+        images: ["./big-plant-in-lobby-sprite.gif"],
+        frames: { width: 90, height: 96 },
+        animations: {
+          rest: 1,
+          rustleAndRest: {
+            frames: [3, 0],
+            next: "rest"
+          }
+        },
+        framerate: 4
+      }
+    },
+    [
+      _c("easel-sprite", {
+        attrs: {
+          x: _vm.x,
+          y: _vm.y,
+          animation: _vm.animation,
+          align: "bottom-center"
+        },
+        on: { click: _vm.shakePlant, animationend: _vm.restPlant }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/EnzoText.vue?vue&type=template&id=5b8f3e47&":
 /*!***************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/EnzoText.vue?vue&type=template&id=5b8f3e47& ***!
@@ -8804,6 +8970,7 @@ var render = function() {
       _c(
         "easel-canvas",
         {
+          ref: "canvas",
           attrs: {
             id: "canvas",
             width: _vm.canvas.width,
@@ -8847,42 +9014,17 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
       _vm._v(" "),
-      _c(
-        "easel-sprite-sheet",
-        {
-          attrs: {
-            images: ["./big-plant-in-lobby-sprite.gif"],
-            frames: { width: 90, height: 96 },
-            animations: {
-              rest: 1,
-              rustleAndRest: {
-                frames: [3, 0],
-                next: "rest"
-              }
-            },
-            framerate: 4
-          }
-        },
-        [
-          _c("easel-sprite", {
-            attrs: {
-              animation: _vm.plant.animation,
-              align: "bottom-center",
-              x: "330",
-              y: "160"
-            },
-            on: { click: _vm.shakePlant, animationend: _vm.restPlant }
-          })
-        ],
-        1
-      ),
+      _c("big-plant", {
+        attrs: { x: "330", y: "160" },
+        on: { shake: _vm.checkPlant }
+      }),
       _vm._v(" "),
       _vm.showMessage
         ? _c("enzo-text", {
             attrs: {
               text: "The plant is messy now",
               x: "330",
-              y: "60",
+              y: "100",
               align: "bottom-right"
             }
           })
