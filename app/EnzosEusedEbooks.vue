@@ -8,38 +8,21 @@
             viewport-height="255"
             :anti-alias="false"
         >
-            <easel-bitmap
-                image="lobby.gif"
-            >
-            </easel-bitmap>
-            <easel-sprite-sheet
-                :images="['./big-plant-in-lobby-sprite.gif']"
-                :frames="{width: 90, height: 96}"
-                :animations="{
-                    rest: 0,
-                    wave: {
-                        frames: [3, 2],
-                    },
-                }"
-                :framerate="2"
-            >
-                <easel-sprite
-                    animation="rest"
-                    align="bottom-center"
-                    x="330"
-                    y="160"
-                >
-                </easel-sprite>
-            </easel-sprite-sheet>
+            <lobby></lobby>
         </easel-canvas>
     </div>
 </template>
 
 <script>
+import Lobby from './Lobby';
 
 const pixelWidth = 350,
     pixelHeight = 255;
+
 export default {
+    components: {
+        Lobby,
+    },
     mounted() {
         this.resizer = () => {
             const parent = this.$el.parentNode;
