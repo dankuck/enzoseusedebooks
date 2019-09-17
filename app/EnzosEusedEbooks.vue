@@ -17,8 +17,8 @@
 <script>
 import Lobby from './Lobby';
 
-const pixelWidth = 350,
-    pixelHeight = 255;
+export const pixelWidth = 350;
+export const pixelHeight = 255;
 
 export default {
     components: {

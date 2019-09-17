@@ -10,26 +10,21 @@
             @shake="checkPlant"
         >
         </big-plant>
-        <enzo-text
-            text="The plant is messy now"
-            x="330"
-            y="100"
-            align="bottom-right"
-            v-if="showMessage"
-        >
-        </enzo-text>
+        <notifications></notifications>
     </easel-container>
 </template>
 
 <script>
 import BigPlant from './BigPlant';
+import Notifications from './Notifications';
+
 export default {
     components: {
         BigPlant,
+        Notifications,
     },
     data() {
         return {
-            showMessage: false,
             plant: {
                 animation: 'rest',
             },
@@ -37,8 +32,11 @@ export default {
     },
     methods: {
         checkPlant() {
-            this.showMessage = true;
-            setTimeout(() => this.showMessage = false, 2000);
+            Notifications.queue({
+                text: 'The plant is messy now',
+                x: 330,
+                y: 100,
+            });
         },
     },
 };

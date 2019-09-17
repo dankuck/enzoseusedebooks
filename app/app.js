@@ -3,13 +3,15 @@ window.Vue = require('vue');
 window.VueEaseljs = require('vue-easeljs');
 window.easeljs = window.VueEaseljs.easeljs;
 
+import EnzoText from './EnzoText.vue';
+import EnzosEusedEbooks from './EnzosEusedEbooks.vue';
+import Notifications from './Notifications';
+
+window.Notifications = Notifications;
+
 Vue.use(VueEaseljs);
 
-import EnzoText from './EnzoText.vue';
-
 Vue.component('enzo-text', EnzoText);
-
-import EnzosEusedEbooks from './EnzosEusedEbooks.vue';
 
 const app = new Vue({
     el: '#app',
