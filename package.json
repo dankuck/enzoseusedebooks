@@ -1,0 +1,33 @@
+{
+  "name": "enzos-eused-ebooks",
+  "version": "1.0.0",
+  "description": "A bookstore, not a game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node ./node_modules/webpack/bin/webpack.js --config webpack.conf.js",
+    "watch": "node ./node_modules/webpack/bin/webpack.js --config webpack.conf.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dankuck/bookstore.git"
+  },
+  "author": "Daniel Kuck-Alvarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dankuck/bookstore/issues"
+  },
+  "homepage": "https://github.com/dankuck/bookstore#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^0.26.4",
+    "vue": "^2.6.10",
+    "vue-easeljs": "^0.1.8",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
+  }
+}
