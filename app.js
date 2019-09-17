@@ -230,6 +230,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 const pixelWidth = 350,
@@ -8558,7 +8560,9 @@ var render = function() {
                 frames: { width: 90, height: 96 },
                 animations: {
                   rest: 0,
-                  wave: [0, 3]
+                  wave: {
+                    frames: [3, 2]
+                  }
                 },
                 framerate: 2
               }
