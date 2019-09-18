@@ -448,8 +448,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EnzoText.vue */ "./app/EnzoText.vue");
-/* harmony import */ var _EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
+/* harmony import */ var _app_EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/EnzoText.vue */ "./app/EnzoText.vue");
+/* harmony import */ var _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
 // Expose these variables for devtools
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-easeljs/dist/index.js");
@@ -460,12 +460,12 @@ window.easeljs = window.VueEaseljs.easeljs;
 
 Vue.use(VueEaseljs);
 
-Vue.component('enzo-text', _EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
+Vue.component('enzo-text', _app_EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 const app = new Vue({
     el: '#app',
     components: {
-        EnzosEusedEbooks: _EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+        EnzosEusedEbooks: _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
     },
     data() {
         return {};
@@ -633,9 +633,9 @@ class Messager {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../TextLayer */ "./app/TextLayer.vue");
-/* harmony import */ var _libs_Messager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../libs/Messager */ "./app/libs/Messager.js");
-/* harmony import */ var _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../libs/Hoverer */ "./app/libs/Hoverer.js");
+/* harmony import */ var _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/TextLayer */ "./app/TextLayer.vue");
+/* harmony import */ var _libs_Messager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @libs/Messager */ "./app/libs/Messager.js");
+/* harmony import */ var _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/Hoverer */ "./app/libs/Hoverer.js");
 
 
 
@@ -643,7 +643,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        TextLayer: _TextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]
+        TextLayer: _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     provide() {
         return {
@@ -713,7 +713,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+/* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
 //
 //
 //
@@ -777,7 +777,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EnzosEusedEbooks */ "./app/EnzosEusedEbooks.vue");
+/* harmony import */ var _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/EnzosEusedEbooks */ "./app/EnzosEusedEbooks.vue");
 //
 //
 //
@@ -798,8 +798,8 @@ __webpack_require__.r(__webpack_exports__);
     props: ['text', 'x', 'y'],
     computed: {
         align() {
-            const horizontal = this.x < _EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelWidth"] / 2 ? 'left' : 'right';
-            const vertical = this.y < _EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelHeight"] / 2 ? 'top' : 'bottom';
+            const horizontal = this.x < _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelWidth"] / 2 ? 'left' : 'right';
+            const vertical = this.y < _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelHeight"] / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
         }
     }
@@ -818,7 +818,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelWidth", function() { return pixelWidth; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelHeight", function() { return pixelHeight; });
-/* harmony import */ var _Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lobby */ "./app/Lobby.vue");
+/* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
 //
 //
 //
@@ -851,7 +851,7 @@ const pixelHeight = 255;
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        Lobby: _Lobby__WEBPACK_IMPORTED_MODULE_0__["default"]
+        Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
         // In a future version of vue-easeljs, this will be handled automatically.
@@ -898,8 +898,8 @@ const pixelHeight = 255;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BigPlant */ "./app/BigPlant.vue");
-/* harmony import */ var _mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/HasTextLayer */ "./app/mixins/HasTextLayer.js");
+/* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
+/* harmony import */ var _mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/HasTextLayer */ "./app/mixins/HasTextLayer.js");
 //
 //
 //
@@ -924,7 +924,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
-        BigPlant: _BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
+        BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     data() {
         return {

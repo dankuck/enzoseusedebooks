@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import UsesTextLayer from './mixins/UsesTextLayer';
+import UsesTextLayer from '@mixins/UsesTextLayer';
 
 export default {
     mixins: [UsesTextLayer],

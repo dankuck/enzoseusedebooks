@@ -1,7 +1,7 @@
 
-import TextLayer from '../TextLayer';
-import Messager from '../libs/Messager';
-import Hoverer from '../libs/Hoverer';
+import TextLayer from '@app/TextLayer';
+import Messager from '@libs/Messager';
+import Hoverer from '@libs/Hoverer';
 
 export default {
     components: {

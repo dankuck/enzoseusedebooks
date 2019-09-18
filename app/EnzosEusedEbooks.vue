@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Lobby from './Lobby';
+import Lobby from '@app/Lobby';
 
 export const pixelWidth = 350;
 export const pixelHeight = 255;

@@ -1,4 +1,5 @@
 const VueLoader = require('vue-loader');
+const path = require('path');
 
 module.exports = {
     devtool: 'sourcemap',
@@ -13,7 +14,11 @@ module.exports = {
     resolve: {
         extensions: ['.vue', '.js'],
         alias: {
-            'vue$': 'vue/dist/vue.js'
+            'vue$': 'vue/dist/vue.js',
+            '@': __dirname,
+            '@app': path.resolve(__dirname, './app/'),
+            '@libs': path.resolve(__dirname, './app/libs/'),
+            '@mixins': path.resolve(__dirname, './app/mixins/')
         }
     },
     plugins: [

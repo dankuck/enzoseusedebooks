@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {pixelWidth, pixelHeight} from './EnzosEusedEbooks';
+import {pixelWidth, pixelHeight} from '@app/EnzosEusedEbooks';
 
 export default {
     props: [

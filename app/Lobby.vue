@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import BigPlant from './BigPlant';
-import HasTextLayer from './mixins/HasTextLayer';
+import BigPlant from '@app/BigPlant';
+import HasTextLayer from '@mixins/HasTextLayer';
 
 export default {
     mixins: [HasTextLayer],
