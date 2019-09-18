@@ -917,13 +917,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -9406,11 +9399,6 @@ var render = function() {
       _vm._v(" "),
       _c("big-plant", {
         attrs: { name: "Suspicious Plant", x: "330", y: "160" },
-        on: { shake: _vm.checkPlant }
-      }),
-      _vm._v(" "),
-      _c("big-plant", {
-        attrs: { name: "Suspect Plant", x: "300", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
