@@ -5,13 +5,13 @@
         >
         </easel-bitmap>
         <big-plant
+            name="Angry Plant"
             x="330"
             y="160"
             @shake="checkPlant"
-            name="Angry Plant"
         >
         </big-plant>
-        <text-layer :messager="messager" :hoverer="hoverer"></text-layer>
+        <text-layer v-bind="textLayer"></text-layer>
     </easel-container>
 </template>
 
@@ -32,11 +32,11 @@ export default {
         };
     },
     methods: {
-        checkPlant() {
-            this.messager.queue({
-                text: 'The plant is messy now',
-                x: 330,
-                y: 100,
+        checkPlant(plant) {
+            this.showMessage({
+                text: "You ruffled the plant.\nIt's messy now.",
+                x: plant.x,
+                y: plant.y,
             });
         },
     },

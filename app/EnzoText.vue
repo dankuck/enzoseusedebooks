@@ -4,7 +4,7 @@
         :x="x"
         :y="y"
         :align="align"
-        color="#5b5b89"
+        color="white"
         :shadow="['#CCF', 1, 1, 1]"
         font="10px 'Press Start 2P'"
     >

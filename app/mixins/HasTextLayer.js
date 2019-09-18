@@ -9,14 +9,23 @@ export default {
     },
     provide() {
         return {
-            messager: this.messager,
-            hoverer: this.hoverer,
+            textLayer: this.textLayer,
         };
     },
     data() {
         return {
-            messager: new Messager(2000),
-            hoverer: new Hoverer(),
+            textLayer: {
+                messager: new Messager(2000),
+                hoverer: new Hoverer(),
+            },
         };
+    },
+    methods: {
+        queueMessage(message) {
+            this.textLayer.messager.queue(message);
+        },
+        showMessage(message) {
+            this.textLayer.messager.clear().queue(message);
+        },
     },
 };

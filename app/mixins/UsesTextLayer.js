@@ -1,12 +1,18 @@
 
 export default {
-    inject: ['messager', 'hoverer'],
+    inject: ['textLayer'],
     methods: {
+        queueMessage(message) {
+            this.textLayer.messager.queue(message);
+        },
+        showMessage(message) {
+            this.textLayer.messager.clear().queue(message);
+        },
         hover() {
-            this.hoverer.hover(this);
+            this.textLayer.hoverer.hover(this);
         },
         unhover() {
-            this.hoverer.unhover(this);
+            this.textLayer.hoverer.unhover(this);
         },
     },
 };

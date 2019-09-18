@@ -44,7 +44,7 @@ export default {
         restPlant() {
             if (this.animation !== 'rest') {
                 this.animation = 'rest';
-                this.$emit('shake');
+                this.$emit('shake', this);
             }
         },
     },

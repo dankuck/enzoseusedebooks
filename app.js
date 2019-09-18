@@ -599,15 +599,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     provide() {
         return {
-            messager: this.messager,
-            hoverer: this.hoverer
+            textLayer: this.textLayer
         };
     },
     data() {
         return {
-            messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2000),
-            hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"]()
+            textLayer: {
+                messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2000),
+                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"]()
+            }
         };
+    },
+    methods: {
+        queueMessage(message) {
+            this.textLayer.messager.queue(message);
+        },
+        showMessage(message) {
+            this.textLayer.messager.clear().queue(message);
+        }
     }
 });
 
@@ -624,13 +633,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['messager', 'hoverer'],
+    inject: ['textLayer'],
     methods: {
+        queueMessage(message) {
+            this.textLayer.messager.queue(message);
+        },
+        showMessage(message) {
+            this.textLayer.messager.clear().queue(message);
+        },
         hover() {
-            this.hoverer.hover(this);
+            this.textLayer.hoverer.hover(this);
         },
         unhover() {
-            this.hoverer.unhover(this);
+            this.textLayer.hoverer.unhover(this);
         }
     }
 });
@@ -693,7 +708,7 @@ __webpack_require__.r(__webpack_exports__);
         restPlant() {
             if (this.animation !== 'rest') {
                 this.animation = 'rest';
-                this.$emit('shake');
+                this.$emit('shake', this);
             }
         }
     }
@@ -859,11 +874,11 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     methods: {
-        checkPlant() {
-            this.messager.queue({
-                text: 'The plant is messy now',
-                x: 330,
-                y: 100
+        checkPlant(plant) {
+            this.showMessage({
+                text: "You ruffled the plant.\nIt's messy now.",
+                x: plant.x,
+                y: plant.y
             });
         }
     }
@@ -9229,7 +9244,7 @@ var render = function() {
       x: _vm.x,
       y: _vm.y,
       align: _vm.align,
-      color: "#5b5b89",
+      color: "white",
       shadow: ["#CCF", 1, 1, 1],
       font: "10px 'Press Start 2P'"
     }
@@ -9309,13 +9324,11 @@ var render = function() {
       _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
       _vm._v(" "),
       _c("big-plant", {
-        attrs: { x: "330", y: "160", name: "Angry Plant" },
+        attrs: { name: "Angry Plant", x: "330", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
-      _c("text-layer", {
-        attrs: { messager: _vm.messager, hoverer: _vm.hoverer }
-      })
+      _c("text-layer", _vm._b({}, "text-layer", _vm.textLayer, false))
     ],
     1
   )
