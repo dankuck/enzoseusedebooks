@@ -484,28 +484,51 @@ const app = new Vue({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Hoverer; });
+/*
+ |---------------------------
+ | Hoverer
+ |---------------------------
+ | A Hoverer holds a message until it is replaced by another call to `hover()`
+ | or cleared by a call to `unhover()`.
+ |
+ | It exposes a property `message`.
+ */
 
 class Hoverer {
-    constructor() {
+    /**
+     * Create
+     * @param  {int} time milliseconds to wait after `unhover`
+     */
+    constructor(time) {
         this.message = null;
+        this.holder = null;
+        this.time = time;
     }
 
-    hover(component) {
-        this.message = {
-            component,
-            text: component.name || component.hoverName,
-            x: component.x,
-            y: component.y
-        };
+    /**
+     * Sets the message and a reference to use to `unhover` later
+     * @param  {any} holder  E.g., the component that is calling or an id
+     * @param  {any} message
+     * @return {void}
+     */
+    hover(holder, message) {
+        this.message = message;
+        this.holder = holder;
     }
 
-    unhover(component) {
+    /**
+     * Clears the message if it was set with the given holder
+     * @param  {any} holder The same holder given to `hover`
+     * @return {void}
+     */
+    unhover(holder) {
         const message = this.message;
         setTimeout(() => {
-            if (this.message && this.message === message && this.message.component === component) {
+            if (this.message && this.message === message && this.holder === holder) {
                 this.message = null;
+                this.holder = null;
             }
-        }, 250);
+        }, this.time);
     }
 }
 
@@ -525,11 +548,18 @@ __webpack_require__.r(__webpack_exports__);
  |---------------------------
  | Messager
  |---------------------------
- | A Messager is a queue of objects. Each object will be the Messager.message
- | value for `time` milliseconds, and then the next one in the queue will
- | replace it.
+ | A Messager is a queue of values. Each value will be the `message` value
+ | for `time` milliseconds, and then the next one in the queue will replace it.
+ | Finally it will equal null.
+ |
+ | It exposes a property `message`.
  */
+
 class Messager {
+    /**
+     * Create
+     * @param  {int} time Milliseconds to show a message
+     */
     constructor(time) {
         this.messages = [];
         this.message = null;
@@ -537,18 +567,32 @@ class Messager {
         this.time = time;
     }
 
+    /**
+     * Add a message to the queue and ensure the queue is running
+     * @param  {any} message
+     * @return {this}
+     */
     queue(message) {
         this.messages.push(message);
         this.start();
         return this;
     }
 
+    /**
+     * Clear the queue and clear any current message, too
+     * @return {this}
+     */
     clear() {
         this.messages.splice(0);
         this.stop();
         return this;
     }
 
+    /**
+     * Start the queue. If the queue is already running, do nothing. If there
+     * are no more messages, clear the current one and do nothing else.
+     * @return {void}
+     */
     start() {
         if (this.timeout) {
             return;
@@ -564,6 +608,10 @@ class Messager {
         }, this.time);
     }
 
+    /**
+     * Stop the queue. If there is no queue running, do nothing.
+     * @return {void}
+     */
     stop() {
         if (!this.timeout) {
             return;
@@ -606,7 +654,7 @@ __webpack_require__.r(__webpack_exports__);
         return {
             textLayer: {
                 messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2000),
-                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"]()
+                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](250)
             }
         };
     },
@@ -642,7 +690,11 @@ __webpack_require__.r(__webpack_exports__);
             this.textLayer.messager.clear().queue(message);
         },
         hover() {
-            this.textLayer.hoverer.hover(this);
+            this.textLayer.hoverer.hover(this, {
+                text: this.name || this.hoverName,
+                x: this.x,
+                y: this.y
+            });
         },
         unhover() {
             this.textLayer.hoverer.unhover(this);
@@ -783,6 +835,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -840,6 +900,13 @@ const pixelHeight = 255;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/HasTextLayer */ "./app/mixins/HasTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9291,6 +9358,20 @@ var render = function() {
         },
         [_c("lobby")],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "easel-canvas",
+        [
+          _c("easel-text", {
+            attrs: {
+              color: "#CCC",
+              text: "A hack to induce the font to preload.",
+              font: "7px 'Press Start 2P'"
+            }
+          })
+        ],
+        1
       )
     ],
     1
@@ -9325,6 +9406,11 @@ var render = function() {
       _vm._v(" "),
       _c("big-plant", {
         attrs: { name: "Suspicious Plant", x: "330", y: "160" },
+        on: { shake: _vm.checkPlant }
+      }),
+      _vm._v(" "),
+      _c("big-plant", {
+        attrs: { name: "Suspect Plant", x: "300", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),

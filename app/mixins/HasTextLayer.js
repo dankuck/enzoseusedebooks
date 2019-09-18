@@ -16,7 +16,7 @@ export default {
         return {
             textLayer: {
                 messager: new Messager(2000),
-                hoverer: new Hoverer(),
+                hoverer: new Hoverer(250),
             },
         };
     },

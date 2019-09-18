@@ -11,6 +11,14 @@
         >
             <lobby></lobby>
         </easel-canvas>
+        <easel-canvas>
+            <easel-text
+                color="#CCC"
+                text="A hack to induce the font to preload."
+                font="7px 'Press Start 2P'"
+            >
+            </easel-text>
+        </easel-canvas>
     </div>
 </template>
 
