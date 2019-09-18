@@ -18,7 +18,8 @@ module.exports = {
             '@': __dirname,
             '@app': path.resolve(__dirname, './app/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
-            '@mixins': path.resolve(__dirname, './app/mixins/')
+            '@mixins': path.resolve(__dirname, './app/mixins/'),
+            '@develop': path.resolve(__dirname, './app/develop/')
         }
     },
     plugins: [

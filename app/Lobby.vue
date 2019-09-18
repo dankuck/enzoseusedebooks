@@ -60,6 +60,12 @@ export default {
                     r: 10,
                     name: "Tan Book",
                 },
+                {
+                    x: 256,
+                    y: 224,
+                    r: 13,
+                    name: "Tan Book",
+                },
             ],
         };
     },

@@ -1,5 +1,6 @@
 <template>
     <div id="canvas-div">
+        <dev-tools v-if="config.develop"></dev-tools>
         <easel-canvas
             ref="canvas"
             id="canvas"
@@ -10,6 +11,7 @@
             :anti-alias="false"
         >
             <lobby></lobby>
+            <dev-elements v-if="config.develop"></dev-elements>
         </easel-canvas>
         <easel-canvas>
             <easel-text
@@ -24,6 +26,9 @@
 
 <script>
 import Lobby from '@app/Lobby';
+import DevTools from '@develop/Tools';
+import DevElements from '@develop/Elements';
+import config from '@/config';
 
 export const pixelWidth = 350;
 export const pixelHeight = 255;
@@ -31,6 +36,8 @@ export const pixelHeight = 255;
 export default {
     components: {
         Lobby,
+        DevTools,
+        DevElements,
     },
     mounted() {
         // In a future version of vue-easeljs, this will be handled automatically.
@@ -58,6 +65,7 @@ export default {
     },
     data() {
         return {
+            config,
             canvas: {
                 width: pixelWidth,
                 height: pixelHeight,
