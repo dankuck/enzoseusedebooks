@@ -11,6 +11,12 @@
             @shake="checkPlant"
         >
         </big-plant>
+        <enzo-click-spot
+            v-for="book in books"
+            :key="book.name"
+            v-bind="book"
+        >
+        </enzo-click-spot>
         <text-layer v-bind="textLayer"></text-layer>
     </easel-container>
 </template>
@@ -29,6 +35,32 @@ export default {
             plant: {
                 animation: 'rest',
             },
+            books: [
+                {
+                    x: 252,
+                    y: 203,
+                    r: 11,
+                    name: "Blue Book",
+                },
+                {
+                    x: 278,
+                    y: 200,
+                    r: 10,
+                    name: "Red Book",
+                },
+                {
+                    x: 304,
+                    y: 200,
+                    r: 10,
+                    name: "Open Book",
+                },
+                {
+                    x: 330,
+                    y: 193,
+                    r: 10,
+                    name: "Tan Book",
+                },
+            ],
         };
     },
     methods: {
