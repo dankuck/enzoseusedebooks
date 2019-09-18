@@ -5,7 +5,7 @@
         >
         </easel-bitmap>
         <big-plant
-            name="Angry Plant"
+            name="Suspicious Plant"
             x="330"
             y="160"
             @shake="checkPlant"

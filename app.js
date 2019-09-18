@@ -9324,7 +9324,7 @@ var render = function() {
       _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
       _vm._v(" "),
       _c("big-plant", {
-        attrs: { name: "Angry Plant", x: "330", y: "160" },
+        attrs: { name: "Suspicious Plant", x: "330", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
