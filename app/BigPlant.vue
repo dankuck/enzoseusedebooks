@@ -18,16 +18,22 @@
             align="bottom-center"
             @click="shakePlant"
             @animationend="restPlant"
+            @mouseover="hover"
+            @mouseout="unhover"
         >
         </easel-sprite>
     </easel-sprite-sheet>
 </template>
 
 <script>
+import UsesTextLayer from './mixins/UsesTextLayer';
+
 export default {
-    props: ['x', 'y'],
+    mixins: [UsesTextLayer],
+    props: ['x', 'y', 'name'],
     data() {
         return {
+            hoverName: 'Bad Plant',
             animation: 'rest',
         };
     },

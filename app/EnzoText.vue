@@ -12,12 +12,24 @@
 </template>
 
 <script>
+import {pixelWidth, pixelHeight} from './EnzosEusedEbooks';
+
 export default {
     props: [
         'text',
-        'align',
         'x',
         'y',
     ],
+    computed: {
+        align() {
+            const horizontal = this.x < pixelWidth / 2
+                ? 'left'
+                : 'right';
+            const vertical = this.y < pixelHeight / 2
+                ? 'top'
+                : 'bottom';
+            return [horizontal, vertical];
+        },
+    },
 };
 </script>

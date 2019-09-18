@@ -5,9 +5,6 @@ window.easeljs = window.VueEaseljs.easeljs;
 
 import EnzoText from './EnzoText.vue';
 import EnzosEusedEbooks from './EnzosEusedEbooks.vue';
-import Notifications from './Notifications';
-
-window.Notifications = Notifications;
 
 Vue.use(VueEaseljs);
 

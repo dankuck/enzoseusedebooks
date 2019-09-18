@@ -8,20 +8,21 @@
             x="330"
             y="160"
             @shake="checkPlant"
+            name="Angry Plant"
         >
         </big-plant>
-        <notifications></notifications>
+        <text-layer :messager="messager" :hoverer="hoverer"></text-layer>
     </easel-container>
 </template>
 
 <script>
 import BigPlant from './BigPlant';
-import Notifications from './Notifications';
+import HasTextLayer from './mixins/HasTextLayer';
 
 export default {
+    mixins: [HasTextLayer],
     components: {
         BigPlant,
-        Notifications,
     },
     data() {
         return {
@@ -32,7 +33,7 @@ export default {
     },
     methods: {
         checkPlant() {
-            Notifications.queue({
+            this.messager.queue({
                 text: 'The plant is messy now',
                 x: 330,
                 y: 100,
