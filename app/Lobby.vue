@@ -28,7 +28,7 @@
             </easel-shape>
         </enzo-click-spot>
         <big-plant
-            name="Suspicious Plant"
+            :name="plant.name"
             x="330"
             y="160"
             @shake="checkPlant"
@@ -57,6 +57,7 @@ export default {
         return {
             plant: {
                 animation: 'rest',
+                name: 'Suspicious Plant',
             },
             books: [
                 {
@@ -181,6 +182,7 @@ export default {
     },
     methods: {
         checkPlant(plant) {
+            this.plant.name = 'Ruffled Plant';
             this.showMessage({
                 text: "You ruffled the plant.\nIt's messy now.",
                 x: plant.x,

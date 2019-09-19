@@ -9138,7 +9138,8 @@ __webpack_require__.r(__webpack_exports__);
     data() {
         return {
             plant: {
-                animation: 'rest'
+                animation: 'rest',
+                name: 'Suspicious Plant'
             },
             books: [{
                 x: 252,
@@ -9231,6 +9232,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         checkPlant(plant) {
+            this.plant.name = 'Ruffled Plant';
             this.showMessage({
                 text: "You ruffled the plant.\nIt's messy now.",
                 x: plant.x,
@@ -10127,7 +10129,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("big-plant", {
-        attrs: { name: "Suspicious Plant", x: "330", y: "160" },
+        attrs: { name: _vm.plant.name, x: "330", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
