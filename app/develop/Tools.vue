@@ -5,6 +5,9 @@
             <div>
                 <input type="checkbox" v-model="DevSettings.showPointsScreen" /> Show Points Screen
             </div>
+            <div>
+                <input type="checkbox" v-model="DevSettings.showClickSpots" /> Show Click Spots
+            </div>
         </div>
     </div>
 </template>

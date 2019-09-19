@@ -1,21 +1,27 @@
 <template>
-    <easel-shape
-        form="circle"
+    <easel-container
         :x="x"
         :y="y"
-        :dimensions="r"
-        fill="black"
-        alpha=".01"
-        align="center-center"
+        :alpha="alpha"
         @click="$emit('click', $event)"
         @mouseover="hover"
         @mouseout="unhover"
     >
-    </easel-shape>
+        <slot>
+            <easel-shape
+                form="circle"
+                :dimensions="r"
+                fill="black"
+                align="center-center"
+            >
+            </easel-shape>
+        </slot>
+    </easel-container>
 </template>
 
 <script>
 import UsesTextLayer from '@mixins/UsesTextLayer';
+import DevSettings from '@develop/DevSettings.js';
 
 export default {
     mixins: [UsesTextLayer],
@@ -25,5 +31,10 @@ export default {
         'r',
         'name',
     ],
+    computed: {
+        alpha() {
+            return DevSettings.showClickSpots ? 0.5 : 0.01;
+        },
+    },
 };
 </script>

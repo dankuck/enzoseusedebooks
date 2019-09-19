@@ -8367,7 +8367,8 @@ const app = new Vue({
 __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    showPointsScreen: false
+    showPointsScreen: false,
+    showClickSpots: false
 });
 
 /***/ }),
@@ -8898,6 +8899,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+/* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
 //
 //
 //
@@ -8914,12 +8916,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['x', 'y', 'r', 'name']
+    props: ['x', 'y', 'r', 'name'],
+    computed: {
+        alpha() {
+            return _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_1__["default"].showClickSpots ? 0.5 : 0.01;
+        }
+    }
 });
 
 /***/ }),
@@ -9090,6 +9103,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -9127,8 +9163,69 @@ __webpack_require__.r(__webpack_exports__);
             }, {
                 x: 256,
                 y: 224,
-                r: 13,
+                r: 11,
                 name: "Tan Book"
+            }, {
+                x: 286,
+                y: 223,
+                r: 11,
+                name: "Brown Book"
+            }, {
+                x: 272,
+                y: 213,
+                r: 11,
+                name: "Yellow Book"
+            }, {
+                x: 311,
+                y: 213,
+                r: 11,
+                name: "Brown Book"
+            }, {
+                x: 328,
+                y: 214,
+                r: 11,
+                name: "Blue Book"
+            }, {
+                x: 315,
+                y: 225,
+                r: 7,
+                name: "Red Book"
+            }, {
+                x: 342,
+                y: 205,
+                r: 7,
+                name: "Tan Book"
+            }, {
+                x: 345,
+                y: 223,
+                r: 7,
+                name: "Red Book"
+            }],
+            aisles: [{
+                x: 197 + 20,
+                y: 53 + 42,
+                dimensionSets: [['rect', -20, -42, [40, 84]]],
+                name: "Old Books"
+            }, {
+                x: 118,
+                y: 87,
+                dimensionSets: [['rect', -23, -37, [46, 84]]],
+                name: "Musty Books"
+            }, {
+                x: 37,
+                y: 97,
+                dimensionSets: [['rect', -18, -39, [36, 78]]],
+                name: "Ratty Books"
+            }, {
+                x: 295,
+                y: 64,
+                dimensionSets: [['rect', -6, -25, [12, 50]], ['rect', -12, 28, [17, 46]]],
+                name: "Shadowy Area"
+            }, {
+                x: 0,
+                y: 168,
+                dimensionSets: [['ellipse', 23, 0, [108, 54]], ['rect', 0, 0, [70, 90]], ['rect', 0, 36, [127, 55]]],
+                name: "Shabby Desk"
             }]
         };
     },
@@ -9291,6 +9388,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
+//
+//
+//
 //
 //
 //
@@ -9843,24 +9943,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("easel-shape", {
-    attrs: {
-      form: "circle",
-      x: _vm.x,
-      y: _vm.y,
-      dimensions: _vm.r,
-      fill: "black",
-      alpha: ".01",
-      align: "center-center"
+  return _c(
+    "easel-container",
+    {
+      attrs: { x: _vm.x, y: _vm.y, alpha: _vm.alpha },
+      on: {
+        click: function($event) {
+          return _vm.$emit("click", $event)
+        },
+        mouseover: _vm.hover,
+        mouseout: _vm.unhover
+      }
     },
-    on: {
-      click: function($event) {
-        return _vm.$emit("click", $event)
-      },
-      mouseover: _vm.hover,
-      mouseout: _vm.unhover
-    }
-  })
+    [
+      _vm._t("default", [
+        _c("easel-shape", {
+          attrs: {
+            form: "circle",
+            dimensions: _vm.r,
+            fill: "black",
+            align: "center-center"
+          }
+        })
+      ])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -9989,15 +10097,44 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
       _vm._v(" "),
+      _c("enzo-click-spot", {
+        attrs: { name: "Window", x: "321", y: "75", r: "20" }
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.aisles, function(aisle, aisleIndex) {
+        return _c(
+          "enzo-click-spot",
+          _vm._b(
+            { key: "aisle:" + aisleIndex },
+            "enzo-click-spot",
+            aisle,
+            false
+          ),
+          _vm._l(aisle.dimensionSets, function(dimensions, index) {
+            return _c("easel-shape", {
+              key: "aisleShape:" + aisleIndex + ":" + index,
+              attrs: {
+                form: dimensions[0],
+                x: dimensions[1],
+                y: dimensions[2],
+                dimensions: dimensions[3],
+                fill: "black"
+              }
+            })
+          }),
+          1
+        )
+      }),
+      _vm._v(" "),
       _c("big-plant", {
         attrs: { name: "Suspicious Plant", x: "330", y: "160" },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
-      _vm._l(_vm.books, function(book) {
+      _vm._l(_vm.books, function(book, index) {
         return _c(
           "enzo-click-spot",
-          _vm._b({ key: book.name }, "enzo-click-spot", book, false)
+          _vm._b({ key: "book:" + index }, "enzo-click-spot", book, false)
         )
       }),
       _vm._v(" "),
@@ -10217,6 +10354,54 @@ var render = function() {
                 }
               }),
               _vm._v(" Show Points Screen\n        ")
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.DevSettings.showClickSpots,
+                    expression: "DevSettings.showClickSpots"
+                  }
+                ],
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.DevSettings.showClickSpots)
+                    ? _vm._i(_vm.DevSettings.showClickSpots, null) > -1
+                    : _vm.DevSettings.showClickSpots
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.DevSettings.showClickSpots,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.DevSettings,
+                            "showClickSpots",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.DevSettings,
+                            "showClickSpots",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.DevSettings, "showClickSpots", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" Show Click Spots\n        ")
             ])
           ]
         )
