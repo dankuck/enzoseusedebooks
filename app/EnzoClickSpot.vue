@@ -3,9 +3,10 @@
         :x="x"
         :y="y"
         :alpha="alpha"
+        cursor="pointer"
         @click="$emit('click', $event)"
-        @mouseover="hover"
-        @mouseout="unhover"
+        @rollover="hover"
+        @rollout="unhover"
     >
         <slot>
             <easel-shape

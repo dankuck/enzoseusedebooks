@@ -6,7 +6,7 @@
         :align="align"
         color="white"
         :shadow="['#CCF', 1, 1, 1]"
-        font="10px 'Press Start 2P'"
+        font="7px 'Press Start 2P'"
     >
     </easel-text>
 </template>

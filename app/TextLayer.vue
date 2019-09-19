@@ -13,7 +13,19 @@ export default {
     props: ['messager', 'hoverer'],
     computed: {
         message() {
-            return this.messager.message || this.hoverer.message;
+            return this.messager.message || this.hovererMessage;
+        },
+        hovererMessage() {
+            if (!this.hoverer.message) {
+                return null;
+            } else {
+                const component = this.hoverer.message;
+                return {
+                    text: component.name || component.hoverName,
+                    x: component.x,
+                    y: component.y,
+                };
+            }
         },
     },
 };

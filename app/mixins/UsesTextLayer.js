@@ -2,18 +2,14 @@
 export default {
     inject: ['textLayer'],
     methods: {
-        queueMessage(message) {
-            this.textLayer.messager.queue(message);
+        queueMessage(text, x, y) {
+            this.textLayer.messager.queue({text, x, y});
         },
-        showMessage(message) {
-            this.textLayer.messager.clear().queue(message);
+        showMessage(text, x, y) {
+            this.textLayer.messager.clear().queue({text, x, y});
         },
         hover() {
-            this.textLayer.hoverer.hover(this, {
-                text: this.name || this.hoverName,
-                x: this.x,
-                y: this.y,
-            });
+            this.textLayer.hoverer.hover(this, this);
         },
         unhover() {
             this.textLayer.hoverer.unhover(this);

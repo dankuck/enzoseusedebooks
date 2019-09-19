@@ -16,6 +16,7 @@
             :y="y"
             :animation="animation"
             align="bottom-center"
+            cursor="pointer"
             @click="shakePlant"
             @animationend="restPlant"
             @mouseover="hover"

@@ -2076,7 +2076,7 @@
 }, function (t, e, n) {
   "use strict";
   var r = n(8),
-      i = n(0);e.a = { inject: ["easelParent", "easelCanvas"], props: ["x", "y", "flip", "rotation", "scale", "alpha", "shadow"], data: function () {
+      i = n(0);e.a = { inject: ["easelParent"], props: ["x", "y", "flip", "rotation", "scale", "alpha", "shadow", "cursor"], data: function () {
       return { component: null };
     }, watch: { x: function () {
         this.component && (this.component.x = this.x || 0);
@@ -2092,6 +2092,8 @@
         this.component && this.updateAlpha();
       }, shadow: function () {
         this.component && this.updateShadow();
+      }, cursor: function () {
+        this.component && this.updateCursor();
       } }, mounted: function () {
       var t = this;this.$watch("component", function (e, n) {
         n && t.displayObjectBreakdown(n), e && t.displayObjectInit();
@@ -2099,7 +2101,7 @@
     }, destroyed: function () {
       this.displayObjectBreakdown();
     }, methods: { displayObjectInit: function () {
-        r.a.bindEvents(this, this.component), this.component.x = this.x || 0, this.component.y = this.y || 0, this.component.rotation = this.rotation, this.updateScales(), this.updateAlpha(), this.updateShadow(), this.easelParent.addChild(this);
+        r.a.bindEvents(this, this.component), this.component.x = this.x || 0, this.component.y = this.y || 0, this.component.rotation = this.rotation, this.updateScales(), this.updateAlpha(), this.updateShadow(), this.updateCursor(), this.easelParent.addChild(this);
       }, displayObjectBreakdown: function (t) {
         void 0 === t && (t = null), this.easelParent.removeChild(this, t);
       }, updateScales: function () {
@@ -2110,6 +2112,8 @@
         this.component.alpha = isNaN(this.alpha) || null === this.alpha ? 1 : this.alpha;
       }, updateShadow: function () {
         this.shadow ? this.component.shadow = new i["default"].Shadow(this.shadow[0], this.shadow[1], this.shadow[2], this.shadow[3]) : this.component.shadow = null;
+      }, updateCursor: function () {
+        this.component.cursor = this.cursor;
       } } };
 }, function (t, e, n) {
   "use strict";
@@ -2199,20 +2203,12 @@
 }, function (t, e, n) {
   "use strict";
   var r = n(22),
-      i = (n.n(r), ["added", "animationend", "change", "click", "dblclick", "mousedown", "mouseout", "mouseover", "pressmove", "pressup", "removed", "rollout", "rollover", "tick"]),
-      a = function (t, e) {
-    return Boolean(t.$options._parentListeners && t.$options._parentListeners[e]);
-  },
-      o = function (t, e) {
-    if (e.component = t, e.stageX && e.stageY && t.easelCanvas.translateCoordinates) {
-      var n = t.easelCanvas.translateCoordinates(e.stageX, e.stageY),
-          r = n[0],
-          i = n[1];e.viewportX = r, e.viewportY = i;
-    }return e;
-  };e.a = { bindEvents: function (t, e) {
-      i.forEach(function (n) {
-        a(t, n) && e.addEventListener(n, function (e) {
-          return t.$emit(n, o(t, e));
+      i = n.n(r),
+      a = ["added", "animationend", "change", "click", "dblclick", "mousedown", "mouseout", "mouseover", "pressmove", "pressup", "removed", "rollout", "rollover", "tick"];e.a = { bindEvents: function (t, e) {
+      var n = Object.keys(t.$options._parentListeners || {}),
+          r = i()(a, n);r.forEach(function (n) {
+        e.addEventListener(n, function (e) {
+          return t.$emit(n, e);
         });
       });
     } };
@@ -2977,9 +2973,7 @@
   "use strict";
   var r = n(8),
       i = n(0),
-      a = n(9);e["default"] = { mixins: [a.a], provide: function () {
-      return { easelCanvas: this };
-    }, props: { antiAlias: { "default": !0 }, height: {}, width: {}, viewportHeight: {}, viewportWidth: {} }, data: function () {
+      a = n(9);e["default"] = { mixins: [a.a], props: { antiAlias: { "default": !0 }, height: {}, width: {}, viewportHeight: {}, viewportWidth: {} }, data: function () {
       return { component: null, context: null };
     }, mounted: function () {
       var t = this;this.component = new i["default"].Stage(this.$refs.canvas), this.context = this.component.canvas.getContext("2d"), i["default"].Touch.enable(this.component, !1, !0), r.a.bindEvents(this, this.component), i["default"].Ticker.addEventListener("tick", function (e) {
@@ -3017,8 +3011,6 @@
             var r = n(e);return r.imageSmoothingEnabled = t.antiAlias, r.mozImageSmoothingEnabled = t.antiAlias, r.webkitImageSmoothingEnabled = t.antiAlias, r.msImageSmoothingEnabled = t.antiAlias, r;
           }, e;
         };
-      }, translateCoordinates: function (t, e) {
-        return [t / this.component.scaleX, e / this.component.scaleY];
       } } };
 }, function (t, e, n) {
   "use strict";
@@ -3036,6 +3028,7 @@
       } } };
 }, function (t, e, n) {
   "use strict";
+
   var r = n(0),
       i = n(3),
       a = n(2),
@@ -3742,8 +3735,7 @@
       if (e) {
         if (t._directInactive = !1, $e(t)) return;
       } else if (t._directInactive) return;if (t._inactive || null === t._inactive) {
-        t._inactive = !1;for (var n = 0; n < t.$children.length; n++) Ie(t.$children[n]);
-        Pe(t, "activated");
+        t._inactive = !1;for (var n = 0; n < t.$children.length; n++) Ie(t.$children[n]);Pe(t, "activated");
       }
     }function Le(t, e) {
       if (!(e && (t._directInactive = !0, $e(t)) || t._inactive)) {
@@ -3751,7 +3743,8 @@
       }
     }function Pe(t, e) {
       I();var n = t.$options[e],
-          r = e + " hook";if (n) for (var i = 0, a = n.length; i < a; i++) gt(n[i], t, null, t, r);t._hasHookEvent && t.$emit("hook:" + e), L();
+          r = e + " hook";if (n) for (var i = 0, a = n.length; i < a; i++) gt(n[i], t, null, t, r);
+      t._hasHookEvent && t.$emit("hook:" + e), L();
     }function Fe() {
       Gs = Ps.length = Fs.length = 0, js = {}, Ns = {}, Bs = Us = !1;
     }function je() {
@@ -4450,8 +4443,7 @@
         C.cancelled || (!t.data.show && a.parentNode && ((a.parentNode._pending || (a.parentNode._pending = {}))[t.key] = t), d && d(a), b && (Vr(a, l), Vr(a, f), Yr(function () {
           Wr(a, l), C.cancelled || (Vr(a, h), w || (ei(x) ? setTimeout(C, x) : zr(a, u, C)));
         })), p && p(a, C), b || w || C());
-      }var a = t.elm;i(a._enterCb) && (a._enterCb.cancelled = !0, a._enterCb());var o = Xr(t.data.transition);if (r(o) || 1 !== a.nodeType) return e();
-      if (!i(a._leaveCb)) {
+      }var a = t.elm;i(a._enterCb) && (a._enterCb.cancelled = !0, a._enterCb());var o = Xr(t.data.transition);if (r(o) || 1 !== a.nodeType) return e();if (!i(a._leaveCb)) {
         var s = o.css,
             u = o.type,
             l = o.leaveClass,
@@ -5072,8 +5064,7 @@
       var Do = {};Object.defineProperty(Do, "passive", { get: function () {
           ko = !0;
         } }), window.addEventListener("test-passive", null, Do);
-    } catch (Ro) {}
-    var Mo,
+    } catch (Ro) {}var Mo,
         $o,
         Io = function () {
       return void 0 === Mo && (Mo = !yo && !bo && "undefined" != typeof e && e.process && "server" === e.process.env.VUE_ENV), Mo;
@@ -6642,11 +6633,11 @@
             var p = t.attrs[d],
                 v = p[3] || p[4] || p[5] || "",
                 m = "a" === n && "href" === p[1] ? e.shouldDecodeNewlinesForHref : e.shouldDecodeNewlines;f[d] = { name: p[1], value: An(v, m) };
-          }i || (c.push({ tag: n, lowerCasedTag: n.toLowerCase(),
-            attrs: f, start: t.start, end: t.end }), s = n), e.start && e.start(n, f, i, t.start, t.end);
+          }i || (c.push({ tag: n, lowerCasedTag: n.toLowerCase(), attrs: f, start: t.start, end: t.end }), s = n), e.start && e.start(n, f, i, t.start, t.end);
         }function a(t, n, r) {
           var i, a;if (null == n && (n = f), null == r && (r = f), t) for (a = t.toLowerCase(), i = c.length - 1; i >= 0 && c[i].lowerCasedTag !== a; i--);else i = 0;if (i >= 0) {
-            for (var o = c.length - 1; o >= i; o--) e.end && e.end(c[o].tag, n, r);c.length = i, s = i && c[i - 1].tag;
+            for (var o = c.length - 1; o >= i; o--) e.end && e.end(c[o].tag, n, r);
+            c.length = i, s = i && c[i - 1].tag;
           } else "br" === a ? e.start && e.start(t, [], !0, n, r) : "p" === a && (e.start && e.start(t, [], !1, n, r), e.end && e.end(t, n, r));
         }for (var o, s, c = [], u = e.expectHTML, l = e.isUnaryTag || pr, h = e.canBeLeftOpenTag || pr, f = 0; t;) {
           if (o = t, s && Co(s)) {
@@ -8765,11 +8756,11 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     methods: {
-        queueMessage(message) {
-            this.textLayer.messager.queue(message);
+        queueMessage(text, x, y) {
+            this.textLayer.messager.queue({ text, x, y });
         },
-        showMessage(message) {
-            this.textLayer.messager.clear().queue(message);
+        showMessage(text, x, y) {
+            this.textLayer.messager.clear().queue({ text, x, y });
         }
     }
 });
@@ -8789,18 +8780,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['textLayer'],
     methods: {
-        queueMessage(message) {
-            this.textLayer.messager.queue(message);
+        queueMessage(text, x, y) {
+            this.textLayer.messager.queue({ text, x, y });
         },
-        showMessage(message) {
-            this.textLayer.messager.clear().queue(message);
+        showMessage(text, x, y) {
+            this.textLayer.messager.clear().queue({ text, x, y });
         },
         hover() {
-            this.textLayer.hoverer.hover(this, {
-                text: this.name || this.hoverName,
-                x: this.x,
-                y: this.y
-            });
+            this.textLayer.hoverer.hover(this, this);
         },
         unhover() {
             this.textLayer.hoverer.unhover(this);
@@ -8835,6 +8822,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+//
 //
 //
 //
@@ -8900,6 +8888,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
 /* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
+//
 //
 //
 //
@@ -9139,7 +9128,8 @@ __webpack_require__.r(__webpack_exports__);
         return {
             plant: {
                 animation: 'rest',
-                name: 'Suspicious Plant'
+                name: 'Suspicious Plant',
+                response: "You ruffled the plant.\nIt's messy now."
             },
             books: [{
                 x: 252,
@@ -9232,12 +9222,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         checkPlant(plant) {
+            this.showMessage(this.plant.response, plant.x, plant.y);
             this.plant.name = 'Ruffled Plant';
-            this.showMessage({
-                text: "You ruffled the plant.\nIt's messy now.",
-                x: plant.x,
-                y: plant.y
-            });
+            this.plant.response = "Hasn't this plant been\nthrough enough?";
         }
     }
 });
@@ -9268,7 +9255,19 @@ __webpack_require__.r(__webpack_exports__);
     props: ['messager', 'hoverer'],
     computed: {
         message() {
-            return this.messager.message || this.hoverer.message;
+            return this.messager.message || this.hovererMessage;
+        },
+        hovererMessage() {
+            if (!this.hoverer.message) {
+                return null;
+            } else {
+                const component = this.hoverer.message;
+                return {
+                    text: component.name || component.hoverName,
+                    x: component.x,
+                    y: component.y
+                };
+            }
         }
     }
 });
@@ -9910,7 +9909,8 @@ var render = function() {
           x: _vm.x,
           y: _vm.y,
           animation: _vm.animation,
-          align: "bottom-center"
+          align: "bottom-center",
+          cursor: "pointer"
         },
         on: {
           click: _vm.shakePlant,
@@ -9948,13 +9948,13 @@ var render = function() {
   return _c(
     "easel-container",
     {
-      attrs: { x: _vm.x, y: _vm.y, alpha: _vm.alpha },
+      attrs: { x: _vm.x, y: _vm.y, alpha: _vm.alpha, cursor: "pointer" },
       on: {
         click: function($event) {
           return _vm.$emit("click", $event)
         },
-        mouseover: _vm.hover,
-        mouseout: _vm.unhover
+        rollover: _vm.hover,
+        rollout: _vm.unhover
       }
     },
     [
@@ -10002,7 +10002,7 @@ var render = function() {
       align: _vm.align,
       color: "white",
       shadow: ["#CCF", 1, 1, 1],
-      font: "10px 'Press Start 2P'"
+      font: "7px 'Press Start 2P'"
     }
   })
 }

@@ -58,6 +58,7 @@ export default {
             plant: {
                 animation: 'rest',
                 name: 'Suspicious Plant',
+                response: "You ruffled the plant.\nIt's messy now.",
             },
             books: [
                 {
@@ -182,12 +183,9 @@ export default {
     },
     methods: {
         checkPlant(plant) {
+            this.showMessage(this.plant.response, plant.x, plant.y);
             this.plant.name = 'Ruffled Plant';
-            this.showMessage({
-                text: "You ruffled the plant.\nIt's messy now.",
-                x: plant.x,
-                y: plant.y,
-            });
+            this.plant.response = "Hasn't this plant been\nthrough enough?";
         },
     },
 };
