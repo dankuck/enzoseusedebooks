@@ -1049,25 +1049,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['x', 'y', 'name'],
+    props: ['x', 'y', 'name', 'ruffled'],
     data() {
         return {
-            hoverName: 'Bad Plant',
-            animation: 'rest'
+            animation: null
         };
+    },
+    computed: {
+        restFrame() {
+            return this.ruffled ? 'ruffled' : 'rest';
+        }
     },
     methods: {
         shakePlant() {
             this.animation = 'rustleAndRest';
         },
         restPlant() {
-            if (this.animation !== 'rest') {
-                this.animation = 'rest';
+            if (this.animation === 'rustleAndRest') {
+                this.animation = null;
                 this.$emit('shake', this);
             }
         }
@@ -1315,6 +1320,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1329,7 +1335,8 @@ __webpack_require__.r(__webpack_exports__);
             plant: {
                 animation: 'rest',
                 name: 'Suspicious Plant',
-                response: "You ruffled the plant.\nIt's messy now."
+                response: "You ruffled the plant.\nIt's messy now.",
+                ruffled: false
             },
             books: [{
                 x: 252,
@@ -1425,6 +1432,7 @@ __webpack_require__.r(__webpack_exports__);
             this.showMessage(this.plant.response, plant.x, plant.y);
             this.plant.name = 'Ruffled Plant';
             this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.ruffled = true;
         }
     }
 });
@@ -9910,11 +9918,12 @@ var render = function() {
         animations: {
           rest: 1,
           rustleAndRest: {
-            frames: [3, 0],
-            next: "rest"
-          }
+            frames: [3, 0, 3, 1],
+            next: "ruffled"
+          },
+          ruffled: 3
         },
-        framerate: 4
+        framerate: 5
       }
     },
     [
@@ -9922,7 +9931,7 @@ var render = function() {
         attrs: {
           x: _vm.x,
           y: _vm.y,
-          animation: _vm.animation,
+          animation: _vm.animation || _vm.restFrame,
           align: "bottom-center",
           cursor: "pointer"
         },
@@ -10149,7 +10158,12 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("big-plant", {
-        attrs: { name: _vm.plant.name, x: "330", y: "160" },
+        attrs: {
+          name: _vm.plant.name,
+          x: "330",
+          y: "160",
+          ruffled: _vm.plant.ruffled
+        },
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
@@ -10266,7 +10280,7 @@ var render = function() {
                 form: "circle",
                 x: point.x,
                 y: point.y,
-                dimensions: "1",
+                dimensions: ".5",
                 fill: "red"
               }
             }),

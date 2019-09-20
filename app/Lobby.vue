@@ -31,6 +31,7 @@
             :name="plant.name"
             x="330"
             y="160"
+            :ruffled="plant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
@@ -59,6 +60,7 @@ export default {
                 animation: 'rest',
                 name: 'Suspicious Plant',
                 response: "You ruffled the plant.\nIt's messy now.",
+                ruffled: false,
             },
             books: [
                 {
@@ -186,6 +188,7 @@ export default {
             this.showMessage(this.plant.response, plant.x, plant.y);
             this.plant.name = 'Ruffled Plant';
             this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.ruffled = true;
         },
     },
 };

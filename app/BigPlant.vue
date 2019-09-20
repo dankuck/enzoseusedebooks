@@ -5,16 +5,17 @@
         :animations="{
             rest: 1,
             rustleAndRest: {
-                frames: [3, 0],
-                next: 'rest',
+                frames: [3, 0, 3, 1],
+                next: 'ruffled',
             },
+            ruffled: 3,
         }"
-        :framerate="4"
+        :framerate="5"
     >
         <easel-sprite
             :x="x"
             :y="y"
-            :animation="animation"
+            :animation="animation || restFrame"
             align="bottom-center"
             cursor="pointer"
             @click="shakePlant"
@@ -31,20 +32,24 @@ import UsesTextLayer from '@mixins/UsesTextLayer';
 
 export default {
     mixins: [UsesTextLayer],
-    props: ['x', 'y', 'name'],
+    props: ['x', 'y', 'name', 'ruffled'],
     data() {
         return {
-            hoverName: 'Bad Plant',
-            animation: 'rest',
+            animation: null,
         };
+    },
+    computed: {
+        restFrame() {
+            return this.ruffled ? 'ruffled' : 'rest';
+        },
     },
     methods: {
         shakePlant() {
             this.animation = 'rustleAndRest';
         },
         restPlant() {
-            if (this.animation !== 'rest') {
-                this.animation = 'rest';
+            if (this.animation === 'rustleAndRest') {
+                this.animation = null;
                 this.$emit('shake', this);
             }
         },

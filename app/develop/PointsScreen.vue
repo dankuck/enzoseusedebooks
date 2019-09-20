@@ -16,7 +16,7 @@
                 form="circle"
                 :x="point.x"
                 :y="point.y"
-                dimensions="1"
+                dimensions=".5"
                 fill="red"
             >
             </easel-shape>
