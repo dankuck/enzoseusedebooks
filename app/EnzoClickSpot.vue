@@ -4,6 +4,7 @@
         :y="y"
         :alpha="alpha"
         cursor="pointer"
+        :cache="true"
         @click="$emit('click', $event)"
         @rollover="hover"
         @rollout="unhover"

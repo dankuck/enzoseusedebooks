@@ -24,10 +24,12 @@
     "babel-preset-env": "^1.7.0",
     "css-loader": "^0.26.4",
     "vue": "^2.6.10",
-    "vue-easeljs": "^0.1.9",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.8"
+  },
+  "dependencies": {
+    "vue-easeljs": "^0.1.10"
   }
 }

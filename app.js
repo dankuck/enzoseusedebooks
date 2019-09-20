@@ -1109,6 +1109,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4021,7 +4022,7 @@ exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || t
           var n = e.x,
               r = e.y,
               i = e.width,
-              a = e.height;t.easelParent.createCanvas(function () {
+              a = e.height;t.easelCanvas.createCanvas(function () {
             t.component.cache(n, r, i, a, window.devicePixelRatio * (t.scale || 1));
           }), t.cacheStarted = !0, t.cacheNeedsUpdate = !1;
         })["catch"](function (t) {
@@ -9961,7 +9962,13 @@ var render = function() {
   return _c(
     "easel-container",
     {
-      attrs: { x: _vm.x, y: _vm.y, alpha: _vm.alpha, cursor: "pointer" },
+      attrs: {
+        x: _vm.x,
+        y: _vm.y,
+        alpha: _vm.alpha,
+        cursor: "pointer",
+        cache: true
+      },
       on: {
         click: function($event) {
           return _vm.$emit("click", $event)
