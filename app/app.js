@@ -6,6 +6,7 @@ window.easeljs = window.VueEaseljs.easeljs;
 import EnzoText from '@app/EnzoText.vue';
 import EnzoClickSpot from '@app/EnzoClickSpot.vue';
 import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
+import config from '@/config';
 
 Vue.use(VueEaseljs);
 
@@ -17,8 +18,42 @@ const app = new Vue({
     components: {
         EnzosEusedEbooks,
     },
+    provide() {
+        return {
+            app: this,
+        };
+    },
+    mounted() {
+        this.resizer = () => {
+            const parent = this.$el.parentNode;
+            this.canvas.width = parent.offsetWidth;
+            this.canvas.height = parent.offsetHeight;
+            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
+            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
+            if (adjustedWidth < this.canvas.width) {
+                this.canvas.width = adjustedWidth;
+            }
+            if (adjustedHeight < this.canvas.height) {
+                this.canvas.height = adjustedHeight;
+            }
+            this.isMobile = screen.width <= 768;
+        };
+        window.addEventListener('resize', this.resizer);
+        this.resizer();
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.resizer);
+    },
     data() {
         return {
+            config,
+            isMobile: false,
+            canvas: {
+                pixelWidth: 350,
+                pixelHeight: 255,
+                width: 350,
+                height: 255,
+            },
         };
     },
 });

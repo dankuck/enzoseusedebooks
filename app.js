@@ -297,18 +297,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************!*\
   !*** ./app/EnzosEusedEbooks.vue ***!
   \**********************************/
-/*! exports provided: default, pixelWidth, pixelHeight */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EnzosEusedEbooks_vue_vue_type_template_id_28f0c2a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EnzosEusedEbooks.vue?vue&type=template&id=28f0c2a4& */ "./app/EnzosEusedEbooks.vue?vue&type=template&id=28f0c2a4&");
 /* harmony import */ var _EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EnzosEusedEbooks.vue?vue&type=script&lang=js& */ "./app/EnzosEusedEbooks.vue?vue&type=script&lang=js&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelWidth", function() { return _EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["pixelWidth"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelHeight", function() { return _EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["pixelHeight"]; });
-
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -338,17 +334,13 @@ component.options.__file = "app/EnzosEusedEbooks.vue"
 /*!***********************************************************!*\
   !*** ./app/EnzosEusedEbooks.vue?vue&type=script&lang=js& ***!
   \***********************************************************/
-/*! exports provided: default, pixelWidth, pixelHeight */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./EnzosEusedEbooks.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/EnzosEusedEbooks.vue?vue&type=script&lang=js&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelWidth", function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["pixelWidth"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelHeight", function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["pixelHeight"]; });
-
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EnzosEusedEbooks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -520,10 +512,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/EnzoText.vue */ "./app/EnzoText.vue");
 /* harmony import */ var _app_EnzoClickSpot_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/EnzoClickSpot.vue */ "./app/EnzoClickSpot.vue");
 /* harmony import */ var _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
 // Expose these variables for devtools
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-easeljs/dist/index.js");
 window.easeljs = window.VueEaseljs.easeljs;
+
 
 
 
@@ -539,8 +533,43 @@ const app = new Vue({
     components: {
         EnzosEusedEbooks: _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
+    provide() {
+        return {
+            app: this
+        };
+    },
+    mounted() {
+        this.resizer = () => {
+            const parent = this.$el.parentNode;
+            this.canvas.width = parent.offsetWidth;
+            this.canvas.height = parent.offsetHeight;
+            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
+            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
+            if (adjustedWidth < this.canvas.width) {
+                this.canvas.width = adjustedWidth;
+            }
+            if (adjustedHeight < this.canvas.height) {
+                this.canvas.height = adjustedHeight;
+            }
+            this.isMobile = screen.width <= 768;
+        };
+        window.addEventListener('resize', this.resizer);
+        this.resizer();
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.resizer);
+    },
     data() {
-        return {};
+        return {
+            config: _config__WEBPACK_IMPORTED_MODULE_3__["default"],
+            isMobile: false,
+            canvas: {
+                pixelWidth: 350,
+                pixelHeight: 255,
+                width: 350,
+                height: 255
+            }
+        };
     }
 });
 
@@ -770,6 +799,56 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/libs/CallbackRing.js":
+/*!**********************************!*\
+  !*** ./app/libs/CallbackRing.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CallbackRing; });
+class CallbackRing {
+    constructor(time) {
+        this.list = [];
+        this.timeout = null;
+        this.time = time;
+        this.index = -1;
+    }
+
+    add(callback) {
+        this.remove(callback);
+        this.list.push(callback);
+    }
+
+    remove(callback) {
+        this.list = this.list.filter(element => element !== callback);
+    }
+
+    start() {
+        if (this.timeout) {
+            return;
+        }
+        this.timeout = setTimeout(() => {
+            this.timeout = null;
+            this.start();
+        }, this.time);
+        this.index = (this.index + 1) % this.list.length;
+        this.list[this.index]();
+    }
+
+    stop() {
+        if (!this.timeout) {
+            return;
+        }
+        clearTimeout(this.timeout);
+        this.timeout = null;
+    }
+}
+
+/***/ }),
+
 /***/ "./app/libs/Hoverer.js":
 /*!*****************************!*\
   !*** ./app/libs/Hoverer.js ***!
@@ -936,6 +1015,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/TextLayer */ "./app/TextLayer.vue");
 /* harmony import */ var _libs_Messager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @libs/Messager */ "./app/libs/Messager.js");
 /* harmony import */ var _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/Hoverer */ "./app/libs/Hoverer.js");
+/* harmony import */ var _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @libs/CallbackRing */ "./app/libs/CallbackRing.js");
+/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+
+
 
 
 
@@ -945,35 +1028,41 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         TextLayer: _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
+    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__["default"]],
+    inject: ['app'],
     provide() {
         return {
             textLayer: this.textLayer
         };
     },
+    mounted() {
+        this.$watch('app.isMobile', () => {
+            this.startStopMobileHoverRing();
+        });
+        this.startStopMobileHoverRing();
+    },
     data() {
         return {
             textLayer: {
                 messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2000),
-                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](250)
+                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](250),
+                mobileHoverRing: new _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__["default"](1500)
             }
         };
     },
     methods: {
-        queueMessage(text, x, y) {
-            this.textLayer.messager.queue({ text, x, y });
-        },
-        showMessage(text, x, y) {
-            this.textLayer.messager.clear().queue({ text, x, y });
+        startStopMobileHoverRing() {
+            this.app.isMobile ? this.textLayer.mobileHoverRing.start() : this.textLayer.mobileHoverRing.stop();
         }
     }
 });
 
 /***/ }),
 
-/***/ "./app/mixins/UsesTextLayer.js":
-/*!*************************************!*\
-  !*** ./app/mixins/UsesTextLayer.js ***!
-  \*************************************/
+/***/ "./app/mixins/TextLayerMethods.js":
+/*!****************************************!*\
+  !*** ./app/mixins/TextLayerMethods.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -981,8 +1070,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['textLayer'],
     methods: {
+        addToHoverRing() {
+            this.textLayer.mobileHoverRing.add(this.hoverCallback);
+        },
+        removeFromHoverRing() {
+            this.textLayer.mobileHoverRing.remove(this.hoverCallback);
+        },
         queueMessage(text, x, y) {
             this.textLayer.messager.queue({ text, x, y });
         },
@@ -1000,6 +1094,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/mixins/UsesTextLayer.js":
+/*!*************************************!*\
+  !*** ./app/mixins/UsesTextLayer.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['textLayer'],
+    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
+    mounted() {
+        this.hoverCallback = () => this.hover();
+        this.addToHoverRing();
+    },
+    destroyed() {
+        this.removeFromHoverRing();
+    }
+});
+
+/***/ }),
+
 /***/ "./config.js":
 /*!*******************!*\
   !*** ./config.js ***!
@@ -1010,7 +1130,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-    develop: true
+    developmentMode: true
 });
 
 /***/ }),
@@ -1144,7 +1264,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/EnzosEusedEbooks */ "./app/EnzosEusedEbooks.vue");
 //
 //
 //
@@ -1158,16 +1277,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['text', 'x', 'y'],
+    inject: ['app'],
+    props: ['text', 'x', 'y', 'buffer'],
     computed: {
         align() {
-            const horizontal = this.x < _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelWidth"] / 2 ? 'left' : 'right';
-            const vertical = this.y < _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelHeight"] / 2 ? 'top' : 'bottom';
+            const horizontal = this.x < this.app.canvas.pixelWidth / 2 ? 'left' : 'right';
+            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
+        },
+        shiftedX() {
+            return parseInt(this.x) + (this.buffer || 0) * (this.align[0] === 'left' ? 1 : -1);
+        },
+        shiftedY() {
+            return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         }
     }
 });
@@ -1178,17 +1302,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/EnzosEusedEbooks.vue?vue&type=script&lang=js& ***!
   \*********************************************************************************************************************************************/
-/*! exports provided: pixelWidth, pixelHeight, default */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelWidth", function() { return pixelWidth; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelHeight", function() { return pixelHeight; });
 /* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
 /* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
 /* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
 //
 //
 //
@@ -1219,10 +1340,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-const pixelWidth = 350;
-const pixelHeight = 255;
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
@@ -1230,39 +1347,7 @@ const pixelHeight = 255;
         DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_1__["default"],
         DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
-    mounted() {
-        // In a future version of vue-easeljs, this will be handled automatically.
-        // https://github.com/dankuck/vue-easeljs/issues/28
-        this.$refs.canvas.component.enableMouseOver();
-
-        this.resizer = () => {
-            const parent = this.$el.parentNode;
-            this.canvas.width = parent.offsetWidth;
-            this.canvas.height = parent.offsetHeight;
-            const adjustedHeight = this.canvas.width * pixelHeight / pixelWidth;
-            const adjustedWidth = this.canvas.height * pixelWidth / pixelHeight;
-            if (adjustedWidth < this.canvas.width) {
-                this.canvas.width = adjustedWidth;
-            }
-            if (adjustedHeight < this.canvas.height) {
-                this.canvas.height = adjustedHeight;
-            }
-        };
-        window.addEventListener('resize', this.resizer);
-        this.resizer();
-    },
-    destroyed() {
-        window.removeEventListener('resize', this.resizer);
-    },
-    data() {
-        return {
-            config: _config__WEBPACK_IMPORTED_MODULE_3__["default"],
-            canvas: {
-                width: pixelWidth,
-                height: pixelHeight
-            }
-        };
-    }
+    inject: ['app']
 });
 
 /***/ }),
@@ -1462,8 +1547,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
     props: ['messager', 'hoverer'],
     computed: {
         message() {
@@ -1532,7 +1644,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/EnzosEusedEbooks */ "./app/EnzosEusedEbooks.vue");
 //
 //
 //
@@ -1568,14 +1679,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
     data() {
         return {
-            pixelWidth: _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelWidth"],
-            pixelHeight: _app_EnzosEusedEbooks__WEBPACK_IMPORTED_MODULE_0__["pixelHeight"],
             points: []
         };
     },
@@ -10030,8 +10138,8 @@ var render = function() {
   return _c("easel-text", {
     attrs: {
       text: _vm.text,
-      x: _vm.x,
-      y: _vm.y,
+      x: _vm.shiftedX,
+      y: _vm.shiftedY,
       align: _vm.align,
       color: "white",
       shadow: ["#CCF", 1, 1, 1],
@@ -10065,7 +10173,7 @@ var render = function() {
     "div",
     { attrs: { id: "canvas-div" } },
     [
-      _vm.config.develop ? _c("dev-tools") : _vm._e(),
+      _vm.app.config.developmentMode ? _c("dev-tools") : _vm._e(),
       _vm._v(" "),
       _c(
         "easel-canvas",
@@ -10073,17 +10181,17 @@ var render = function() {
           ref: "canvas",
           attrs: {
             id: "canvas",
-            width: _vm.canvas.width,
-            height: _vm.canvas.height,
-            "viewport-width": "350",
-            "viewport-height": "255",
+            width: _vm.app.canvas.width,
+            height: _vm.app.canvas.height,
+            "viewport-width": _vm.app.canvas.pixelWidth,
+            "viewport-height": _vm.app.canvas.pixelHeight,
             "anti-alias": false
           }
         },
         [
           _c("lobby"),
           _vm._v(" "),
-          _vm.config.develop ? _c("dev-elements") : _vm._e()
+          _vm.app.config.developmentMode ? _c("dev-elements") : _vm._e()
         ],
         1
       ),
@@ -10206,9 +10314,52 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.message
-    ? _c("enzo-text", {
-        attrs: { text: _vm.message.text, x: _vm.message.x, y: _vm.message.y }
-      })
+    ? _c(
+        "easel-container",
+        [
+          _c("enzo-text", {
+            attrs: {
+              text: _vm.message.text,
+              x: _vm.message.x,
+              y: _vm.message.y,
+              buffer: _vm.app.isMobile ? 3 : 0
+            }
+          }),
+          _vm._v(" "),
+          !_vm.messager.message
+            ? _c(
+                "easel-container",
+                [
+                  _vm.app.isMobile
+                    ? _c("easel-shape", {
+                        attrs: {
+                          form: "rect",
+                          dimensions: [3, 3],
+                          fill: "white",
+                          x: _vm.message.x,
+                          y: _vm.message.y
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.app.isMobile
+                    ? _c("easel-shape", {
+                        attrs: {
+                          form: "rect",
+                          dimensions: [1, 1],
+                          fill: "black",
+                          x: _vm.message.x + 1,
+                          y: _vm.message.y + 1
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e()
+        ],
+        1
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -10267,7 +10418,7 @@ var render = function() {
       _c("easel-shape", {
         attrs: {
           form: "rect",
-          dimensions: [_vm.pixelWidth, _vm.pixelHeight],
+          dimensions: [_vm.app.canvas.pixelWidth, _vm.app.canvas.pixelHeight],
           fill: "black",
           alpha: ".2"
         },

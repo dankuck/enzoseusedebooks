@@ -1,8 +1,8 @@
 <template>
     <easel-text
         :text="text"
-        :x="x"
-        :y="y"
+        :x="shiftedX"
+        :y="shiftedY"
         :align="align"
         color="white"
         :shadow="['#CCF', 1, 1, 1]"
@@ -12,23 +12,29 @@
 </template>
 
 <script>
-import {pixelWidth, pixelHeight} from '@app/EnzosEusedEbooks';
-
 export default {
+    inject: ['app'],
     props: [
         'text',
         'x',
         'y',
+        'buffer',
     ],
     computed: {
         align() {
-            const horizontal = this.x < pixelWidth / 2
+            const horizontal = this.x < this.app.canvas.pixelWidth / 2
                 ? 'left'
                 : 'right';
-            const vertical = this.y < pixelHeight / 2
+            const vertical = this.y < this.app.canvas.pixelHeight / 2
                 ? 'top'
                 : 'bottom';
             return [horizontal, vertical];
+        },
+        shiftedX() {
+            return parseInt(this.x) + (this.buffer || 0) * (this.align[0] === 'left' ? 1 : -1);
+        },
+        shiftedY() {
+            return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         },
     },
 };

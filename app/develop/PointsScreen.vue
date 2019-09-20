@@ -2,7 +2,7 @@
     <easel-container>
         <easel-shape
             form="rect"
-            :dimensions="[pixelWidth, pixelHeight]"
+            :dimensions="[app.canvas.pixelWidth, app.canvas.pixelHeight]"
             fill="black"
             alpha=".2"
             @click="addPoint"
@@ -34,13 +34,10 @@
 </template>
 
 <script>
-import {pixelWidth, pixelHeight} from '@app/EnzosEusedEbooks';
-
 export default {
+    inject: ['app'],
     data() {
         return {
-            pixelWidth,
-            pixelHeight,
             points: [],
         };
     },

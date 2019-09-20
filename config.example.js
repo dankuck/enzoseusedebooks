@@ -1,3 +1,3 @@
 export default {
-    develop: false,
+    developmentMode: false,
 };
