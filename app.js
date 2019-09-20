@@ -797,8 +797,9 @@ class Hoverer {
      */
     constructor(time) {
         this.message = null;
-        this.holder = null;
         this.time = time;
+        this.timeout = null;
+        this.holder = null;
     }
 
     /**
@@ -810,6 +811,10 @@ class Hoverer {
     hover(holder, message) {
         this.message = message;
         this.holder = holder;
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
     }
 
     /**
@@ -818,11 +823,10 @@ class Hoverer {
      * @return {void}
      */
     unhover(holder) {
-        const message = this.message;
-        setTimeout(() => {
-            if (this.message && this.message === message && this.holder === holder) {
+        this.timeout = setTimeout(() => {
+            if (this.holder === holder) {
                 this.message = null;
-                this.holder = null;
+                this.timeout = null;
             }
         }, this.time);
     }
