@@ -1,3 +1,19 @@
+<!--
+/**
+ |---------------------------------
+ | TextLayer
+ |---------------------------------
+ | Shows text, being careful not to clutter the display.
+ |
+ | This component is meant to be used by a parent that mixes in HasTextLayer,
+ | which provides `messager` and `hoverer`.
+ |
+ | In Mobile mode, it also shows a dot so users know where to tap.
+ |
+ | This component only shows one piece of text at a time. It favors text from
+ | `messager` if there is any. Otherwise it uses text from `hoverer`.
+ */
+-->
 <template>
     <easel-container
         v-if="message"

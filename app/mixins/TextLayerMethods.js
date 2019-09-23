@@ -1,3 +1,13 @@
+/**
+ |---------------------------------
+ | TextLayerMethods
+ |---------------------------------
+ | This mixin is not meant to be used on its own.
+ |
+ | Use either:
+ |  HasTextLayer - if the component is intended to have a TextLayer child
+ |  UsesTextLayer - if the component is intended to use a parent's TextLayer
+ */
 
 export default {
     methods: {

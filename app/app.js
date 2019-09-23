@@ -1,3 +1,16 @@
+/**
+ |---------------------------------
+ | app.js
+ |---------------------------------
+ | This is the root of the whole app.
+ |
+ | It handles screen sizing, being a parent to other components, and providing
+ | globally useful tools such as `isMobile`, canvas size, and config.
+ |
+ | It does NOT handle rendering anything directly or choosing which components
+ | are rendered. That's left to the EnzosEusedEbooks component.
+ */
+
 // Expose these variables for devtools
 window.Vue = require('vue');
 window.VueEaseljs = require('vue-easeljs');

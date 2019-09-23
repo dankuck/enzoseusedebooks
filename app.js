@@ -513,6 +513,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_EnzoClickSpot_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/EnzoClickSpot.vue */ "./app/EnzoClickSpot.vue");
 /* harmony import */ var _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
+/**
+ |---------------------------------
+ | app.js
+ |---------------------------------
+ | This is the root of the whole app.
+ |
+ | It handles screen sizing, being a parent to other components, and providing
+ | globally useful tools such as `isMobile`, canvas size, and config.
+ |
+ | It does NOT handle rendering anything directly or choosing which components
+ | are rendered. That's left to the EnzosEusedEbooks component.
+ */
+
 // Expose these variables for devtools
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-easeljs/dist/index.js");
@@ -809,7 +822,20 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CallbackRing; });
+/**
+ |---------------------------------
+ | CallbackRing
+ |---------------------------------
+ | A class that keeps a list of callbacks and calls then on a given interval,
+ | looping at the end.
+ */
+
 class CallbackRing {
+    /**
+     * Create
+     * @param  {int} time millisecond interval to wait between calls
+     * @return {void}
+     */
     constructor(time) {
         this.list = [];
         this.timeout = null;
@@ -817,15 +843,33 @@ class CallbackRing {
         this.index = -1;
     }
 
+    /**
+     * Add a callback to the list
+     * @param {Function} callback - receives no parameters
+     * @return {void}
+     */
     add(callback) {
         this.remove(callback);
         this.list.push(callback);
     }
 
+    /**
+     * Removes a callback from the list
+     * @param  {Function} callback - must be the same reference
+     * @return {void}
+     */
     remove(callback) {
         this.list = this.list.filter(element => element !== callback);
     }
 
+    /**
+     * Start the queue. No callbacks will be called until this method is
+     * called. When this is called, the first callback will be called
+     * immediately, and each subsequent callback will be called in turn after
+     * intervals. When the end of the list is reached, the process will start
+     * over from the beginning.
+     * @return {void}
+     */
     start() {
         if (this.timeout) {
             return;
@@ -838,6 +882,10 @@ class CallbackRing {
         this.list[this.index]();
     }
 
+    /**
+     * Stop the queue. No more callbacks will be called after this.
+     * @return {void}
+     */
     stop() {
         if (!this.timeout) {
             return;
@@ -1017,6 +1065,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/Hoverer */ "./app/libs/Hoverer.js");
 /* harmony import */ var _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @libs/CallbackRing */ "./app/libs/CallbackRing.js");
 /* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+/**
+ |---------------------------------
+ | HasTextLayer
+ |---------------------------------
+ | This mixin provides several TextLayer related tools.
+ |
+ | It provides `textLayer`, which has these elements:
+ |  `messager` - used to hold temporary messages
+ |  `hoverer` - used to hold information to show when hovering over a component
+ |  `mobileHoverRing` - used to cycle through hoverable items and imitate a
+ |                      hover action
+ |
+ | This mixin activates and deactivates auto-hover behavior when the browser
+ | appears to be in mobile mode.
+ |
+ | This also mixes in methods from TextLayerMethods:
+ |  `queueMessage(text, x, y)` - put a message on TextLayer queue
+ |  `showMessage(text, x, y)` - show a mesage on TextLayer, replacing the queue
+ |  `hover()` - show this component's name or hoverName
+ |  `unhover()` - stop showing this component's name or hoverName
+ */
 
 
 
@@ -1068,6 +1137,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/**
+ |---------------------------------
+ | TextLayerMethods
+ |---------------------------------
+ | This mixin is not meant to be used on its own.
+ |
+ | Use either:
+ |  HasTextLayer - if the component is intended to have a TextLayer child
+ |  UsesTextLayer - if the component is intended to use a parent's TextLayer
+ */
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     methods: {
@@ -1103,12 +1182,29 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+/**
+ |---------------------------------
+ | UsesTextLayer
+ |---------------------------------
+ | This mixin provides several TextLayer related tools.
+ |
+ | It requires a parent that mixes in HasTextLayer.
+ |
+ | This mixin adds the component to the auto-hover list.
+ |
+ | This also mixes in methods from TextLayerMethods:
+ |  `queueMessage(text, x, y)` - put a message on TextLayer queue
+ |  `showMessage(text, x, y)` - show a mesage on TextLayer, replacing the queue
+ |  `hover()` - show this component's name or hoverName
+ |  `unhover()` - stop showing this component's name or hoverName
+ */
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['textLayer'],
-    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
+    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__["default"]],
     mounted() {
         this.hoverCallback = () => this.hover();
         this.addToHoverRing();
@@ -1145,6 +1241,15 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1239,6 +1344,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1264,6 +1383,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1336,6 +1465,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1363,6 +1507,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/HasTextLayer */ "./app/mixins/HasTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1537,6 +1693,22 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //

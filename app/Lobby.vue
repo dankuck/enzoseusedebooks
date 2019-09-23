@@ -1,3 +1,15 @@
+<!--
+/**
+ |---------------------------------
+ | Lobby
+ |---------------------------------
+ | This component is the first visual context a user is brought to.
+ |
+ | It provides TextLayer tools, shows a GIF background, and has click spots for
+ | emitting events up to EnzosEusedEbooks.
+ */
+-->
+
 <template>
     <easel-container>
         <easel-bitmap

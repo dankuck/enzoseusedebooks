@@ -1,3 +1,17 @@
+<!--
+/**
+ |--------------------------
+ | EnzoClickSpot
+ |--------------------------
+ | Creates an invisible circle which has hover and click events.
+ |
+ | If a slot is present, this uses that slot's contents instead of a circle.
+ |
+ | Emits a `click` event.
+ |
+ | Development tools can make the spots visible.
+ */
+-->
 <template>
     <easel-container
         :x="x"

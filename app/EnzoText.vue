@@ -1,3 +1,13 @@
+<!--
+/**
+ |--------------------------
+ | EnzoText
+ |--------------------------
+ | Displays text using an <easel-text> in a default style, while shifting the
+ | location and alignment depending on the location on the canvas, to increase
+ | readability.
+ */
+-->
 <template>
     <easel-text
         :text="text"

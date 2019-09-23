@@ -1,3 +1,12 @@
+<!--
+/**
+ |--------------------------
+ | BigPlant
+ |--------------------------
+ | A component that displays a large animated plant. When clicked, the plant
+ | shakes and emits a `shake` event.
+ */
+-->
 <template>
     <easel-sprite-sheet
         :images="['./big-plant-in-lobby-sprite.gif']"
