@@ -25,7 +25,7 @@
             :viewport-height="app.canvas.pixelHeight"
             :anti-alias="false"
         >
-            <lobby></lobby>
+            <component :is="location"></component>
             <dev-elements v-if="app.config.developmentMode"></dev-elements>
         </easel-canvas>
         <easel-canvas>
@@ -51,5 +51,10 @@ export default {
         DevElements,
     },
     inject: ['app'],
+    data() {
+        return {
+            location: 'lobby',
+        };
+    },
 };
 </script>

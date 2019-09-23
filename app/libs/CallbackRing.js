@@ -2,8 +2,8 @@
  |---------------------------------
  | CallbackRing
  |---------------------------------
- | A class that keeps a list of callbacks and calls then on a given interval,
- | looping at the end.
+ | A class that keeps a list of callbacks and calls them on a given interval,
+ | looping at the end of the list.
  */
 
 export default class CallbackRing
