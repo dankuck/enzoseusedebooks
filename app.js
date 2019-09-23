@@ -874,12 +874,19 @@ class CallbackRing {
         if (this.timeout) {
             return;
         }
+        if (this.list.length === 0) {
+            return;
+        }
         this.timeout = setTimeout(() => {
             this.timeout = null;
             this.start();
         }, this.time);
         this.index = (this.index + 1) % this.list.length;
-        this.list[this.index]();
+        try {
+            this.list[this.index]();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     /**
@@ -1752,17 +1759,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
-    props: ['messager', 'hoverer'],
+    inject: ['app', 'textLayer'],
     computed: {
+        messager() {
+            return this.textLayer.messager;
+        },
         message() {
-            return this.messager.message || this.hovererMessage;
+            return this.textLayer.messager.message || this.hovererMessage;
         },
         hovererMessage() {
-            if (!this.hoverer.message) {
+            if (!this.textLayer.hoverer.message) {
                 return null;
             } else {
-                const component = this.hoverer.message;
+                const component = this.textLayer.hoverer.message;
                 return {
                     text: component.name || component.hoverName,
                     x: component.x,
@@ -10463,7 +10472,7 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c("text-layer", _vm._b({}, "text-layer", _vm.textLayer, false))
+      _c("text-layer")
     ],
     2
   )
@@ -10503,7 +10512,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          !_vm.messager.message
+          !_vm.textLayer.messager.message
             ? _c(
                 "easel-container",
                 [

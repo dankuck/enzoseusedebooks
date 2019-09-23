@@ -53,7 +53,7 @@
             v-bind="book"
         >
         </enzo-click-spot>
-        <text-layer v-bind="textLayer"></text-layer>
+        <text-layer></text-layer>
     </easel-container>
 </template>
 

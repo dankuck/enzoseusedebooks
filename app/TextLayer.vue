@@ -6,7 +6,7 @@
  | Shows text, being careful not to clutter the display.
  |
  | This component is meant to be used by a parent that mixes in HasTextLayer,
- | which provides `messager` and `hoverer`.
+ | which provides `textLayer`.
  |
  | In Mobile mode, it also shows a dot so users know where to tap.
  |
@@ -26,7 +26,7 @@
         >
         </enzo-text>
         <easel-container
-            v-if="!messager.message"
+            v-if="!textLayer.messager.message"
         >
             <easel-shape
                 v-if="app.isMobile"
@@ -52,17 +52,19 @@
 
 <script>
 export default {
-    inject: ['app'],
-    props: ['messager', 'hoverer'],
+    inject: ['app', 'textLayer'],
     computed: {
+        messager() {
+            return this.textLayer.messager;
+        },
         message() {
-            return this.messager.message || this.hovererMessage;
+            return this.textLayer.messager.message || this.hovererMessage;
         },
         hovererMessage() {
-            if (!this.hoverer.message) {
+            if (!this.textLayer.hoverer.message) {
                 return null;
             } else {
-                const component = this.hoverer.message;
+                const component = this.textLayer.hoverer.message;
                 return {
                     text: component.name || component.hoverName,
                     x: component.x,
