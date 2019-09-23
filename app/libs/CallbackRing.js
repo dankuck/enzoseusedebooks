@@ -51,12 +51,19 @@ export default class CallbackRing
         if (this.timeout) {
             return;
         }
+        if (this.list.length === 0) {
+            return;
+        }
         this.timeout = setTimeout(() => {
             this.timeout = null;
             this.start();
         }, this.time)
         this.index = (this.index + 1) % this.list.length;
-        this.list[this.index]();
+        try {
+            this.list[this.index]();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     /**
