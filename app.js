@@ -826,8 +826,8 @@ __webpack_require__.r(__webpack_exports__);
  |---------------------------------
  | CallbackRing
  |---------------------------------
- | A class that keeps a list of callbacks and calls then on a given interval,
- | looping at the end.
+ | A class that keeps a list of callbacks and calls them on a given interval,
+ | looping at the end of the list.
  */
 
 class CallbackRing {
@@ -1491,7 +1491,12 @@ __webpack_require__.r(__webpack_exports__);
         DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_1__["default"],
         DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
-    inject: ['app']
+    inject: ['app'],
+    data() {
+        return {
+            location: 'lobby'
+        };
+    }
 });
 
 /***/ }),
@@ -10361,7 +10366,7 @@ var render = function() {
           }
         },
         [
-          _c("lobby"),
+          _c(_vm.location, { tag: "component" }),
           _vm._v(" "),
           _vm.app.config.developmentMode ? _c("dev-elements") : _vm._e()
         ],
