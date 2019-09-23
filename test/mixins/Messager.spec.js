@@ -19,7 +19,7 @@ describe('Messager', function () {
         equal(messager.message, message1);
     });
 
-    it('should set then unset the message', function (done) {
+    it('should set then timeout the message', function (done) {
         const messager = new Messager(10);
         messager.queue(message1);
         equal(messager.message, message1);
@@ -35,7 +35,7 @@ describe('Messager', function () {
         messager.queue(message1);
         messager.queue(message2);
         equal(messager.message, message1);
-        wait(20)
+        wait(15)
             .then(() => {
                 equal(messager.message, message2);
             })

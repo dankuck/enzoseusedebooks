@@ -3,7 +3,7 @@ import assert from 'assert';
 const {deepStrictEqual: equal} = assert;
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-describe.only('CallbackRing', function () {
+describe('CallbackRing', function () {
 
     it('should instantiate', function () {
         new CallbackRing(0); // no whammy
