@@ -20,7 +20,7 @@ import EnzoText from '@app/EnzoText.vue';
 import EnzoClickSpot from '@app/EnzoClickSpot.vue';
 import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
 import config from '@/config';
-import SerialStorage from '@libs/SerialStorage';
+import JsonStorage from '@libs/JsonStorage';
 
 Vue.use(VueEaseljs);
 
@@ -68,7 +68,7 @@ const app = new Vue({
                 width: 350,
                 height: 255,
             },
-            localStorage: new SerialStorage(window.localStorage),
+            storage: new JsonStorage(window.localStorage, 'enzos-eused-ebooks'),
         };
     },
 });
