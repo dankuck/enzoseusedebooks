@@ -20,11 +20,11 @@
  |  `unhover()` - stop showing this component's name or hoverName
  */
 
-import TextLayer from '@app/TextLayer';
+import TextLayer from '@textLayer/TextLayer';
 import Messager from '@libs/Messager';
 import Hoverer from '@libs/Hoverer';
 import CallbackRing from '@libs/CallbackRing';
-import TextLayerMethods from '@mixins/TextLayerMethods';
+import TextLayerMethods from '@textLayer/TextLayerMethods';
 
 export default {
     components: {

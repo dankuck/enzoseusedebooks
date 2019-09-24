@@ -431,75 +431,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./app/TextLayer.vue":
-/*!***************************!*\
-  !*** ./app/TextLayer.vue ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextLayer.vue?vue&type=template&id=43afd3f8& */ "./app/TextLayer.vue?vue&type=template&id=43afd3f8&");
-/* harmony import */ var _TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TextLayer.vue?vue&type=script&lang=js& */ "./app/TextLayer.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "app/TextLayer.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./app/TextLayer.vue?vue&type=script&lang=js&":
-/*!****************************************************!*\
-  !*** ./app/TextLayer.vue?vue&type=script&lang=js& ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./TextLayer.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/TextLayer.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./app/TextLayer.vue?vue&type=template&id=43afd3f8&":
-/*!**********************************************************!*\
-  !*** ./app/TextLayer.vue?vue&type=template&id=43afd3f8& ***!
-  \**********************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./TextLayer.vue?vue&type=template&id=43afd3f8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/TextLayer.vue?vue&type=template&id=43afd3f8&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43afd3f8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./app/app.js":
 /*!********************!*\
   !*** ./app/app.js ***!
@@ -1058,20 +989,20 @@ class Messager {
 
 /***/ }),
 
-/***/ "./app/mixins/HasTextLayer.js":
-/*!************************************!*\
-  !*** ./app/mixins/HasTextLayer.js ***!
-  \************************************/
+/***/ "./app/textLayer/HasTextLayer.js":
+/*!***************************************!*\
+  !*** ./app/textLayer/HasTextLayer.js ***!
+  \***************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/TextLayer */ "./app/TextLayer.vue");
+/* harmony import */ var _textLayer_TextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/TextLayer */ "./app/textLayer/TextLayer.vue");
 /* harmony import */ var _libs_Messager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @libs/Messager */ "./app/libs/Messager.js");
 /* harmony import */ var _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/Hoverer */ "./app/libs/Hoverer.js");
 /* harmony import */ var _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @libs/CallbackRing */ "./app/libs/CallbackRing.js");
-/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+/* harmony import */ var _textLayer_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @textLayer/TextLayerMethods */ "./app/textLayer/TextLayerMethods.js");
 /**
  |---------------------------------
  | HasTextLayer
@@ -1102,9 +1033,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        TextLayer: _app_TextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]
+        TextLayer: _textLayer_TextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
-    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__["default"]],
+    mixins: [_textLayer_TextLayerMethods__WEBPACK_IMPORTED_MODULE_4__["default"]],
     inject: ['app'],
     provide() {
         return {
@@ -1135,10 +1066,79 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./app/mixins/TextLayerMethods.js":
-/*!****************************************!*\
-  !*** ./app/mixins/TextLayerMethods.js ***!
-  \****************************************/
+/***/ "./app/textLayer/TextLayer.vue":
+/*!*************************************!*\
+  !*** ./app/textLayer/TextLayer.vue ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextLayer.vue?vue&type=template&id=43cd1a4d& */ "./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d&");
+/* harmony import */ var _TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TextLayer.vue?vue&type=script&lang=js& */ "./app/textLayer/TextLayer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/textLayer/TextLayer.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/textLayer/TextLayer.vue?vue&type=script&lang=js&":
+/*!**************************************************************!*\
+  !*** ./app/textLayer/TextLayer.vue?vue&type=script&lang=js& ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib!../../node_modules/vue-loader/lib??vue-loader-options!./TextLayer.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/textLayer/TextLayer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d&":
+/*!********************************************************************!*\
+  !*** ./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d& ***!
+  \********************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./TextLayer.vue?vue&type=template&id=43cd1a4d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextLayer_vue_vue_type_template_id_43cd1a4d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./app/textLayer/TextLayerMethods.js":
+/*!*******************************************!*\
+  !*** ./app/textLayer/TextLayerMethods.js ***!
+  \*******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1180,16 +1180,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./app/mixins/UsesTextLayer.js":
-/*!*************************************!*\
-  !*** ./app/mixins/UsesTextLayer.js ***!
-  \*************************************/
+/***/ "./app/textLayer/UsesTextLayer.js":
+/*!****************************************!*\
+  !*** ./app/textLayer/UsesTextLayer.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/TextLayerMethods */ "./app/mixins/TextLayerMethods.js");
+/* harmony import */ var _textLayer_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/TextLayerMethods */ "./app/textLayer/TextLayerMethods.js");
 /**
  |---------------------------------
  | UsesTextLayer
@@ -1211,7 +1211,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['textLayer'],
-    mixins: [_mixins_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    mixins: [_textLayer_TextLayerMethods__WEBPACK_IMPORTED_MODULE_0__["default"]],
     mounted() {
         this.hoverCallback = () => this.hover();
         this.addToHoverRing();
@@ -1247,7 +1247,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
 //
 //
 //
@@ -1290,7 +1290,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [_mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     props: ['x', 'y', 'name', 'ruffled'],
     data() {
         return {
@@ -1326,7 +1326,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UsesTextLayer */ "./app/mixins/UsesTextLayer.js");
+/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
 /* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
 //
 //
@@ -1370,7 +1370,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [_mixins_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     props: ['x', 'y', 'r', 'name'],
     computed: {
         alpha() {
@@ -1518,7 +1518,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
-/* harmony import */ var _mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/HasTextLayer */ "./app/mixins/HasTextLayer.js");
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 //
 //
 //
@@ -1583,7 +1583,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [_mixins_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
@@ -1690,94 +1690,6 @@ __webpack_require__.r(__webpack_exports__);
             this.plant.name = 'Ruffled Plant';
             this.plant.response = "Hasn't this plant been\nthrough enough?";
             this.plant.ruffled = true;
-        }
-    }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/TextLayer.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/TextLayer.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app', 'textLayer'],
-    computed: {
-        messager() {
-            return this.textLayer.messager;
-        },
-        message() {
-            return this.textLayer.messager.message || this.hovererMessage;
-        },
-        hovererMessage() {
-            if (!this.textLayer.hoverer.message) {
-                return null;
-            } else {
-                const component = this.textLayer.hoverer.message;
-                return {
-                    text: component.name || component.hoverName,
-                    x: component.x,
-                    y: component.y
-                };
-            }
         }
     }
 });
@@ -1920,6 +1832,94 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/textLayer/TextLayer.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/textLayer/TextLayer.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app', 'textLayer'],
+    computed: {
+        messager() {
+            return this.textLayer.messager;
+        },
+        message() {
+            return this.textLayer.messager.message || this.hovererMessage;
+        },
+        hovererMessage() {
+            if (!this.textLayer.hoverer.message) {
+                return null;
+            } else {
+                const component = this.textLayer.hoverer.message;
+                return {
+                    text: component.name || component.hoverName,
+                    x: component.x,
+                    y: component.y
+                };
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -10484,77 +10484,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/TextLayer.vue?vue&type=template&id=43afd3f8&":
-/*!****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/TextLayer.vue?vue&type=template&id=43afd3f8& ***!
-  \****************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.message
-    ? _c(
-        "easel-container",
-        [
-          _c("enzo-text", {
-            attrs: {
-              text: _vm.message.text,
-              x: _vm.message.x,
-              y: _vm.message.y,
-              buffer: _vm.app.isMobile ? 3 : 0
-            }
-          }),
-          _vm._v(" "),
-          !_vm.textLayer.messager.message
-            ? _c(
-                "easel-container",
-                [
-                  _vm.app.isMobile
-                    ? _c("easel-shape", {
-                        attrs: {
-                          form: "rect",
-                          dimensions: [3, 3],
-                          fill: "white",
-                          x: _vm.message.x,
-                          y: _vm.message.y
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.app.isMobile
-                    ? _c("easel-shape", {
-                        attrs: {
-                          form: "rect",
-                          dimensions: [1, 1],
-                          fill: "black",
-                          x: _vm.message.x + 1,
-                          y: _vm.message.y + 1
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              )
-            : _vm._e()
-        ],
-        1
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/develop/Elements.vue?vue&type=template&id=905bd076&":
 /*!***********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/develop/Elements.vue?vue&type=template&id=905bd076& ***!
@@ -10784,6 +10713,77 @@ var render = function() {
         )
       : _vm._e()
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/textLayer/TextLayer.vue?vue&type=template&id=43cd1a4d& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.message
+    ? _c(
+        "easel-container",
+        [
+          _c("enzo-text", {
+            attrs: {
+              text: _vm.message.text,
+              x: _vm.message.x,
+              y: _vm.message.y,
+              buffer: _vm.app.isMobile ? 3 : 0
+            }
+          }),
+          _vm._v(" "),
+          !_vm.textLayer.messager.message
+            ? _c(
+                "easel-container",
+                [
+                  _vm.app.isMobile
+                    ? _c("easel-shape", {
+                        attrs: {
+                          form: "rect",
+                          dimensions: [3, 3],
+                          fill: "white",
+                          x: _vm.message.x,
+                          y: _vm.message.y
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.app.isMobile
+                    ? _c("easel-shape", {
+                        attrs: {
+                          form: "rect",
+                          dimensions: [1, 1],
+                          fill: "black",
+                          x: _vm.message.x + 1,
+                          y: _vm.message.y + 1
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e()
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -18,7 +18,7 @@ module.exports = {
             '@': __dirname,
             '@app': path.resolve(__dirname, './app/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
-            '@mixins': path.resolve(__dirname, './app/mixins/'),
+            '@textLayer': path.resolve(__dirname, './app/textLayer/'),
             '@develop': path.resolve(__dirname, './app/develop/')
         }
     },

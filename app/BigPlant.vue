@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import UsesTextLayer from '@mixins/UsesTextLayer';
+import UsesTextLayer from '@textLayer/UsesTextLayer';
 
 export default {
     mixins: [UsesTextLayer],

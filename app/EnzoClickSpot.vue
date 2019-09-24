@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import UsesTextLayer from '@mixins/UsesTextLayer';
+import UsesTextLayer from '@textLayer/UsesTextLayer';
 import DevSettings from '@develop/DevSettings.js';
 
 export default {

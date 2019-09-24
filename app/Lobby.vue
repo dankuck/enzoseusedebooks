@@ -59,7 +59,7 @@
 
 <script>
 import BigPlant from '@app/BigPlant';
-import HasTextLayer from '@mixins/HasTextLayer';
+import HasTextLayer from '@textLayer/HasTextLayer';
 
 export default {
     mixins: [HasTextLayer],

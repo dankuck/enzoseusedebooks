@@ -15,7 +15,7 @@
  |  `unhover()` - stop showing this component's name or hoverName
  */
 
-import TextLayerMethods from '@mixins/TextLayerMethods';
+import TextLayerMethods from '@textLayer/TextLayerMethods';
 
 export default {
     inject: ['textLayer'],
