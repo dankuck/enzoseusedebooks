@@ -444,6 +444,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_EnzoClickSpot_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/EnzoClickSpot.vue */ "./app/EnzoClickSpot.vue");
 /* harmony import */ var _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
+/* harmony import */ var _libs_SerialStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/SerialStorage */ "./app/libs/SerialStorage.js");
 /**
  |---------------------------------
  | app.js
@@ -461,6 +462,7 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-easeljs/dist/index.js");
 window.easeljs = window.VueEaseljs.easeljs;
+
 
 
 
@@ -512,7 +514,8 @@ const app = new Vue({
                 pixelHeight: 255,
                 width: 350,
                 height: 255
-            }
+            },
+            localStorage: new _libs_SerialStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage)
         };
     }
 });
@@ -984,6 +987,48 @@ class Messager {
         clearTimeout(this.timeout);
         this.timeout = null;
         this.message = null;
+    }
+};
+
+/***/ }),
+
+/***/ "./app/libs/SerialStorage.js":
+/*!***********************************!*\
+  !*** ./app/libs/SerialStorage.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SerialStorage; });
+
+class SerialStorage {
+    constructor(storage, serializer = JSON) {
+        this.storage = storage;
+        this.serializer = serializer;
+    }
+
+    read(key) {
+        if (arguments.length === 0) {
+            const read = {};
+            for (let field in this.storage) {
+                read[field] = this.serializer.parse(this.storage[field]);
+            }
+            return read;
+        } else {
+            return this.serializer.parse(this.storage[key]);
+        }
+    }
+
+    write(key, data) {
+        if (arguments.length === 1) {
+            for (let field in key) {
+                this.storage[field] = this.serializer.stringify(key[field]);
+            }
+        } else {
+            this.storage[key] = this.serializer.stringify(data);
+        }
     }
 };
 
