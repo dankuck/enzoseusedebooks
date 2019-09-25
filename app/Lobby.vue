@@ -40,10 +40,10 @@
             </easel-shape>
         </enzo-click-spot>
         <big-plant
-            :name="plant.name"
+            :name="app.world.plant.name"
             x="330"
             y="160"
-            :ruffled="plant.ruffled"
+            :ruffled="app.world.plant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
@@ -68,12 +68,6 @@ export default {
     },
     data() {
         return {
-            plant: {
-                animation: 'rest',
-                name: 'Suspicious Plant',
-                response: "You ruffled the plant.\nIt's messy now.",
-                ruffled: false,
-            },
             books: [
                 {
                     x: 252,
@@ -196,11 +190,11 @@ export default {
         };
     },
     methods: {
-        checkPlant(plant) {
-            this.showMessage(this.plant.response, plant.x, plant.y);
-            this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been\nthrough enough?";
-            this.plant.ruffled = true;
+        checkPlant(vuePlant) {
+            this.showMessage(this.app.world.plant.response, vuePlant.x, vuePlant.y);
+            this.app.world.plant.name = 'Ruffled Plant';
+            this.app.world.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.app.world.plant.ruffled = true;
         },
     },
 };

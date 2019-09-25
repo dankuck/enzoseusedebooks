@@ -21,11 +21,28 @@ import EnzoClickSpot from '@app/EnzoClickSpot.vue';
 import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
 import config from '@/config';
 import JsonStorage from '@libs/JsonStorage';
+import World from '@world/World';
+import Reviver from '@libs/Reviver';
 
 Vue.use(VueEaseljs);
 
 Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
+
+const reviver = new Reviver();
+reviver.add(
+    World,
+    (key, data) => World.reviveFromJson(data),
+    (key, data) => data.replaceForJson()
+);
+
+const storage = new JsonStorage(
+    window.localStorage,
+    'enzos-eused-ebooks',
+    reviver
+);
+
+const world = storage.read('world') || new World();
 
 const app = new Vue({
     el: '#app',
@@ -54,6 +71,11 @@ const app = new Vue({
         };
         window.addEventListener('resize', this.resizer);
         this.resizer();
+        this.$watch(
+            'world',
+            () => this.storage.write('world', this.world),
+            {deep: true}
+        );
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);
@@ -68,7 +90,8 @@ const app = new Vue({
                 width: 350,
                 height: 255,
             },
-            storage: new JsonStorage(window.localStorage, 'enzos-eused-ebooks'),
+            storage,
+            world,
         };
     },
 });

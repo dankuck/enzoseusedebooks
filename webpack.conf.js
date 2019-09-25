@@ -19,7 +19,8 @@ module.exports = {
             '@app': path.resolve(__dirname, './app/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
             '@textLayer': path.resolve(__dirname, './app/textLayer/'),
-            '@develop': path.resolve(__dirname, './app/develop/')
+            '@develop': path.resolve(__dirname, './app/develop/'),
+            '@world': path.resolve(__dirname, './app/world/')
         }
     },
     plugins: [

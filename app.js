@@ -445,6 +445,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_EnzosEusedEbooks_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/EnzosEusedEbooks.vue */ "./app/EnzosEusedEbooks.vue");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
 /* harmony import */ var _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/JsonStorage */ "./app/libs/JsonStorage.js");
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @world/World */ "./app/world/World.js");
+/* harmony import */ var _libs_Reviver__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @libs/Reviver */ "./app/libs/Reviver.js");
 /**
  |---------------------------------
  | app.js
@@ -469,10 +471,19 @@ window.easeljs = window.VueEaseljs.easeljs;
 
 
 
+
+
 Vue.use(VueEaseljs);
 
 Vue.component('enzo-text', _app_EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.component('enzo-click-spot', _app_EnzoClickSpot_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_6__["default"]();
+reviver.add(_world_World__WEBPACK_IMPORTED_MODULE_5__["default"], (key, data) => _world_World__WEBPACK_IMPORTED_MODULE_5__["default"].reviveFromJson(data), (key, data) => data.replaceForJson());
+
+const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, 'enzos-eused-ebooks', reviver);
+
+const world = storage.read('world') || new _world_World__WEBPACK_IMPORTED_MODULE_5__["default"]();
 
 const app = new Vue({
     el: '#app',
@@ -501,6 +512,7 @@ const app = new Vue({
         };
         window.addEventListener('resize', this.resizer);
         this.resizer();
+        this.$watch('world', () => this.storage.write('world', this.world), { deep: true });
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);
@@ -515,7 +527,8 @@ const app = new Vue({
                 width: 350,
                 height: 255
             },
-            storage: new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, 'enzos-eused-ebooks')
+            storage,
+            world
         };
     }
 });
@@ -922,11 +935,11 @@ __webpack_require__.r(__webpack_exports__);
  | object.
  */
 class JsonStorage {
-    constructor(storage, rootKey, { reviver, replacer } = {}) {
+    constructor(storage, rootKey, transformer = null) {
         this.storage = storage;
         this.rootKey = rootKey;
-        this.reviver = reviver || ((key, value) => value);
-        this.replacer = replacer || ((key, value) => value);
+        this.reviver = (key, value) => transformer && transformer.revive ? transformer.revive(key, value) : value;
+        this.replacer = (key, value) => transformer && transformer.replace ? transformer.replace(key, value) : value;
     }
 
     getRoot() {
@@ -1061,6 +1074,134 @@ class Messager {
         this.message = null;
     }
 };
+
+/***/ }),
+
+/***/ "./app/libs/Reviver.js":
+/*!*****************************!*\
+  !*** ./app/libs/Reviver.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Reviver; });
+
+class Reviver {
+    constructor() {
+        this.classes = [];
+    }
+
+    add(classToRevive, revive, replace) {
+        this.classes.push({
+            'class': classToRevive,
+            revive: revive,
+            replace: replace
+        });
+    }
+
+    findMatch(value) {
+        return this.classes.reduce((found, match) => {
+            if (found) {
+                return found;
+            }
+            if (value instanceof match.class) {
+                return match;
+            }
+            if (value && value.__class__ === match.class.name) {
+                return match;
+            }
+            return null;
+        }, null);
+    }
+
+    revive(key, value) {
+        const match = this.findMatch(value);
+        if (!match) {
+            return value;
+        } else {
+            return match.revive(key, value.__data__);
+        }
+    }
+
+    replace(key, value) {
+        const match = this.findMatch(value);
+        if (!match) {
+            return value;
+        } else {
+            return {
+                __class__: match.class.name,
+                __data__: match.replace(key, value)
+            };
+        }
+    }
+}
+
+/***/ }),
+
+/***/ "./app/libs/VersionUpgrader.js":
+/*!*************************************!*\
+  !*** ./app/libs/VersionUpgrader.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VersionUpgrader; });
+/**
+ |--------------------------
+ | VersionUpgrader
+ |--------------------------
+ | This class keeps a list of versions and callbacks to be applied to an
+ | object in order. Only versions higher than a given version will be applied.
+ |
+ | The last version number applied will be returned.
+ |
+ | Example:
+ |  const object = {x: 4};
+ |  object.version = new VersionUpgrader()
+ |      .version(1, object => object.x = 1)
+ |      .version(2, object => {
+ |          object.y = {
+ |              z: 1,
+ |          };
+ |      })
+ |      .upgrade(1, object);
+ |
+ | In this example, only version 2 will be applied to the object, because the
+ | version passed to `upgrade` was 1. Afterward the object will look like this:
+ |  {
+ |      x: 4,
+ |      y: {
+ |          z: 1,
+ |      },
+ |      version: 2,
+ |  }
+ |
+ | The version does not have to be stored on the object if that is not
+ | convenient, but it should be stored somewhere so that it can be passed in
+ | again later when the object needs to be upgraded again.
+ */
+
+class VersionUpgrader {
+
+    constructor() {
+        this.changes = [];
+    }
+
+    version(version, callback) {
+        this.changes.push({ version, callback });
+        return this;
+    }
+
+    upgrade(version, object) {
+        const changes = this.changes.sort((a, b) => a.version - b.version).filter(change => change.version > version);
+        changes.forEach(change => change.callback(object));
+        return changes.length ? changes[changes.length - 1].version : version;
+    }
+}
 
 /***/ }),
 
@@ -1295,6 +1436,45 @@ __webpack_require__.r(__webpack_exports__);
         this.removeFromHoverRing();
     }
 });
+
+/***/ }),
+
+/***/ "./app/world/World.js":
+/*!****************************!*\
+  !*** ./app/world/World.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
+/* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
+
+
+const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default"]().version(1, world => {
+    world.plant = {
+        animation: 'rest',
+        name: 'Suspicious Plant',
+        response: "You ruffled the plant.\nIt's messy now.",
+        ruffled: false
+    };
+});
+
+class World {
+    constructor(data = {}) {
+        Object.assign(this, data);
+        this.version = upgrader.upgrade(this.version || 0, this);
+    }
+
+    replaceForJson() {
+        return Object.assign({}, this);
+    }
+};
+
+World.reviveFromJson = function (data) {
+    return new World(data);
+};
 
 /***/ }),
 
@@ -1664,12 +1844,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     data() {
         return {
-            plant: {
-                animation: 'rest',
-                name: 'Suspicious Plant',
-                response: "You ruffled the plant.\nIt's messy now.",
-                ruffled: false
-            },
             books: [{
                 x: 252,
                 y: 203,
@@ -1760,11 +1934,11 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     methods: {
-        checkPlant(plant) {
-            this.showMessage(this.plant.response, plant.x, plant.y);
-            this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been\nthrough enough?";
-            this.plant.ruffled = true;
+        checkPlant(vuePlant) {
+            this.showMessage(this.app.world.plant.response, vuePlant.x, vuePlant.y);
+            this.app.world.plant.name = 'Ruffled Plant';
+            this.app.world.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.app.world.plant.ruffled = true;
         }
     }
 });
@@ -10532,10 +10706,10 @@ var render = function() {
       _vm._v(" "),
       _c("big-plant", {
         attrs: {
-          name: _vm.plant.name,
+          name: _vm.app.world.plant.name,
           x: "330",
           y: "160",
-          ruffled: _vm.plant.ruffled
+          ruffled: _vm.app.world.plant.ruffled
         },
         on: { shake: _vm.checkPlant }
       }),
