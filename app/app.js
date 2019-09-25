@@ -4,11 +4,22 @@
  |---------------------------------
  | This is the root of the whole app.
  |
- | It handles screen sizing, being a parent to other components, and providing
- | globally useful tools such as `isMobile`, canvas size, and config.
+ | It handles screen sizing, and providing globally useful tools and data.
  |
- | It does NOT handle rendering anything directly or choosing which components
- | are rendered. That's left to the EnzosEusedEbooks component.
+ | Provides itself as `app` to all descendants.
+ |
+ | Data includes:
+ |  config: data from config.js
+ |  isMobile: dynamic boolean is true if the screen size looks like mobile
+ |  canvas.pixelWidth: the width of the canvas internally
+ |  canvas.pixelHeight: the height of the canvas internally
+ |  canvas.width: the HTML page width of the canvas
+ |  canvas.height: the HTML page height of the canvas
+ |  storage: a JsonStorage object that persists data to localStorage
+ |  world: the World object
+ |
+ | This class does NOT handle rendering anything directly or choosing which
+ | components are rendered. That's left to the EnzosEusedEbooks component.
  */
 
 // Expose these variables for devtools

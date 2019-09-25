@@ -12,7 +12,8 @@ const upgrader = new VersionUpgrader()
     .version(2, world => {
         world.lobbyPlant = world.plant;
         delete world.plant;
-    });
+    })
+    .version(3, world => world.location = 'lobby');
 
 export default class World
 {

@@ -453,11 +453,22 @@ __webpack_require__.r(__webpack_exports__);
  |---------------------------------
  | This is the root of the whole app.
  |
- | It handles screen sizing, being a parent to other components, and providing
- | globally useful tools such as `isMobile`, canvas size, and config.
+ | It handles screen sizing, and providing globally useful tools and data.
  |
- | It does NOT handle rendering anything directly or choosing which components
- | are rendered. That's left to the EnzosEusedEbooks component.
+ | Provides itself as `app` to all descendants.
+ |
+ | Data includes:
+ |  config: data from config.js
+ |  isMobile: dynamic boolean is true if the screen size looks like mobile
+ |  canvas.pixelWidth: the width of the canvas internally
+ |  canvas.pixelHeight: the height of the canvas internally
+ |  canvas.width: the HTML page width of the canvas
+ |  canvas.height: the HTML page height of the canvas
+ |  storage: a JsonStorage object that persists data to localStorage
+ |  world: the World object
+ |
+ | This class does NOT handle rendering anything directly or choosing which
+ | components are rendered. That's left to the EnzosEusedEbooks component.
  */
 
 // Expose these variables for devtools
@@ -1157,7 +1168,11 @@ __webpack_require__.r(__webpack_exports__);
  | This class keeps a list of versions and callbacks to be applied to an
  | object in order. Only versions higher than a given version will be applied.
  |
- | The last version number applied will be returned.
+ | `version(version, callback)` defines a callback to be run when an object is
+ | below the given version.
+ |
+ | `upgrade(version, object)` runs the necessary callbacks and returns the new
+ | version.
  |
  | Example:
  |  const object = {x: 4};
@@ -1187,15 +1202,36 @@ __webpack_require__.r(__webpack_exports__);
 
 class VersionUpgrader {
 
+    /**
+     * Create
+     * @return {void}
+     */
     constructor() {
         this.changes = [];
     }
 
+    /**
+     * Add a version number and the mutation callback.
+     *
+     * The callback will receive the object given to `upgrade` and is expected
+     * to alter it if needed. The return value is ignored.
+     *
+     * @param  {int}   version
+     * @param  {Function} callback
+     * @return {this}
+     */
     version(version, callback) {
         this.changes.push({ version, callback });
         return this;
     }
 
+    /**
+     * Apply version mutations above the given version and return the highest
+     * version applied, or else return the same version if nothing was applied.
+     * @param  {int} version
+     * @param  {Object} object
+     * @return {int}         - the highest version applied
+     */
     upgrade(version, object) {
         const changes = this.changes.sort((a, b) => a.version - b.version).filter(change => change.version > version);
         changes.forEach(change => change.callback(object));
@@ -1464,7 +1500,7 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 }).version(2, world => {
     world.lobbyPlant = world.plant;
     delete world.plant;
-});
+}).version(3, world => world.location = 'lobby');
 
 class World {
     constructor(data = {}) {
@@ -1758,12 +1794,7 @@ __webpack_require__.r(__webpack_exports__);
         DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_1__["default"],
         DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
-    inject: ['app'],
-    data() {
-        return {
-            location: 'lobby'
-        };
-    }
+    inject: ['app']
 });
 
 /***/ }),
@@ -10646,7 +10677,7 @@ var render = function() {
           }
         },
         [
-          _c(_vm.location, { tag: "component" }),
+          _c(_vm.app.world.location, { tag: "component" }),
           _vm._v(" "),
           _vm.app.config.developmentMode ? _c("dev-elements") : _vm._e()
         ],

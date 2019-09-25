@@ -10,7 +10,7 @@
  | development tools.
  |
  | This component is NOT responsible for resizing/mobile-detection or providing
- | globally useful tools. That is the responsibility of app.js.
+ | globally useful tools or data. That is the responsibility of app.js.
  */
 -->
 <template>
@@ -25,7 +25,7 @@
             :viewport-height="app.canvas.pixelHeight"
             :anti-alias="false"
         >
-            <component :is="location"></component>
+            <component :is="app.world.location"></component>
             <dev-elements v-if="app.config.developmentMode"></dev-elements>
         </easel-canvas>
         <easel-canvas>
@@ -51,10 +51,5 @@ export default {
         DevElements,
     },
     inject: ['app'],
-    data() {
-        return {
-            location: 'lobby',
-        };
-    },
 };
 </script>
