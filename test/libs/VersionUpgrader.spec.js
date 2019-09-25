@@ -97,4 +97,13 @@ describe.only('VersionUpgrader', function () {
             .upgrade(0, object);
         equal(3, newVersion);
     });
+
+    it('should do nothing when up to date', function () {
+        const object = {};
+        const newVersion = new VersionUpgrader()
+            .version(3, thing => assert(false))
+            .version(2, thing => assert(false))
+            .upgrade(3, object);
+        equal(3, newVersion);
+    });
 });
