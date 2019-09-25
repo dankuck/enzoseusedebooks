@@ -2056,6 +2056,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/World */ "./app/world/World.js");
 //
 //
 //
@@ -2070,17 +2071,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
     data() {
         return {
             showTools: false,
             DevSettings: _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__["default"]
         };
     },
-    methods: {}
+    methods: {
+        resetWorld() {
+            if (confirm('Really reset world to default?')) {
+                this.app.world = new _world_World__WEBPACK_IMPORTED_MODULE_1__["default"]();
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -10957,6 +10969,12 @@ var render = function() {
                 }
               }),
               _vm._v(" Show Click Spots\n        ")
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("button", { on: { click: _vm.resetWorld } }, [
+                _vm._v("Reset World")
+              ])
             ])
           ]
         )

@@ -8,14 +8,19 @@
             <div>
                 <input type="checkbox" v-model="DevSettings.showClickSpots" /> Show Click Spots
             </div>
+            <div>
+                <button @click="resetWorld">Reset World</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import DevSettings from '@develop/DevSettings.js';
+import World from '@world/World';
 
 export default {
+    inject: ['app'],
     data() {
         return {
             showTools: false,
@@ -23,6 +28,11 @@ export default {
         };
     },
     methods: {
+        resetWorld() {
+            if (confirm('Really reset world to default?')) {
+                this.app.world = new World();
+            }
+        },
     },
 };
 </script>
