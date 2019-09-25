@@ -40,10 +40,10 @@
             </easel-shape>
         </enzo-click-spot>
         <big-plant
-            :name="app.world.plant.name"
+            :name="plant.name"
             x="330"
             y="160"
-            :ruffled="app.world.plant.ruffled"
+            :ruffled="plant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
@@ -189,12 +189,17 @@ export default {
             ],
         };
     },
+    computed: {
+        plant() {
+            return this.app.world.lobbyPlant;
+        },
+    },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.app.world.plant.response, vuePlant.x, vuePlant.y);
-            this.app.world.plant.name = 'Ruffled Plant';
-            this.app.world.plant.response = "Hasn't this plant been\nthrough enough?";
-            this.app.world.plant.ruffled = true;
+            this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
+            this.plant.name = 'Ruffled Plant';
+            this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.ruffled = true;
         },
     },
 };

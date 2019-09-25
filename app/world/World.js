@@ -8,6 +8,10 @@ const upgrader = new VersionUpgrader()
             response: "You ruffled the plant.\nIt's messy now.",
             ruffled: false,
         };
+    })
+    .version(2, world => {
+        world.lobbyPlant = world.plant;
+        delete world.plant;
     });
 
 export default class World

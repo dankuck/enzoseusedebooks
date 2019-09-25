@@ -1459,6 +1459,9 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
         response: "You ruffled the plant.\nIt's messy now.",
         ruffled: false
     };
+}).version(2, world => {
+    world.lobbyPlant = world.plant;
+    delete world.plant;
 });
 
 class World {
@@ -1933,12 +1936,17 @@ __webpack_require__.r(__webpack_exports__);
             }]
         };
     },
+    computed: {
+        plant() {
+            return this.app.world.lobbyPlant;
+        }
+    },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.app.world.plant.response, vuePlant.x, vuePlant.y);
-            this.app.world.plant.name = 'Ruffled Plant';
-            this.app.world.plant.response = "Hasn't this plant been\nthrough enough?";
-            this.app.world.plant.ruffled = true;
+            this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
+            this.plant.name = 'Ruffled Plant';
+            this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.ruffled = true;
         }
     }
 });
@@ -10718,10 +10726,10 @@ var render = function() {
       _vm._v(" "),
       _c("big-plant", {
         attrs: {
-          name: _vm.app.world.plant.name,
+          name: _vm.plant.name,
           x: "330",
           y: "160",
-          ruffled: _vm.app.world.plant.ruffled
+          ruffled: _vm.plant.ruffled
         },
         on: { shake: _vm.checkPlant }
       }),
