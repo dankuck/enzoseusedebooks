@@ -1450,6 +1450,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
 /* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default"]().version(1, world => {
@@ -1471,7 +1473,7 @@ class World {
     }
 
     replaceForJson() {
-        return Object.assign({}, this);
+        return _extends({}, this);
     }
 };
 

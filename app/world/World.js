@@ -22,7 +22,7 @@ export default class World
     }
 
     replaceForJson() {
-        return Object.assign({}, this);
+        return {...this};
     }
 };
 

@@ -2,7 +2,7 @@ import VersionUpgrader from '@libs/VersionUpgrader';
 import assert from 'assert';
 const {deepStrictEqual: equal} = assert;
 
-describe.only('VersionUpgrader', function () {
+describe('VersionUpgrader', function () {
 
     it('should instantiate', function () {
         new VersionUpgrader();

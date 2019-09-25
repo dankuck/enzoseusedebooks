@@ -54,7 +54,7 @@ describe('JsonStorage', function () {
             {},
             'myRoot',
             {
-                reviver(key, value) {
+                revive(key, value) {
                     if (key === 'x') {
                         caughtParams[key] = value;
                         return 'transformed';
@@ -76,7 +76,7 @@ describe('JsonStorage', function () {
             {},
             'myRoot',
             {
-                replacer(key, value) {
+                replace(key, value) {
                     if (key === 'x') {
                         caughtParams[key] = value;
                         return 'transformed';
