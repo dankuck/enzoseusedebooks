@@ -9,12 +9,12 @@
  */
 export default class JsonStorage
 {
-    constructor(storage, rootKey, {reviver, replacer} = {})
+    constructor(storage, rootKey, transformer = null)
     {
         this.storage = storage;
         this.rootKey = rootKey;
-        this.reviver = reviver || ((key, value) => value);
-        this.replacer = replacer || ((key, value) => value);
+        this.reviver = (key, value) => transformer && transformer.revive ? transformer.revive(key, value) : value;
+        this.replacer = (key, value) => transformer && transformer.replace ? transformer.replace(key, value) : value;
     }
 
     getRoot()
