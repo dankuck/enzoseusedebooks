@@ -41,11 +41,7 @@ Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
 
 const reviver = new Reviver();
-reviver.add(
-    World,
-    (key, data) => World.reviveFromJson(data),
-    (key, data) => data.replaceForJson()
-);
+World.addToReviver(reviver);
 
 const storage = new JsonStorage(
     window.localStorage,
