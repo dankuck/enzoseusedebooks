@@ -6,11 +6,12 @@
  | This is the visual root of the app.
  |
  | The main job of this component is to control what visual context the user
- | sees. IE, what room the user is in. Its secondary role is to contain
- | development tools.
+ | sees. IE, what room the user is in. Its secondary role is to contain global
+ | visual elements, such as development tools.
  |
  | This component is NOT responsible for resizing/mobile-detection or providing
- | globally useful tools or data. That is the responsibility of app.js.
+ | globally useful tools or data to descendent components. That is the
+ | responsibility of app.js.
  */
 -->
 <template>
