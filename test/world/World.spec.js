@@ -22,13 +22,13 @@ describe.only('World', function () {
 
     it('should choose a name from a collection of 1', function (done) {
         let caughtUrl;
-        const axiosMock = {
+        const axios = {
             get(url) {
                 caughtUrl = url;
                 return Promise.resolve({data: ['a name']});
             },
         };
-        const world = new World({}, axiosMock);
+        const world = new World({axios});
         world.chooseNameFromCollection('code-1', 'bargain')
             .then(name => {
                 equal('a name', name);
@@ -39,13 +39,13 @@ describe.only('World', function () {
 
     it('should only load the collection once', function (done) {
         let getCount = 0;
-        const axiosMock = {
+        const axios = {
             get() {
                 getCount++;
                 return Promise.resolve({data: ['a name']});
             },
         };
-        const world = new World({}, axiosMock);
+        const world = new World({axios});
         world.chooseNameFromCollection('code-1', 'bargain')
             .then(name => {
                 equal('a name', name);
@@ -68,13 +68,13 @@ describe.only('World', function () {
             Math.random(),
             Math.random(),
         ];
-        const axiosMock = {
+        const axios = {
             get() {
                 return Promise.resolve({data: names});
             },
         };
         let firstName;
-        const world = new World({}, axiosMock);
+        const world = new World({axios});
         world.chooseNameFromCollection('code-1', 'bargain')
             .then(name => {
                 firstName = name;
@@ -91,13 +91,13 @@ describe.only('World', function () {
             Math.random(),
             Math.random(),
         ];
-        const axiosMock = {
+        const axios = {
             get() {
                 return Promise.resolve({data: names});
             },
         };
         let firstName;
-        const world = new World({}, axiosMock);
+        const world = new World({axios});
         world.chooseNameFromCollection('code-1', 'bargain')
             .then(name => {
                 firstName = name;
@@ -113,12 +113,12 @@ describe.only('World', function () {
         const names = [
             Math.random(),
         ];
-        const axiosMock = {
+        const axios = {
             get() {
                 return Promise.resolve({data: names});
             },
         };
-        const world = new World({}, axiosMock);
+        const world = new World({axios});
         world.chooseNameFromCollection('code-1', 'bargain')
             .then(name => {
                 return world.chooseNameFromCollection('code-2', 'bargain');

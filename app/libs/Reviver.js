@@ -52,4 +52,8 @@ export default class Reviver
             };
         }
     }
+
+    register(classToRegister) {
+        classToRegister.registerReviver(this);
+    }
 }

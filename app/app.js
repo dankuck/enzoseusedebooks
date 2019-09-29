@@ -22,10 +22,6 @@
  | components are rendered. That's left to the EnzosEusedEbooks component.
  */
 
-// Expose these variables for devtools
-window.Vue = require('vue');
-window.VueEaseljs = require('vue-easeljs');
-window.easeljs = window.VueEaseljs.easeljs;
 
 import EnzoText from '@app/EnzoText.vue';
 import EnzoClickSpot from '@app/EnzoClickSpot.vue';
@@ -34,6 +30,13 @@ import config from '@/config';
 import JsonStorage from '@libs/JsonStorage';
 import World from '@world/World';
 import Reviver from '@libs/Reviver';
+import axios from 'axios';
+
+// Expose these variables for devtools
+window.Vue = require('vue');
+window.VueEaseljs = require('vue-easeljs');
+window.easeljs = window.VueEaseljs.easeljs;
+window.axios = axios;
 
 Vue.use(VueEaseljs);
 
@@ -41,7 +44,7 @@ Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
 
 const reviver = new Reviver();
-World.addToReviver(reviver);
+reviver.register(World);
 
 const storage = new JsonStorage(
     window.localStorage,

@@ -1,6 +1,7 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
-
+import axios from 'axios';
+window.Collection = Collection;
 const upgrader = new VersionUpgrader()
     .version(1, world => {
         world.plant = {
@@ -17,19 +18,21 @@ const upgrader = new VersionUpgrader()
     .version(3, world => world.location = 'lobby')
     .version(4, world => {
         world.collections = {
-            bargain:    new Collection('bargain', world.axios),
-            children:   new Collection('children', world.axios),
-            fiction:    new Collection('fiction', world.axios),
-            nonfiction: new Collection('nonfiction', world.axios),
+            bargain:    new Collection({name: 'bargain', axios: world.axios}),
+            children:   new Collection({name: 'children', axios: world.axios}),
+            fiction:    new Collection({name: 'fiction', axios: world.axios}),
+            nonfiction: new Collection({name: 'nonfiction', axios: world.axios}),
         };
     })
     ;
 
 export default class World
 {
-    constructor(data = {}, axios = null) {
-        this.axios = axios;
+    constructor(data = {}) {
         Object.assign(this, data);
+        if (!this.axios) {
+            this.axios = axios;
+        }
         this.version = upgrader.upgrade(this.version || 0, this);
     }
 
@@ -38,16 +41,11 @@ export default class World
     }
 };
 
-World.addToReviver = function (reviver, axios) {
+World.registerReviver = function (reviver) {
     reviver.add(
         World,
-        (key, data) => { return new World(data, axios) },
-        (key, data) => {
-            const converted = {...World};
-            delete converted.axios;
-            return converted;
-        }
+        (key, data) => { return new World(data) },
+        (key, data) => { return {...data} }
     );
-    Collection.addToReviver(reviver, axios);
+    reviver.register(Collection);
 };
-

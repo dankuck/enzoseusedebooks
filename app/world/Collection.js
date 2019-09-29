@@ -1,11 +1,14 @@
+import axios from 'axios';
 
 export default class Collection
 {
-    constructor(name, axios) {
-        this.name = name;
-        this.axios = axios;
+    constructor(data) {
         this.names = null;
         this.chosen = {};
+        Object.assign(this, data);
+        if (!this.axios) {
+            this.axios = axios;
+        }
     }
 
     chooseName(code) {
@@ -33,17 +36,12 @@ export default class Collection
                 return this.names;
             });
     }
-}
+};
 
-
-Collection.addToReviver = function (reviver, axios) {
+Collection.registerReviver = function (reviver) {
     reviver.add(
         Collection,
-        (key, data) => { return new Collection(data, axios) },
-        (key, data) => {
-            const converted = {...Collection};
-            delete converted.axios;
-            return converted;
-        }
+        (key, data) => { return new Collection(data) },
+        (key, data) => { return {...data} }
     );
 };
