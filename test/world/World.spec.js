@@ -129,4 +129,6 @@ describe('World', function () {
             )
             .then(done, done);
     });
+
+    it('should not double-get a name under race conditions');
 });
