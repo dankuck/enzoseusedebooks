@@ -1527,7 +1527,10 @@ class Collection {
             return Promise.resolve(this.names);
         }
         return this.axios.get(`./data/${this.name}-names.json`).then(response => {
-            this.names = response.data;
+            // avoid race conditions
+            if (!this.names) {
+                this.names = response.data;
+            }
             return this.names;
         });
     }
@@ -1562,7 +1565,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-window.Collection = _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"];
+
 const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default"]().version(1, world => {
     world.plant = {
         animation: 'rest',
@@ -3519,68 +3522,75 @@ __webpack_require__.r(__webpack_exports__);
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     data() {
+        const books = [];
+        [{
+            x: 252,
+            y: 203,
+            r: 11,
+            id: 'bargain-1'
+        }, {
+            x: 278,
+            y: 200,
+            r: 10,
+            id: 'bargain-2'
+        }, {
+            x: 304,
+            y: 200,
+            r: 10,
+            id: 'bargain-3'
+        }, {
+            x: 330,
+            y: 193,
+            r: 10,
+            id: 'bargain-4'
+        }, {
+            x: 256,
+            y: 224,
+            r: 11,
+            id: 'bargain-5'
+        }, {
+            x: 286,
+            y: 223,
+            r: 11,
+            id: 'bargain-6'
+        }, {
+            x: 272,
+            y: 213,
+            r: 11,
+            id: 'bargain-7'
+        }, {
+            x: 311,
+            y: 213,
+            r: 11,
+            id: 'bargain-8'
+        }, {
+            x: 328,
+            y: 214,
+            r: 11,
+            id: 'bargain-9'
+        }, {
+            x: 315,
+            y: 225,
+            r: 7,
+            id: 'bargain-10'
+        }, {
+            x: 342,
+            y: 205,
+            r: 7,
+            id: 'bargain-11'
+        }, {
+            x: 345,
+            y: 223,
+            r: 7,
+            id: 'bargain-12'
+        }].forEach(spot => {
+            this.app.world.chooseNameFromCollection(spot.id, 'bargain').then(name => {
+                spot.name = name;
+                books.push(spot);
+            });
+        });
         return {
-            books: [{
-                x: 252,
-                y: 203,
-                r: 11,
-                name: "Blue Book"
-            }, {
-                x: 278,
-                y: 200,
-                r: 10,
-                name: "Red Book"
-            }, {
-                x: 304,
-                y: 200,
-                r: 10,
-                name: "Open Book"
-            }, {
-                x: 330,
-                y: 193,
-                r: 10,
-                name: "Tan Book"
-            }, {
-                x: 256,
-                y: 224,
-                r: 11,
-                name: "Tan Book"
-            }, {
-                x: 286,
-                y: 223,
-                r: 11,
-                name: "Brown Book"
-            }, {
-                x: 272,
-                y: 213,
-                r: 11,
-                name: "Yellow Book"
-            }, {
-                x: 311,
-                y: 213,
-                r: 11,
-                name: "Brown Book"
-            }, {
-                x: 328,
-                y: 214,
-                r: 11,
-                name: "Blue Book"
-            }, {
-                x: 315,
-                y: 225,
-                r: 7,
-                name: "Red Book"
-            }, {
-                x: 342,
-                y: 205,
-                r: 7,
-                name: "Tan Book"
-            }, {
-                x: 345,
-                y: 223,
-                r: 7,
-                name: "Red Book"
-            }],
+            books,
             aisles: [{
                 x: 197 + 20,
                 y: 53 + 42,
