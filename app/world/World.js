@@ -1,7 +1,7 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
 import axios from 'axios';
-window.Collection = Collection;
+
 const upgrader = new VersionUpgrader()
     .version(1, world => {
         world.plant = {

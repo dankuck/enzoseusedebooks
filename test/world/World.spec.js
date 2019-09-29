@@ -5,7 +5,7 @@ const {
     notDeepStrictEqual: notEqual,
 } = assert;
 
-describe.only('World', function () {
+describe('World', function () {
 
     it('should instantiate', function () {
         new World({});

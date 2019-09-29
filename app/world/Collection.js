@@ -12,16 +12,15 @@ export default class Collection
     }
 
     chooseName(code) {
-        if (this.chosen[code]) {
-            return Promise.resolve(this.chosen[code]);
-        }
         return this.loadNames()
             .then(names => {
-                if (names.length === 0) {
-                    throw `No names left in ${this.name}`;
+                if (!this.chosen[code]) {
+                    if (names.length === 0) {
+                        throw `No names left in ${this.name}`;
+                    }
+                    const index = Math.floor(Math.random() * names.length);
+                    this.chosen[code] = names.splice(index, 1)[0];
                 }
-                const index = Math.floor(Math.random() * names.length);
-                this.chosen[code] = names.splice(index, 1)[0];
                 return this.chosen[code];
             });
     }
