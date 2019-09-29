@@ -149,7 +149,7 @@ describe('World', function () {
         // overwrite each other and give different results for the same name
         const axios = {
             get() {
-                return delay(10).then(() => { return {data: names} });
+                return delay(10).then(() => { return {data: [...names]} });
             },
         };
         const world = new World({axios});
