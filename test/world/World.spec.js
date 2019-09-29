@@ -5,6 +5,8 @@ const {
     notDeepStrictEqual: notEqual,
 } = assert;
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 describe('World', function () {
 
     it('should instantiate', function () {
@@ -130,5 +132,65 @@ describe('World', function () {
             .then(done, done);
     });
 
-    it('should not double-get a name under race conditions');
+    it('should not double-get a name under race conditions', function (done) {
+        const names = [
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random(),
+        ];
+        // Make sure that each call takes 10 ms so the next one starts before
+        // the first one is finished. This will cause two calls to try to set
+        // the internal `names` property. If they both succeed, they could
+        // overwrite each other and give different results for the same name
+        const axios = {
+            get() {
+                return delay(10).then(() => { return {data: names} });
+            },
+        };
+        const world = new World({axios});
+        Promise
+            .all([
+                world.chooseNameFromCollection('code-1', 'bargain'),
+                world.chooseNameFromCollection('code-1', 'bargain'),
+            ])
+            .then(names => {
+                equal(...names);
+            })
+            .then(done, done);
+    });
+
+    it('should not double-load names under race conditions', function (done) {
+        const names = [
+            Math.random(),
+        ];
+        // Make sure that each call takes 10 ms so the next one starts before
+        // the first one is finished. This will cause two calls to try to set
+        // the internal `names` property. If they both succeed, they could
+        // overwrite `names` and cause two different codes to use the same name
+        const axios = {
+            get() {
+                return delay(10).then(() => { return {data: [...names]} });
+            },
+        };
+        const world = new World({axios});
+        Promise
+            .all([
+                world.chooseNameFromCollection('code-1', 'bargain'),
+                world.chooseNameFromCollection('code-2', 'bargain'),
+            ])
+            .then(
+                names => {
+                    assert(false, `Expected an error on the second name: ${names}`);
+                },
+                error => {
+                    assert(true);
+                }
+            )
+            .then(done, done);
+    });
 });

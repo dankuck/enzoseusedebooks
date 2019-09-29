@@ -31,7 +31,10 @@ export default class Collection
         }
         return this.axios.get(`./data/${this.name}-names.json`)
             .then(response => {
-                this.names = response.data;
+                // avoid race conditions
+                if (!this.names) {
+                    this.names = response.data;
+                }
                 return this.names;
             });
     }
