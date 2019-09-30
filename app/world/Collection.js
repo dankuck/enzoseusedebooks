@@ -29,15 +29,15 @@ export default class Collection
         if (this.names) {
             return Promise.resolve(this.names);
         }
-        if (!this.loading) {
-            this.loading = this.axios.get(`./data/${this.name}-names.json`)
+        if (!this.loadingNames) {
+            this.loadingNames = this.axios.get(`./data/${this.name}-names.json`)
                 .then(response => {
-                    delete this.loading;
+                    delete this.loadingNames;
                     this.names = response.data;
                     return this.names;
                 });
         }
-        return this.loading;
+        return this.loadingNames;
     }
 };
 

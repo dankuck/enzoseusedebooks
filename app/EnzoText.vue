@@ -14,8 +14,8 @@
         :x="shiftedX"
         :y="shiftedY"
         :align="align"
-        color="white"
-        :shadow="['#CCF', 1, 1, 1]"
+        color="yellow"
+        :shadow="['black', 1, 1, 5]"
         :font="`${fontWidth}px 'Press Start 2P'`"
     >
     </easel-text>

@@ -46,7 +46,7 @@ export default {
     data() {
         return {
             textLayer: {
-                messager: new Messager(2000),
+                messager: new Messager(2500),
                 hoverer: new Hoverer(250),
                 mobileHoverRing: new CallbackRing(1500),
             },

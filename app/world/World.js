@@ -7,7 +7,7 @@ const upgrader = new VersionUpgrader()
         world.plant = {
             animation: 'rest',
             name: 'Suspicious Plant',
-            response: "You ruffled the plant.\nIt's messy now.",
+            response: "You ruffled the plant. It's messy now.",
             ruffled: false,
         };
     })

@@ -1444,7 +1444,7 @@ __webpack_require__.r(__webpack_exports__);
     data() {
         return {
             textLayer: {
-                messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2000),
+                messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2500),
                 hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](250),
                 mobileHoverRing: new _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__["default"](1500)
             }
@@ -1659,13 +1659,14 @@ class Collection {
         if (this.names) {
             return Promise.resolve(this.names);
         }
-        if (!this.loading) {
-            this.loading = this.axios.get(`./data/${this.name}-names.json`).then(response => {
+        if (!this.loadingNames) {
+            this.loadingNames = this.axios.get(`./data/${this.name}-names.json`).then(response => {
+                delete this.loadingNames;
                 this.names = response.data;
                 return this.names;
             });
         }
-        return this.loading;
+        return this.loadingNames;
     }
 };
 
@@ -1703,7 +1704,7 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     world.plant = {
         animation: 'rest',
         name: 'Suspicious Plant',
-        response: "You ruffled the plant.\nIt's messy now.",
+        response: "You ruffled the plant. It's messy now.",
         ruffled: false
     };
 }).version(2, world => {
@@ -3669,71 +3670,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     data() {
         const books = [];
-        [{
-            x: 252,
-            y: 203,
-            r: 11,
-            id: 'bargain-1'
-        }, {
-            x: 278,
-            y: 200,
-            r: 10,
-            id: 'bargain-2'
-        }, {
-            x: 304,
-            y: 200,
-            r: 10,
-            id: 'bargain-3'
-        }, {
-            x: 330,
-            y: 193,
-            r: 10,
-            id: 'bargain-4'
-        }, {
-            x: 256,
-            y: 224,
-            r: 11,
-            id: 'bargain-5'
-        }, {
-            x: 286,
-            y: 223,
-            r: 11,
-            id: 'bargain-6'
-        }, {
-            x: 272,
-            y: 213,
-            r: 11,
-            id: 'bargain-7'
-        }, {
-            x: 311,
-            y: 213,
-            r: 11,
-            id: 'bargain-8'
-        }, {
-            x: 328,
-            y: 214,
-            r: 11,
-            id: 'bargain-9'
-        }, {
-            x: 315,
-            y: 225,
-            r: 7,
-            id: 'bargain-10'
-        }, {
-            x: 342,
-            y: 205,
-            r: 7,
-            id: 'bargain-11'
-        }, {
-            x: 345,
-            y: 223,
-            r: 7,
-            id: 'bargain-12'
-        }].forEach(spot => {
-            this.app.world.chooseNameFromCollection(spot.id, 'bargain').then(name => {
-                spot.name = name;
-                books.push(spot);
-            });
+        [['bargain-1', 252, 203, 11], ['bargain-2', 278, 200, 10], ['bargain-3', 304, 200, 10], ['bargain-4', 330, 193, 10], ['bargain-5', 256, 224, 11], ['bargain-6', 286, 223, 11], ['bargain-7', 272, 213, 11], ['bargain-8', 311, 213, 11], ['bargain-9', 328, 214, 11], ['bargain-10', 315, 225, 7], ['bargain-11', 342, 205, 7], ['bargain-12', 345, 223, 7]].forEach(([id, x, y, r]) => {
+            this.app.world.chooseNameFromCollection(id, 'bargain').then(name => books.push({ id, x, y, r, name }));
         });
         return {
             books,
@@ -12468,8 +12406,8 @@ var render = function() {
       x: _vm.shiftedX,
       y: _vm.shiftedY,
       align: _vm.align,
-      color: "white",
-      shadow: ["#CCF", 1, 1, 1],
+      color: "yellow",
+      shadow: ["black", 1, 1, 5],
       font: _vm.fontWidth + "px 'Press Start 2P'"
     }
   })
