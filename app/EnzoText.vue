@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import sizeText from '@libs/sizeText.js'
+
 export default {
     inject: ['app'],
     props: [
@@ -42,7 +44,8 @@ export default {
                 : 'right';
             const vertical = this.y < this.app.canvas.pixelHeight / 2
                 ? 'top'
-                : 'bottom';
+                : 'alphabetic';
+            console.log(this.y, this.app.canvas.pixelHeight / 2, vertical);
             return [horizontal, vertical];
         },
         shiftedX() {
@@ -52,13 +55,8 @@ export default {
             return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         },
         fittedText() {
-            const maxText = (this.app.canvas.pixelWidth / 2) / this.fontWidth;
-            const text = [];
-            const source = this.text + '                                     ';
-            for (let i = 0; i < Math.ceil(this.text.length / maxText); i++) {
-                text.push(source.slice(i * maxText, (i + 1) * maxText));
-            }
-            return text.join("\n");
+            const maxLength = (this.app.canvas.pixelWidth / 2) / this.fontWidth;
+            return sizeText(this.text, maxLength);
         },
     },
 };

@@ -206,7 +206,7 @@ export default {
         checkPlant(vuePlant) {
             this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
             this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.response = "Hasn't this plant been through enough?";
             this.plant.ruffled = true;
         },
     },

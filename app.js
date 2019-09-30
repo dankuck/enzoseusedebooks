@@ -1319,6 +1319,69 @@ class VersionUpgrader {
 
 /***/ }),
 
+/***/ "./app/libs/sizeText.js":
+/*!******************************!*\
+  !*** ./app/libs/sizeText.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return sizeText; });
+/**
+ |-----------------------
+ | sizeText()
+ |-----------------------
+ | Break down text to a specific width by replacing whitespace with newlines
+ |
+ */
+
+function sizeText(text, maxLength) {
+    if (maxLength < 2) {
+        // avoid infinite loops when trying to breakdown
+        // long words
+        throw new Error('maxLength must be at least 2');
+    }
+    return text.split(/\n/).map(text => {
+        const lines = [];
+        let next = '';
+        text.split(/(\s+)/).forEach(segment => {
+            if (segment.trim().length === 0) {
+                // whitespace just goes directly on the line
+                next += segment;
+                return;
+            }
+            const together = (next + segment).trim();
+            if (together.length <= maxLength) {
+                // if the line is still short enough, keep growing
+                next = together;
+            } else {
+                // if the line would be too long, put what we've got so far
+                // into the list
+                if (next.trim().length > 0) {
+                    lines.push(next.trim());
+                }
+                // If the new word is too long, break it down
+                while (segment.length > maxLength) {
+                    lines.push(segment.slice(0, maxLength - 1) + '-');
+                    segment = segment.slice(maxLength - 1);
+                }
+                // Whatever is left (maybe the whole word) is the beginning
+                // of our next line
+                next = segment;
+            }
+        });
+        if (next.trim().length > 0) {
+            // the last line needs added to the list
+            lines.push(next.trim());
+        }
+        return lines.join("\n");
+    }).join("\n");
+};
+
+/***/ }),
+
 /***/ "./app/textLayer/HasTextLayer.js":
 /*!***************************************!*\
   !*** ./app/textLayer/HasTextLayer.js ***!
@@ -3398,6 +3461,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _libs_sizeText_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/sizeText.js */ "./app/libs/sizeText.js");
 //
 //
 //
@@ -3422,6 +3486,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
     props: ['text', 'x', 'y', 'buffer'],
@@ -3433,7 +3499,8 @@ __webpack_require__.r(__webpack_exports__);
     computed: {
         align() {
             const horizontal = this.x < this.app.canvas.pixelWidth / 2 ? 'left' : 'right';
-            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'bottom';
+            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'alphabetic';
+            console.log(this.y, this.app.canvas.pixelHeight / 2, vertical);
             return [horizontal, vertical];
         },
         shiftedX() {
@@ -3443,13 +3510,8 @@ __webpack_require__.r(__webpack_exports__);
             return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         },
         fittedText() {
-            const maxText = this.app.canvas.pixelWidth / 2 / this.fontWidth;
-            const text = [];
-            const source = this.text + '                                     ';
-            for (let i = 0; i < Math.ceil(this.text.length / maxText); i++) {
-                text.push(source.slice(i * maxText, (i + 1) * maxText));
-            }
-            return text.join("\n");
+            const maxLength = this.app.canvas.pixelWidth / 2 / this.fontWidth;
+            return Object(_libs_sizeText_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.text, maxLength);
         }
     }
 });
@@ -3712,7 +3774,7 @@ __webpack_require__.r(__webpack_exports__);
         checkPlant(vuePlant) {
             this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
             this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been\nthrough enough?";
+            this.plant.response = "Hasn't this plant been through enough?";
             this.plant.ruffled = true;
         }
     }
