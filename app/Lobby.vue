@@ -18,9 +18,10 @@
         </easel-bitmap>
         <enzo-click-spot
             name="Window"
-            x="321"
-            y="75"
-            r="20"
+            x="326"
+            y="70"
+            r="25"
+            @click="queueMessage('The town looks dark tonight.', 326, 70)"
         >
         </enzo-click-spot>
         <enzo-click-spot

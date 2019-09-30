@@ -36,7 +36,7 @@ describe.only('sizeText', function () {
     });
 
     it('puts long, broken words on their own lines, then leads into next line', function () {
-        equal("the\nabcdefghi-\njklmnopqr-\nstuvwxyz\nof life", sizeText('the abcdefghijklmnopqrstuvwxyz of life', 10));
+        equal("the\nabcdefghi-\njklmnopqr-\nstuvwx of\nlife", sizeText('the abcdefghijklmnopqrstuvwx of life', 10));
     });
 
     it('dies on length less than 2', function () {

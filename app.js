@@ -1339,7 +1339,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function sizeText(text, maxLength) {
     if (maxLength < 2) {
-        // avoid infinite loops when trying to breakdown
+        // Avoid infinite loops when trying to breakdown
         // long words
         throw new Error('maxLength must be at least 2');
     }
@@ -1348,16 +1348,16 @@ function sizeText(text, maxLength) {
         let next = '';
         text.split(/(\s+)/).forEach(segment => {
             if (segment.trim().length === 0) {
-                // whitespace just goes directly on the line
+                // Whitespace just goes directly on the line
                 next += segment;
                 return;
             }
             const together = (next + segment).trim();
             if (together.length <= maxLength) {
-                // if the line is still short enough, keep growing
+                // If the line is still short enough, keep growing
                 next = together;
             } else {
-                // if the line would be too long, put what we've got so far
+                // If the line would be too long, put what we've got so far
                 // into the list
                 if (next.trim().length > 0) {
                     lines.push(next.trim());
@@ -3499,8 +3499,7 @@ __webpack_require__.r(__webpack_exports__);
     computed: {
         align() {
             const horizontal = this.x < this.app.canvas.pixelWidth / 2 ? 'left' : 'right';
-            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'alphabetic';
-            console.log(this.y, this.app.canvas.pixelHeight / 2, vertical);
+            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
@@ -3599,6 +3598,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+//
 //
 //
 //
@@ -12568,7 +12568,12 @@ var render = function() {
       _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
       _vm._v(" "),
       _c("enzo-click-spot", {
-        attrs: { name: "Window", x: "321", y: "75", r: "20" }
+        attrs: { name: "Window", x: "326", y: "70", r: "25" },
+        on: {
+          click: function($event) {
+            return _vm.queueMessage("The town looks dark tonight.", 326, 70)
+          }
+        }
       }),
       _vm._v(" "),
       _vm._l(_vm.aisles, function(aisle, aisleIndex) {

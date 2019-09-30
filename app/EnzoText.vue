@@ -44,8 +44,7 @@ export default {
                 : 'right';
             const vertical = this.y < this.app.canvas.pixelHeight / 2
                 ? 'top'
-                : 'alphabetic';
-            console.log(this.y, this.app.canvas.pixelHeight / 2, vertical);
+                : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
