@@ -1659,13 +1659,13 @@ class Collection {
         if (this.names) {
             return Promise.resolve(this.names);
         }
-        return this.axios.get(`./data/${this.name}-names.json`).then(response => {
-            // avoid race conditions
-            if (!this.names) {
+        if (!this.loading) {
+            this.loading = this.axios.get(`./data/${this.name}-names.json`).then(response => {
                 this.names = response.data;
-            }
-            return this.names;
-        });
+                return this.names;
+            });
+        }
+        return this.loading;
     }
 };
 

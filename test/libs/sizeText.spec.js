@@ -2,7 +2,7 @@ import sizeText from '@libs/sizeText';
 import assert from 'assert';
 const {deepStrictEqual: equal} = assert;
 
-describe.only('sizeText', function () {
+describe('sizeText', function () {
 
     it('should not format short text', function () {
         equal('ohai', sizeText('ohai', 10));

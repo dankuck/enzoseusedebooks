@@ -168,12 +168,14 @@ describe('World', function () {
         const names = [
             Math.random(),
         ];
+        let count = 0;
         // Make sure that each call takes 10 ms so the next one starts before
         // the first one is finished. This will cause two calls to try to set
         // the internal `names` property. If they both succeed, they could
         // overwrite `names` and cause two different codes to use the same name
         const axios = {
             get() {
+                count++;
                 return delay(10).then(() => { return {data: [...names]} });
             },
         };
@@ -189,6 +191,7 @@ describe('World', function () {
                 },
                 error => {
                     assert(true);
+                    equal(1, count);
                 }
             )
             .then(done, done);
