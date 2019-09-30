@@ -11,6 +11,9 @@
             <div>
                 <button @click="resetWorld">Reset World</button>
             </div>
+            <div>
+                Show Text <input v-model="DevSettings.showText" />
+            </div>
         </div>
     </div>
 </template>

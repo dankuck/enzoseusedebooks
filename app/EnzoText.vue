@@ -10,13 +10,13 @@
 -->
 <template>
     <easel-text
-        :text="text"
+        :text="fittedText"
         :x="shiftedX"
         :y="shiftedY"
         :align="align"
         color="white"
         :shadow="['#CCF', 1, 1, 1]"
-        font="7px 'Press Start 2P'"
+        :font="`${fontWidth}px 'Press Start 2P'`"
     >
     </easel-text>
 </template>
@@ -30,6 +30,11 @@ export default {
         'y',
         'buffer',
     ],
+    data() {
+        return {
+            fontWidth: 8,
+        };
+    },
     computed: {
         align() {
             const horizontal = this.x < this.app.canvas.pixelWidth / 2
@@ -45,6 +50,15 @@ export default {
         },
         shiftedY() {
             return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
+        },
+        fittedText() {
+            const maxText = (this.app.canvas.pixelWidth / 2) / this.fontWidth;
+            const text = [];
+            const source = this.text + '                                     ';
+            for (let i = 0; i < Math.ceil(this.text.length / maxText); i++) {
+                text.push(source.slice(i * maxText, (i + 1) * maxText));
+            }
+            return text.join("\n");
         },
     },
 };
