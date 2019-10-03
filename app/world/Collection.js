@@ -2,42 +2,24 @@ import axios from 'axios';
 
 export default class Collection
 {
-    constructor(data) {
-        this.names = null;
-        this.chosen = {};
+    constructor(data, codes, defaultItem = {}) {
         Object.assign(this, data);
         if (!this.axios) {
             this.axios = axios;
         }
+        this.pendingCodes = codes;
+        codes.forEach(code => { if (!this[code]) this[code] = {...defaultItem} });
     }
 
-    chooseName(code) {
-        return this.loadNames()
-            .then(names => {
-                if (!this.chosen[code]) {
-                    if (names.length === 0) {
-                        throw `No names left in ${this.name}`;
-                    }
-                    const index = Math.floor(Math.random() * names.length);
-                    this.chosen[code] = names.splice(index, 1)[0];
-                }
-                return this.chosen[code];
-            });
-    }
-
-    loadNames() {
-        if (this.names) {
-            return Promise.resolve(this.names);
-        }
-        if (!this.loadingNames) {
-            this.loadingNames = this.axios.get(`./data/${this.name}-names.json`)
-                .then(response => {
-                    delete this.loadingNames;
-                    this.names = response.data;
-                    return this.names;
+    load() {
+        return this.axios.get(`./data/${this.name}.json`)
+            .then(response => {
+                const items = response.data;
+                this.pendingCodes.forEach(code => {
+                    const index = Math.floor(Math.random() * items.length);
+                    this[code] = items.splice(index, 1)[0];
                 });
-        }
-        return this.loadingNames;
+            });
     }
 };
 
