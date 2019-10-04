@@ -19,7 +19,7 @@ const upgrader = new VersionUpgrader()
     .version(4, world => {
         world.collections = {
             bargain: new Collection({
-                name:    './data/bargain.json',
+                url:     './data/bargain.json',
                 axios:   world.axios,
                 key:     ['title'],
                 default: {title: ''},

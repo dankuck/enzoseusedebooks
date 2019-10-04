@@ -52,7 +52,7 @@
             v-for="(book, index) in books"
             :key="book.id"
             v-bind="book"
-            :name="app.world.collections.bargain[book.id]"
+            :name="app.world.collections.bargain[book.id].title"
         >
         </enzo-click-spot>
         <text-layer></text-layer>
@@ -83,7 +83,7 @@ export default {
             ['book10', 315, 225, 7],
             ['book11', 342, 205, 7],
             ['book12', 345, 223, 7],
-        ].forEach(([id, x, y, r]) => { return {id, x, y, r} });
+        ].map(([id, x, y, r]) => { return {id, x, y, r} });
         return {
             books,
             aisles: [

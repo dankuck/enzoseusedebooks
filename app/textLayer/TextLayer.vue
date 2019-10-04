@@ -66,7 +66,7 @@ export default {
             } else {
                 const component = this.textLayer.hoverer.message;
                 return {
-                    text: component.name || component.hoverName,
+                    text: component.name || component.hoverName || '',
                     x: component.x,
                     y: component.y,
                 };

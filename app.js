@@ -1633,40 +1633,63 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 class Collection {
-    constructor(data) {
-        this.names = null;
-        this.chosen = {};
+    constructor(data = {}) {
         Object.assign(this, data);
         if (!this.axios) {
             this.axios = axios__WEBPACK_IMPORTED_MODULE_0___default.a;
         }
+        if (!this.key) {
+            this.key = [];
+        }
+        if (!this.codes) {
+            this.codes = [];
+        }
+        if (!this.pendingCodes) {
+            this.pendingCodes = this.codes.filter(code => !this[code]);
+        }
+        if (!this.default) {
+            this.default = {};
+        }
+        this.pendingCodes.forEach(code => this[code] = _extends({}, this.default));
     }
 
-    chooseName(code) {
-        return this.loadNames().then(names => {
-            if (!this.chosen[code]) {
-                if (names.length === 0) {
-                    throw `No names left in ${this.name}`;
-                }
-                const index = Math.floor(Math.random() * names.length);
-                this.chosen[code] = names.splice(index, 1)[0];
-            }
-            return this.chosen[code];
+    load() {
+        if (this.loading) {
+            return this.loading;
+        }
+        if (this.pendingCodes.length === 0) {
+            return Promise.resolve();
+        }
+        this.loading = this.axios.get(this.url).finally(() => delete this.loading).then(response => {
+            this.fulfillPending(this.removeUsed(response.data));
         });
+        return this.loading;
     }
 
-    loadNames() {
-        if (this.names) {
-            return Promise.resolve(this.names);
+    fulfillPending(items) {
+        items = [...items];
+        this.pendingCodes = this.pendingCodes.filter(code => {
+            if (items.length === 0) {
+                return true;
+            } else {
+                const index = Math.floor(Math.random() * items.length);
+                this[code] = items.splice(index, 1)[0];
+                return false;
+            }
+        });
+        if (this.pendingCodes.length > 0) {
+            throw new Error('Not enough items');
         }
-        if (!this.loadingNames) {
-            this.loadingNames = this.axios.get(`./data/${this.name}-names.json`).then(response => {
-                delete this.loadingNames;
-                this.names = response.data;
-                return this.names;
-            });
+    }
+
+    removeUsed(items) {
+        items = [...items];
+        if (this.key.length === 0) {
+            return items;
         }
-        return this.loadingNames;
+        const key = item => this.key.map(field => item[field]).join(':');
+        const used = Object.values(this).filter(item => typeof item === 'object').map(key);
+        return items.filter(item => !used.includes(key(item)));
     }
 };
 
@@ -1674,7 +1697,10 @@ Collection.registerReviver = function (reviver) {
     reviver.add(Collection, (key, data) => {
         return new Collection(data);
     }, (key, data) => {
-        return _extends({}, data);
+        const collection = _extends({}, data);
+        delete collection.axios;
+        delete collection.loading;
+        return collection;
     });
 };
 
@@ -1712,10 +1738,13 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     delete world.plant;
 }).version(3, world => world.location = 'lobby').version(4, world => {
     world.collections = {
-        bargain: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({ name: 'bargain', axios: world.axios }),
-        children: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({ name: 'children', axios: world.axios }),
-        fiction: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({ name: 'fiction', axios: world.axios }),
-        nonfiction: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({ name: 'nonfiction', axios: world.axios })
+        bargain: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({
+            url: './data/bargain.json',
+            axios: world.axios,
+            key: ['title'],
+            default: { title: '' },
+            codes: ['book1', 'book2', 'book3', 'book4', 'book5', 'book6', 'book7', 'book8', 'book9', 'book10', 'book11', 'book12']
+        })
     };
 });
 
@@ -3659,6 +3688,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3669,9 +3699,9 @@ __webpack_require__.r(__webpack_exports__);
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     data() {
-        const books = [];
-        [['bargain-1', 252, 203, 11], ['bargain-2', 278, 200, 10], ['bargain-3', 304, 200, 10], ['bargain-4', 330, 193, 10], ['bargain-5', 256, 224, 11], ['bargain-6', 286, 223, 11], ['bargain-7', 272, 213, 11], ['bargain-8', 311, 213, 11], ['bargain-9', 328, 214, 11], ['bargain-10', 315, 225, 7], ['bargain-11', 342, 205, 7], ['bargain-12', 345, 223, 7]].forEach(([id, x, y, r]) => {
-            this.app.world.chooseNameFromCollection(id, 'bargain').then(name => books.push({ id, x, y, r, name }));
+        this.app.world.collections.bargain.load();
+        const books = [['book1', 252, 203, 11], ['book2', 278, 200, 10], ['book3', 304, 200, 10], ['book4', 330, 193, 10], ['book5', 256, 224, 11], ['book6', 286, 223, 11], ['book7', 272, 213, 11], ['book8', 311, 213, 11], ['book9', 328, 214, 11], ['book10', 315, 225, 7], ['book11', 342, 205, 7], ['book12', 345, 223, 7]].map(([id, x, y, r]) => {
+            return { id, x, y, r };
         });
         return {
             books,
@@ -3992,7 +4022,7 @@ __webpack_require__.r(__webpack_exports__);
             } else {
                 const component = this.textLayer.hoverer.message;
                 return {
-                    text: component.name || component.hoverName,
+                    text: component.name || component.hoverName || '',
                     x: component.x,
                     y: component.y
                 };
@@ -12552,7 +12582,15 @@ var render = function() {
       _vm._l(_vm.books, function(book, index) {
         return _c(
           "enzo-click-spot",
-          _vm._b({ key: "book:" + index }, "enzo-click-spot", book, false)
+          _vm._b(
+            {
+              key: book.id,
+              attrs: { name: _vm.app.world.collections.bargain[book.id].title }
+            },
+            "enzo-click-spot",
+            book,
+            false
+          )
         )
       }),
       _vm._v(" "),
