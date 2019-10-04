@@ -29,7 +29,7 @@ import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
 import config from '@/config';
 import JsonStorage from '@libs/JsonStorage';
 import World from '@world/World';
-import Reviver from '@libs/Reviver';
+import reviver from '@app/reviver';
 import axios from 'axios';
 
 // Expose these variables for devtools
@@ -42,9 +42,6 @@ Vue.use(VueEaseljs);
 
 Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
-
-const reviver = new Reviver();
-reviver.register(World);
 
 const storage = new JsonStorage(
     window.localStorage,

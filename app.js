@@ -446,7 +446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/config */ "./config.js");
 /* harmony import */ var _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/JsonStorage */ "./app/libs/JsonStorage.js");
 /* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @world/World */ "./app/world/World.js");
-/* harmony import */ var _libs_Reviver__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @libs/Reviver */ "./app/libs/Reviver.js");
+/* harmony import */ var _app_reviver__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @app/reviver */ "./app/reviver.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
 /**
@@ -493,10 +493,7 @@ Vue.use(VueEaseljs);
 Vue.component('enzo-text', _app_EnzoText_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.component('enzo-click-spot', _app_EnzoClickSpot_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_6__["default"]();
-reviver.register(_world_World__WEBPACK_IMPORTED_MODULE_5__["default"]);
-
-const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, 'enzos-eused-ebooks', reviver);
+const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, 'enzos-eused-ebooks', _app_reviver__WEBPACK_IMPORTED_MODULE_6__["default"]);
 
 const world = storage.read('world') || new _world_World__WEBPACK_IMPORTED_MODULE_5__["default"]();
 
@@ -1382,6 +1379,28 @@ function sizeText(text, maxLength) {
 
 /***/ }),
 
+/***/ "./app/reviver.js":
+/*!************************!*\
+  !*** ./app/reviver.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @world/World */ "./app/world/World.js");
+/* harmony import */ var _libs_Reviver__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @libs/Reviver */ "./app/libs/Reviver.js");
+
+
+
+const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_1__["default"]();
+
+reviver.register(_world_World__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (reviver);
+
+/***/ }),
+
 /***/ "./app/textLayer/HasTextLayer.js":
 /*!***************************************!*\
   !*** ./app/textLayer/HasTextLayer.js ***!
@@ -1718,10 +1737,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
 /* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
 /* harmony import */ var _world_Collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/Collection */ "./app/world/Collection.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 
 
 
@@ -1740,7 +1756,6 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     world.collections = {
         bargain: new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({
             url: './data/bargain.json',
-            axios: world.axios,
             key: ['title'],
             default: { title: '' },
             codes: ['book1', 'book2', 'book3', 'book4', 'book5', 'book6', 'book7', 'book8', 'book9', 'book10', 'book11', 'book12']
@@ -1751,14 +1766,7 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 class World {
     constructor(data = {}) {
         Object.assign(this, data);
-        if (!this.axios) {
-            this.axios = axios__WEBPACK_IMPORTED_MODULE_2___default.a;
-        }
         this.version = upgrader.upgrade(this.version || 0, this);
-    }
-
-    chooseNameFromCollection(code, collectionName) {
-        return this.collections[collectionName].chooseName(code);
     }
 };
 
@@ -3902,6 +3910,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @develop/DevSettings.js */ "./app/develop/DevSettings.js");
 /* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/World */ "./app/world/World.js");
+/* harmony import */ var _libs_Messager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/Messager */ "./app/libs/Messager.js");
+/* harmony import */ var _app_reviver__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/reviver */ "./app/reviver.js");
+/* harmony import */ var _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/JsonStorage */ "./app/libs/JsonStorage.js");
 //
 //
 //
@@ -3922,6 +3933,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -3929,15 +3959,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
     data() {
+        const saveNameSaver = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, 'dev-saves');
         return {
             showTools: false,
+            saveNameSaver,
+            saveNames: saveNameSaver.read('names') || [],
+            saveName: '',
+            messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_2__["default"](2000),
             DevSettings: _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__["default"]
         };
+    },
+    watch: {
+        saveNames() {
+            this.saveNameSaver.write('names', this.saveNames);
+        }
     },
     methods: {
         resetWorld() {
             if (confirm('Really reset world to default?')) {
                 this.app.world = new _world_World__WEBPACK_IMPORTED_MODULE_1__["default"]();
+                this.messager.queue(`Reset world`);
+            }
+        },
+        saveWorld() {
+            const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, this.saveName, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
+            storage.write('world', this.app.world);
+            this.addSaveName(this.saveName);
+            this.messager.queue(`Saved ${this.saveName}`);
+            this.saveName = '';
+        },
+        addSaveName(name) {
+            this.saveNames = Array.from(new Set(this.saveNames.concat(this.saveNameSaver.read('names') || [], name)));
+        },
+        removeSaveName(name) {
+            this.saveNames = this.saveNames.filter(saved => saved !== name);
+        },
+        loadWorld(name) {
+            if (confirm(`Really reset world to save ${name}?`)) {
+                const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, name, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
+                this.app.world = storage.read('world');
+                this.messager.queue(`Loaded ${name}`);
+            }
+        },
+        deleteWorld(name) {
+            if (confirm(`Delete save ${name}?`)) {
+                const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, name, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
+                storage.delete();
+                this.removeSaveName(name);
+                this.messager.queue(`Deleted ${name}`);
             }
         }
     }
@@ -12873,6 +12942,73 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.saveName,
+                    expression: "saveName"
+                  }
+                ],
+                attrs: { placeholder: "Save Name" },
+                domProps: { value: _vm.saveName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.saveName = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("button", { on: { click: _vm.saveWorld } }, [
+                _vm._v("Save World")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _vm._v("\n            Saves:\n            "),
+              _c(
+                "ol",
+                _vm._l(_vm.saveNames, function(name) {
+                  return _c("li", { key: name }, [
+                    _c(
+                      "button",
+                      {
+                        on: {
+                          click: function($event) {
+                            return _vm.loadWorld(name)
+                          }
+                        }
+                      },
+                      [_vm._v("📂")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteWorld(name)
+                          }
+                        }
+                      },
+                      [_vm._v("❌")]
+                    ),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(name) +
+                        "\n                "
+                    )
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", [
               _vm._v("\n            Show Text "),
               _c("input", {
                 directives: [
@@ -12893,7 +13029,17 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _vm.messager.message
+              ? _c("div", { staticStyle: { color: "blue" } }, [
+                  _vm._v(
+                    "\n            » " +
+                      _vm._s(_vm.messager.message || "") +
+                      "\n        "
+                  )
+                ])
+              : _vm._e()
           ]
         )
       : _vm._e()
