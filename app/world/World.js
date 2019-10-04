@@ -1,6 +1,5 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
-import axios from 'axios';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -20,7 +19,6 @@ const upgrader = new VersionUpgrader()
         world.collections = {
             bargain: new Collection({
                 url:     './data/bargain.json',
-                axios:   world.axios,
                 key:     ['title'],
                 default: {title: ''},
                 codes:   [
@@ -46,14 +44,7 @@ export default class World
 {
     constructor(data = {}) {
         Object.assign(this, data);
-        if (!this.axios) {
-            this.axios = axios;
-        }
         this.version = upgrader.upgrade(this.version || 0, this);
-    }
-
-    chooseNameFromCollection(code, collectionName) {
-        return this.collections[collectionName].chooseName(code);
     }
 };
 
