@@ -14,14 +14,14 @@ describe.only('Collection', function () {
     });
 
     it('should have default elements', function () {
-        const collection = new Collection({}, ['code1', 'code2'], {title: ''});
+        const collection = new Collection({}, ['code1', 'code2'], [], {title: ''});
         equal({title: ''}, collection.code1);
         equal({title: ''}, collection.code2);
     });
 
     it('should not overwrite elements pre-constructor elements', function () {
         const original = {title: 'good guy'};
-        const collection = new Collection({code1: original}, ['code1', 'code2'], {title: ''});
+        const collection = new Collection({code1: original}, ['code1', 'code2'], [], {title: ''});
         equal(original, collection.code1);
         equal({title: ''}, collection.code2);
     });
@@ -61,6 +61,29 @@ describe.only('Collection', function () {
             .then(done, done);
     });
 
+    it('should load and not overwrite pre-constructor things', function (done) {
+        let count = 0;
+        const code1 = {title: 'a name'};
+        const data = [
+            {title: Math.random()},
+            {title: Math.random()},
+        ];
+        const axios = {
+            get() {
+                count++;
+                return Promise.resolve({data: data});
+            },
+        };
+        const collection = new Collection({axios, code1}, ['code1', 'code2']);
+        collection.load()
+            .then(() => {
+                equal(1, count);
+                assert(code1 === collection.code1);
+                assert(collection.code2.title);
+            })
+            .then(done, done);
+    });
+
     it('should load more and not overwrite existing loaded things', function (done) {
         let count = 0;
         let code1;
@@ -81,7 +104,7 @@ describe.only('Collection', function () {
             })
             .then(() => {
                 equal(2, count);
-                assert(code1 === collection.code1, collection.pendingCodes);
+                assert(code1 === collection.code1);
                 assert(collection.code1.title);
                 assert(collection.code2.title);
             })
@@ -129,7 +152,7 @@ describe.only('Collection', function () {
             .then(done, done);
     });
 
-    it('should not load the same item under two codes in separate loads', function (done) {
+    it('should not load the same item under two codes', function (done) {
         const data = [
             {title: 'a name'},
         ];
@@ -139,7 +162,7 @@ describe.only('Collection', function () {
             },
         };
         const code1 = {title: 'a name'};
-        const collection = new Collection({axios, code1}, ['code2']);
+        const collection = new Collection({axios, code1}, ['code2'], ['title']);
         collection.load()
             .then(
                 () => {
