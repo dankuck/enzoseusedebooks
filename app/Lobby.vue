@@ -69,6 +69,7 @@ export default {
         BigPlant,
     },
     data() {
+        this.app.world.collections.bargain.load();
         const books = [
             ['book1', 252, 203, 11],
             ['book2', 278, 200, 10],
