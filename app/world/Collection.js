@@ -12,14 +12,26 @@ export default class Collection
     }
 
     load() {
-        return this.axios.get(`./data/${this.name}.json`)
+        if (this.loading) {
+            return this.loading;
+        }
+        if (this.pendingCodes.length === 0) {
+            return Promise.resolve();
+        }
+        this.loading = this.axios.get(`./data/${this.name}.json`)
             .then(response => {
+                delete this.loading;
                 const items = response.data;
-                this.pendingCodes.forEach(code => {
+                [...this.pendingCodes].forEach((code, i) => {
+                    if (items.length === 0) {
+                        throw new Error('No items left');
+                    }
                     const index = Math.floor(Math.random() * items.length);
                     this[code] = items.splice(index, 1)[0];
+                    this.pendingCodes.splice(i, 1);
                 });
             });
+        return this.loading;
     }
 };
 
