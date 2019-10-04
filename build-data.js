@@ -31,8 +31,6 @@ selected.forEach(book => {
 
 Object.keys(groups)
     .forEach(group => {
-        const namesfile = path.resolve(__dirname, `data/${group}-names.json`);
         const fullfile = path.resolve(__dirname, `data/${group}.json`);
-        fs.writeFileSync(namesfile, JSON.stringify(Object.keys(groups[group])));
-        fs.writeFileSync(fullfile, JSON.stringify(groups[group]));
+        fs.writeFileSync(fullfile, JSON.stringify(Object.values(groups[group])));
     });

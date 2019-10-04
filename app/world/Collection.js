@@ -2,42 +2,70 @@ import axios from 'axios';
 
 export default class Collection
 {
-    constructor(data) {
-        this.names = null;
-        this.chosen = {};
+    constructor(data = {}) {
         Object.assign(this, data);
         if (!this.axios) {
             this.axios = axios;
         }
+        if (!this.key) {
+            this.key = [];
+        }
+        if (!this.codes) {
+            this.codes = [];
+        }
+        if (!this.pendingCodes) {
+            this.pendingCodes = this.codes
+                .filter(code => !this[code]);
+        }
+        if (!this.default) {
+            this.default = {};
+        }
+        this.pendingCodes
+            .forEach(code => this[code] = {...this.default});
     }
 
-    chooseName(code) {
-        return this.loadNames()
-            .then(names => {
-                if (!this.chosen[code]) {
-                    if (names.length === 0) {
-                        throw `No names left in ${this.name}`;
-                    }
-                    const index = Math.floor(Math.random() * names.length);
-                    this.chosen[code] = names.splice(index, 1)[0];
-                }
-                return this.chosen[code];
+    load() {
+        if (this.loading) {
+            return this.loading;
+        }
+        if (this.pendingCodes.length === 0) {
+            return Promise.resolve();
+        }
+        this.loading = this.axios.get(this.url)
+            .finally(() => delete this.loading)
+            .then(response => {
+                this.fulfillPending(this.removeUsed(response.data));
             });
+        return this.loading;
     }
 
-    loadNames() {
-        if (this.names) {
-            return Promise.resolve(this.names);
+    fulfillPending(items) {
+        items = [...items];
+        this.pendingCodes = this.pendingCodes
+            .filter(code => {
+                if (items.length === 0) {
+                    return true;
+                } else {
+                    const index = Math.floor(Math.random() * items.length);
+                    this[code] = items.splice(index, 1)[0];
+                    return false;
+                }
+            });
+        if (this.pendingCodes.length > 0) {
+            throw new Error('Not enough items');
         }
-        if (!this.loadingNames) {
-            this.loadingNames = this.axios.get(`./data/${this.name}-names.json`)
-                .then(response => {
-                    delete this.loadingNames;
-                    this.names = response.data;
-                    return this.names;
-                });
+    }
+
+    removeUsed(items) {
+        items = [...items];
+        if (this.key.length === 0) {
+            return items;
         }
-        return this.loadingNames;
+        const key = (item) => this.key.map(field => item[field]).join(':');
+        const used = Object.values(this)
+            .filter(item => typeof item === 'object')
+            .map(key);
+        return items.filter(item => !used.includes(key(item)));
     }
 };
 
@@ -45,6 +73,11 @@ Collection.registerReviver = function (reviver) {
     reviver.add(
         Collection,
         (key, data) => { return new Collection(data) },
-        (key, data) => { return {...data} }
+        (key, data) => {
+            const collection = {...data};
+            delete collection.axios;
+            delete collection.loading;
+            return collection;
+        }
     );
 };
