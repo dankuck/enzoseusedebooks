@@ -10,18 +10,25 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 describe.only('Collection', function () {
 
     it('should instantiate', function () {
-        new Collection({}, []);
+        new Collection();
     });
 
     it('should have default elements', function () {
-        const collection = new Collection({}, ['code1', 'code2'], [], {title: ''});
+        const collection = new Collection({
+            codes: ['code1', 'code2'],
+            default: {title: ''}
+        });
         equal({title: ''}, collection.code1);
         equal({title: ''}, collection.code2);
     });
 
     it('should not overwrite elements pre-constructor elements', function () {
         const original = {title: 'good guy'};
-        const collection = new Collection({code1: original}, ['code1', 'code2'], [], {title: ''});
+        const collection = new Collection({
+            code1: original,
+            codes: ['code1', 'code2'],
+            default: {title: ''},
+        });
         equal(original, collection.code1);
         equal({title: ''}, collection.code2);
     });
@@ -33,7 +40,10 @@ describe.only('Collection', function () {
         const axios = {
             get() { return Promise.resolve({data: [...data]}) },
         };
-        const collection = new Collection({axios}, ['code1']);
+        const collection = new Collection({
+            axios,
+            codes: ['code1'],
+        });
         collection.load()
             .then(() => {
                 equal(data[0], collection.code1);
@@ -48,7 +58,10 @@ describe.only('Collection', function () {
         const axios = {
             get() { return Promise.resolve({data: [...data]}) },
         };
-        const collection = new Collection({axios}, ['code1', 'code2']);
+        const collection = new Collection({
+            axios,
+            codes: ['code1', 'code2'],
+        });
         collection.load()
             .then(
                 () => {
@@ -74,7 +87,11 @@ describe.only('Collection', function () {
                 return Promise.resolve({data: data});
             },
         };
-        const collection = new Collection({axios, code1}, ['code1', 'code2']);
+        const collection = new Collection({
+            axios,
+            code1,
+            codes: ['code1', 'code2'],
+        });
         collection.load()
             .then(() => {
                 equal(1, count);
@@ -93,7 +110,10 @@ describe.only('Collection', function () {
                 return Promise.resolve({data: [{title: Math.random()}]});
             },
         };
-        const collection = new Collection({axios}, ['code1', 'code2']);
+        const collection = new Collection({
+            axios,
+            codes: ['code1', 'code2'],
+        });
         collection.load()
             .catch(() => {
                 assert(collection.code1.title);
@@ -119,7 +139,10 @@ describe.only('Collection', function () {
                 return Promise.resolve({data: [{title: Math.random()}]});
             },
         };
-        const collection = new Collection({axios}, ['code1']);
+        const collection = new Collection({
+            axios,
+            codes: ['code1'],
+        });
         collection.load()
             .then(() => {
                 return collection.load();
@@ -141,7 +164,10 @@ describe.only('Collection', function () {
                 return Promise.resolve({data: [...data]});
             },
         };
-        const collection = new Collection({axios}, ['code1']);
+        const collection = new Collection({
+            axios,
+            codes: ['code1'],
+        });
         Promise.all([
             collection.load(),
             collection.load(),
@@ -162,7 +188,12 @@ describe.only('Collection', function () {
             },
         };
         const code1 = {title: 'a name'};
-        const collection = new Collection({axios, code1}, ['code2'], ['title']);
+        const collection = new Collection({
+            axios,
+            code1,
+            codes: ['code2'],
+            key: ['title'],
+        });
         collection.load()
             .then(
                 () => {
@@ -173,5 +204,82 @@ describe.only('Collection', function () {
                 }
             )
             .then(done, done);
+    });
+
+    describe('revive and replace', function () {
+
+        // Capture the revival callbacks
+        let revive;
+        const reviver = {
+            add(cls, reviver, replacer) {
+                if (cls === Collection) {
+                    revive = {reviver, replacer};
+                }
+            }
+        };
+        Collection.registerReviver(reviver);
+
+        it('should not save fields it does not need', function () {
+            const axios = {
+                get() { return delay(10).then(() => Promise.reject()); }
+            };
+            const collection = new Collection({
+                axios,
+                codes: ['code1'],
+                key: ['title'],
+                default: {title: ''},
+            });
+            collection.load().catch(() => {}); // force the `loading` key to exist
+            const forSave = revive.replacer('collection', collection);
+            equal(
+                ['codes', 'key', 'default', 'pendingCodes', 'code1'].sort(),
+                Object.keys(forSave).sort()
+            );
+        });
+
+        it('should revive before load', function (done) {
+            const data = [{title: 'a name'}];
+            const axios = {
+                get() { return delay(10).then(() => { return {data: data} } ) }
+            };
+            const collection = new Collection({
+                axios,
+                codes: ['code1'],
+                key: ['title'],
+                default: {title: ''},
+            });
+            const forSave = revive.replacer('collection', collection);
+            forSave.axios = axios;
+            const collection2 = revive.reviver('collection', forSave);
+            equal('', collection2.code1.title);
+            collection2.load()
+                .then(() => {
+                    equal('a name', collection2.code1.title);
+                })
+                .then(done, done);
+        });
+
+        it('should revive after load', function (done) {
+            const data = [{title: 'a name'}];
+            const axios = {
+                get() { return delay(10).then(() => { return {data: data} } ) }
+            };
+            const collection = new Collection({
+                axios,
+                codes: ['code1'],
+                key: ['title'],
+                default: {title: ''},
+            });
+            collection.load()
+                .then(() => {
+                    const forSave = revive.replacer('collection', collection);
+                    forSave.axios = axios;
+                    const collection2 = revive.reviver('collection', forSave);
+                    equal('a name', collection.code1.title);
+                    equal('a name', collection2.code1.title);
+                })
+                .then(done, done);
+
+        });
     });
 });
