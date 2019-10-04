@@ -7,7 +7,7 @@ const {
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-describe.only('Collection', function () {
+describe('Collection', function () {
 
     it('should instantiate', function () {
         new Collection();
@@ -34,19 +34,25 @@ describe.only('Collection', function () {
     });
 
     it('should load', function (done) {
+        let caughtUrl;
         const data = [
             {title: 'name 1'},
         ];
         const axios = {
-            get() { return Promise.resolve({data: [...data]}) },
+            get(url) {
+                caughtUrl = url;
+                return Promise.resolve({data: [...data]})
+            },
         };
         const collection = new Collection({
+            url: 'url.com',
             axios,
             codes: ['code1'],
         });
         collection.load()
             .then(() => {
                 equal(data[0], collection.code1);
+                equal('url.com', caughtUrl);
             })
             .then(done, done);
     });

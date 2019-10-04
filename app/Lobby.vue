@@ -50,8 +50,9 @@
         </big-plant>
         <enzo-click-spot
             v-for="(book, index) in books"
-            :key="'book:' + index"
+            :key="book.id"
             v-bind="book"
+            :name="app.world.collections.bargain[book.id]"
         >
         </enzo-click-spot>
         <text-layer></text-layer>
@@ -68,24 +69,20 @@ export default {
         BigPlant,
     },
     data() {
-        const books = [];
-        [
-            ['bargain-1', 252, 203, 11],
-            ['bargain-2', 278, 200, 10],
-            ['bargain-3', 304, 200, 10],
-            ['bargain-4', 330, 193, 10],
-            ['bargain-5', 256, 224, 11],
-            ['bargain-6', 286, 223, 11],
-            ['bargain-7', 272, 213, 11],
-            ['bargain-8', 311, 213, 11],
-            ['bargain-9', 328, 214, 11],
-            ['bargain-10', 315, 225, 7],
-            ['bargain-11', 342, 205, 7],
-            ['bargain-12', 345, 223, 7],
-        ].forEach(([id, x, y, r]) => {
-            this.app.world.chooseNameFromCollection(id, 'bargain')
-                .then(name => books.push({id, x, y, r, name}));
-        });
+        const books = [
+            ['book1', 252, 203, 11],
+            ['book2', 278, 200, 10],
+            ['book3', 304, 200, 10],
+            ['book4', 330, 193, 10],
+            ['book5', 256, 224, 11],
+            ['book6', 286, 223, 11],
+            ['book7', 272, 213, 11],
+            ['book8', 311, 213, 11],
+            ['book9', 328, 214, 11],
+            ['book10', 315, 225, 7],
+            ['book11', 342, 205, 7],
+            ['book12', 345, 223, 7],
+        ].forEach(([id, x, y, r]) => { return {id, x, y, r} });
         return {
             books,
             aisles: [

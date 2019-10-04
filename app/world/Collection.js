@@ -31,7 +31,7 @@ export default class Collection
         if (this.pendingCodes.length === 0) {
             return Promise.resolve();
         }
-        this.loading = this.axios.get(`./data/${this.name}.json`)
+        this.loading = this.axios.get(this.url)
             .finally(() => delete this.loading)
             .then(response => {
                 this.fulfillPending(this.removeUsed(response.data));

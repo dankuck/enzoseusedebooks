@@ -18,10 +18,26 @@ const upgrader = new VersionUpgrader()
     .version(3, world => world.location = 'lobby')
     .version(4, world => {
         world.collections = {
-            bargain:    new Collection({name: 'bargain', axios: world.axios}),
-            children:   new Collection({name: 'children', axios: world.axios}),
-            fiction:    new Collection({name: 'fiction', axios: world.axios}),
-            nonfiction: new Collection({name: 'nonfiction', axios: world.axios}),
+            bargain: new Collection({
+                name:    './data/bargain.json',
+                axios:   world.axios,
+                key:     ['title'],
+                default: {title: ''},
+                codes:   [
+                    'book1',
+                    'book2',
+                    'book3',
+                    'book4',
+                    'book5',
+                    'book6',
+                    'book7',
+                    'book8',
+                    'book9',
+                    'book10',
+                    'book11',
+                    'book12',
+                ],
+            }),
         };
     })
     ;
