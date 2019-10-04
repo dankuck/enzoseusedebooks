@@ -155,6 +155,59 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/BookViewer.vue":
+/*!****************************!*\
+  !*** ./app/BookViewer.vue ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookViewer.vue?vue&type=template&id=54de8892& */ "./app/BookViewer.vue?vue&type=template&id=54de8892&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/BookViewer.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/BookViewer.vue?vue&type=template&id=54de8892&":
+/*!***********************************************************!*\
+  !*** ./app/BookViewer.vue?vue&type=template&id=54de8892& ***!
+  \***********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./BookViewer.vue?vue&type=template&id=54de8892& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BookViewer.vue?vue&type=template&id=54de8892&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookViewer_vue_vue_type_template_id_54de8892___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/EnzoClickSpot.vue":
 /*!*******************************!*\
   !*** ./app/EnzoClickSpot.vue ***!
@@ -3636,6 +3689,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
 //
 //
 //
@@ -3697,6 +3751,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -3704,7 +3761,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
-        BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"]
+        BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -3713,6 +3771,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         return {
             books,
+            viewBook: null,
             aisles: [{
                 x: 197 + 20,
                 y: 53 + 42,
@@ -12429,6 +12488,30 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BookViewer.vue?vue&type=template&id=54de8892&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/BookViewer.vue?vue&type=template&id=54de8892& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("enzo-text", { attrs: { text: "book-viewer", x: "100", y: "100" } })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/EnzoClickSpot.vue?vue&type=template&id=67e0a880&":
 /*!********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/EnzoClickSpot.vue?vue&type=template&id=67e0a880& ***!
@@ -12648,13 +12731,18 @@ var render = function() {
         on: { shake: _vm.checkPlant }
       }),
       _vm._v(" "),
-      _vm._l(_vm.books, function(book, index) {
+      _vm._l(_vm.books, function(book) {
         return _c(
           "enzo-click-spot",
           _vm._b(
             {
               key: book.id,
-              attrs: { name: _vm.app.world.collections.bargain[book.id].title }
+              attrs: { name: _vm.app.world.collections.bargain[book.id].title },
+              on: {
+                click: function($event) {
+                  _vm.viewBook = book
+                }
+              }
             },
             "enzo-click-spot",
             book,
@@ -12662,6 +12750,10 @@ var render = function() {
           )
         )
       }),
+      _vm._v(" "),
+      _vm.viewBook
+        ? _c("book-viewer", { attrs: { book: _vm.viewBook } })
+        : _vm._e(),
       _vm._v(" "),
       _c("text-layer")
     ],

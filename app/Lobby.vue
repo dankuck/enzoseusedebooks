@@ -49,12 +49,14 @@
         >
         </big-plant>
         <enzo-click-spot
-            v-for="(book, index) in books"
+            v-for="book in books"
             :key="book.id"
             v-bind="book"
             :name="app.world.collections.bargain[book.id].title"
+            @click="viewBook = book"
         >
         </enzo-click-spot>
+        <book-viewer v-if="viewBook" :book="viewBook"></book-viewer>
         <text-layer></text-layer>
     </easel-container>
 </template>
@@ -62,11 +64,13 @@
 <script>
 import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
+import BookViewer from '@app/BookViewer';
 
 export default {
     mixins: [HasTextLayer],
     components: {
         BigPlant,
+        BookViewer,
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -86,6 +90,7 @@ export default {
         ].map(([id, x, y, r]) => { return {id, x, y, r} });
         return {
             books,
+            viewBook: null,
             aisles: [
                 {
                     x: 197 + 20,
