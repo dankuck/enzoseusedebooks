@@ -26,6 +26,25 @@
         >
         </enzo-text>
 
+        <easel-shape
+            :x="app.canvas.pixelWidth / 2 - 2"
+            :y="app.canvas.pixelHeight / 2 + book.image.height / 2"
+            form="rect"
+            fill="grey"
+            :dimensions="[130, 10]"
+            align="bottom-left"
+            @click="goToAmazon"
+            cursor="pointer"
+        >
+        </easel-shape>
+
+        <enzo-text
+            text="Buy It On Amazon"
+            :x="app.canvas.pixelWidth / 2 - 1"
+            :y="app.canvas.pixelHeight / 2 + book.image.height / 2"
+        >
+        </enzo-text>
+
     </easel-container>
 </template>
 
@@ -43,6 +62,11 @@ export default {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
             return lines.join("\n");
+        },
+    },
+    methods: {
+        goToAmazon() {
+            window.open(this.book.url, '_blank');
         },
     },
 };

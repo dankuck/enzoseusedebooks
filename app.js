@@ -11349,6 +11349,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
@@ -11363,6 +11382,11 @@ __webpack_require__.r(__webpack_exports__);
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
             return lines.join("\n");
+        }
+    },
+    methods: {
+        goToAmazon() {
+            window.open(this.book.url, '_blank');
         }
     }
 });
@@ -12628,6 +12652,27 @@ var render = function() {
           text: _vm.description,
           x: _vm.app.canvas.pixelWidth / 2 - 1,
           y: _vm.app.canvas.pixelHeight / 2 - _vm.book.image.height / 2
+        }
+      }),
+      _vm._v(" "),
+      _c("easel-shape", {
+        attrs: {
+          x: _vm.app.canvas.pixelWidth / 2 - 2,
+          y: _vm.app.canvas.pixelHeight / 2 + _vm.book.image.height / 2,
+          form: "rect",
+          fill: "grey",
+          dimensions: [130, 10],
+          align: "bottom-left",
+          cursor: "pointer"
+        },
+        on: { click: _vm.goToAmazon }
+      }),
+      _vm._v(" "),
+      _c("enzo-text", {
+        attrs: {
+          text: "Buy It On Amazon",
+          x: _vm.app.canvas.pixelWidth / 2 - 1,
+          y: _vm.app.canvas.pixelHeight / 2 + _vm.book.image.height / 2
         }
       })
     ],
