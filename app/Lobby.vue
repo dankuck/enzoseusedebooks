@@ -16,6 +16,7 @@
             image="lobby.gif"
         >
         </easel-bitmap>
+
         <enzo-click-spot
             name="Window"
             x="326"
@@ -24,6 +25,7 @@
             @click="queueMessage('The town looks dark tonight.', 326, 70)"
         >
         </enzo-click-spot>
+
         <enzo-click-spot
             v-for="(aisle, aisleIndex) in aisles"
             :key="'aisle:' + aisleIndex"
@@ -40,6 +42,7 @@
             >
             </easel-shape>
         </enzo-click-spot>
+
         <big-plant
             :name="plant.name"
             x="330"
@@ -48,16 +51,27 @@
             @shake="checkPlant"
         >
         </big-plant>
+
         <enzo-click-spot
             v-for="book in books"
             :key="book.id"
             v-bind="book"
-            :name="app.world.collections.bargain[book.id].title"
-            @click="viewBook = book"
+            :name="book.book.title"
+            @click="viewBook = book.book"
         >
         </enzo-click-spot>
-        <book-viewer v-if="viewBook" :book="viewBook"></book-viewer>
-        <text-layer></text-layer>
+
+        <book-viewer
+            v-if="viewBook"
+            :book="viewBook"
+            @close="viewBook = null"
+        >
+        </book-viewer>
+
+        <text-layer
+            v-else
+        >
+        </text-layer>
     </easel-container>
 </template>
 
@@ -74,22 +88,7 @@ export default {
     },
     data() {
         this.app.world.collections.bargain.load();
-        const books = [
-            ['book1', 252, 203, 11],
-            ['book2', 278, 200, 10],
-            ['book3', 304, 200, 10],
-            ['book4', 330, 193, 10],
-            ['book5', 256, 224, 11],
-            ['book6', 286, 223, 11],
-            ['book7', 272, 213, 11],
-            ['book8', 311, 213, 11],
-            ['book9', 328, 214, 11],
-            ['book10', 315, 225, 7],
-            ['book11', 342, 205, 7],
-            ['book12', 345, 223, 7],
-        ].map(([id, x, y, r]) => { return {id, x, y, r} });
         return {
-            books,
             viewBook: null,
             aisles: [
                 {
@@ -141,6 +140,25 @@ export default {
     computed: {
         plant() {
             return this.app.world.lobbyPlant;
+        },
+        books() {
+            return [
+                ['book1', 252, 203, 11],
+                ['book2', 278, 200, 10],
+                ['book3', 304, 200, 10],
+                ['book4', 330, 193, 10],
+                ['book5', 256, 224, 11],
+                ['book6', 286, 223, 11],
+                ['book7', 272, 213, 11],
+                ['book8', 311, 213, 11],
+                ['book9', 328, 214, 11],
+                ['book10', 315, 225, 7],
+                ['book11', 342, 205, 7],
+                ['book12', 345, 223, 7],
+            ].map(([id, x, y, r]) => {
+                const book = this.app.world.collections.bargain[id];
+                return {id, x, y, r, book};
+            });
         },
     },
     methods: {
