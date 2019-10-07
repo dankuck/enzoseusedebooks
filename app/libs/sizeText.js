@@ -6,7 +6,7 @@
  |
  */
 
-export default function sizeText(text, maxLength) {
+export default function sizeText(text, maxLength, maxLines = Infinity) {
     if (maxLength < 2) {
         // Avoid infinite loops when trying to breakdown
         // long words
@@ -46,7 +46,9 @@ export default function sizeText(text, maxLength) {
                 // the last line needs added to the list
                 lines.push(next.trim());
             }
-            return lines.join("\n");
+            return lines;
         })
+        .reduce((lines, line) => lines.concat(line), [])
+        .slice(0, maxLines)
         .join("\n");
 };

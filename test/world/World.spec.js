@@ -19,6 +19,6 @@ describe('World', function () {
 
     it('should not update a high version', function () {
         const world = new World({version: Infinity});
-        equal(['axios', 'version'], Object.keys(world).sort());
+        equal(['version'], Object.keys(world).sort());
     });
 });

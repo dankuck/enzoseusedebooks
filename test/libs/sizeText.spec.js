@@ -49,6 +49,17 @@ describe('sizeText', function () {
         assert(false);
     });
 
+    it('restricts line count', function () {
+        equal(
+            "hello\nmudder\nhello\nfadder",
+            sizeText(
+                "hello\nmudder\nhello\nfadder\nbut not hello brother or sister",
+                Infinity,
+                4
+            )
+        );
+    });
+
     describe('with random sentences', function () {
 
         const words = [
@@ -79,6 +90,16 @@ describe('sizeText', function () {
                 const formatted = sizeText(makeSentence(), lineLength);
                 const lines = formatted.split(/\n/);
                 lines.forEach(line => assert(line.length <= lineLength, `Bad result: ${formatted}`));
+            }
+        });
+
+        it('always stays within line count', function () {
+
+            for (let i = 0; i < 10; i++) {
+                const lineCount = Math.floor(Math.random() * 2) + 1;
+                const formatted = sizeText(makeSentence(), 10, lineCount);
+                const newlines = formatted.replace(/[^\n]/g, '');
+                assert(newlines.length <= lineCount, `${newlines} ${newlines.length} > ${lineCount}`);
             }
         });
     });
