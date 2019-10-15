@@ -86,7 +86,7 @@ describe('ColorReducer', function () {
         );
     });
 
-    it.only('quickly deals with 1,000,000 pixels', function () {
+    it('quickly deals with 1,000,000 pixels', function () {
         this.slow(200);
         const imageData = {
             data: new Array(4000000),
