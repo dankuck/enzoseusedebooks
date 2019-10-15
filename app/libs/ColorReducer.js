@@ -28,23 +28,39 @@
  | [  0, 255, 255] = cyan           [128, 255, 255] = light cyan      [255, 255, 255] = white
  */
 
+const colorDepthMaps = {};
+
+
+const getMap = function (colorsPerChannel) {
+    if (colorDepthMaps[colorsPerChannel]) {
+        return colorDepthMaps[colorsPerChannel];
+    }
+    const segments = colorsPerChannel - 1;
+    const toLowRes = segments / 255;
+    const toHiRes = 255 / segments;
+    const map = [];
+    for (let i = 0; i <= 255; i++) {
+        map[i] = Math.round(Math.round(toLowRes * i) * toHiRes);
+    }
+    colorDepthMaps[colorsPerChannel] = map;
+    return colorDepthMaps[colorsPerChannel];
+};
+
 export default class ColorReducer {
 
     constructor(colorsPerChannel) {
-        this.colorsPerChannel = colorsPerChannel;
+        this.map = getMap(colorsPerChannel);
     }
 
     adjustImageData(imageData) {
         const data = imageData.data;
         const length = data.length;
-        const segments = this.colorsPerChannel - 1;
-        const toLowRes = segments / 255;
-        const toHiRes = 255 / segments;
+        const map = this.map;
         for (let i = 0; i < length; i += 4) {
             if (data[i + 3] > 0) {
-                data[i + 0] = Math.round(Math.round(toLowRes * data[i + 0]) * toHiRes);
-                data[i + 1] = Math.round(Math.round(toLowRes * data[i + 1]) * toHiRes);
-                data[i + 2] = Math.round(Math.round(toLowRes * data[i + 2]) * toHiRes);
+                data[i + 0] = map[data[i + 0]];
+                data[i + 1] = map[data[i + 1]];
+                data[i + 2] = map[data[i + 2]];
             }
         }
         return true;

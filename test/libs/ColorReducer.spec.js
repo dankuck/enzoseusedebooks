@@ -1,8 +1,9 @@
 import ColorReducer from '../../app/libs/ColorReducer.js';
 import assert from 'assert';
+import flops, {estimateOperations} from '../fixtures/flops.js';
 const {deepStrictEqual: equal} = assert;
 
-describe.only('ColorReducer', function () {
+describe('ColorReducer', function () {
 
     it('instantiates', function () {
         new ColorReducer(2);
@@ -85,26 +86,24 @@ describe.only('ColorReducer', function () {
         );
     });
 
-    it('reduces colors to 5 colors per channel', function () {
+    it.only('quickly deals with 1,000,000 pixels', function () {
+        this.slow(200);
         const imageData = {
-            data: [
-                0, 8, 16, 255,
-                32, 48, 63, 255,
-                64, 127, 128, 255,
-                191, 192, 254, 255,
-            ],
+            data: new Array(4000000),
         };
-        const reducer = new ColorReducer(5);
-        const result = reducer.adjustImageData(imageData);
+        const data = imageData.data;
+        for (let i = 0; i < 4000000; i += 4) {
+            data[i + 0] = i % 48;
+            data[i + 1] = i % 192;
+            data[i + 2] = i % 255;
+            data[i + 3] = 255;
+        }
+        const reducer = new ColorReducer(24);
+        let result;
+        const ops = estimateOperations(() => result = reducer.adjustImageData(imageData));
         assert(result);
-        equal(
-            [
-                0, 0, 0, 255,
-                64, 64, 64, 255,
-                64, 128, 128, 255,
-                191, 191, 255, 255,
-            ],
-            imageData.data
-        );
+        console.log(ops);
+         // 8000000 is the largest measured value, so we compare to something a bit larger
+        assert(ops < 10000000, `Process completed in ${ops} operations > 10 million`);
     });
 });
