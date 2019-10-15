@@ -6,14 +6,12 @@
  |
  | `new ColorReducer(2)` would make each channel have 2 values, 0 and 255, so
  | the 8 colors (2^3) would be:
- | [  0,   0,   0] = black
- | [  0,   0, 255] = blue
- | [  0, 255,   0] = green
- | [  0, 255, 255] = cyan
- | [255,   0,   0] = red
- | [255,   0, 255] = magenta
- | [255, 255,   0] = yellow
- | [255, 255, 255] = white
+ | [  0,   0,   0] = black    [255,   0,   0] = red
+ | [  0,   0, 255] = blue     [255,   0, 255] = magenta
+ |
+ | [  0, 255,   0] = green    [255, 255,   0] = yellow
+ | [  0, 255, 255] = cyan     [255, 255, 255] = white
+ |
  |
  | `new ColorReducer(3)` would make each channel have 3 values, 0, 128, and
  | 255, so the 27 (3^3) colors would be:
@@ -40,11 +38,13 @@ export default class ColorReducer {
         const data = imageData.data;
         const length = data.length;
         const segments = this.colorsPerChannel - 1;
+        const toLowRes = segments / 255;
+        const toHiRes = 255 / segments;
         for (let i = 0; i < length; i += 4) {
             if (data[i + 3] > 0) {
-                data[i + 0] = Math.round(Math.round(segments * data[i + 0] / 255) * 255 / segments);
-                data[i + 1] = Math.round(Math.round(segments * data[i + 1] / 255) * 255 / segments);
-                data[i + 2] = Math.round(Math.round(segments * data[i + 2] / 255) * 255 / segments);
+                data[i + 0] = Math.round(Math.round(toLowRes * data[i + 0]) * toHiRes);
+                data[i + 1] = Math.round(Math.round(toLowRes * data[i + 1]) * toHiRes);
+                data[i + 2] = Math.round(Math.round(toLowRes * data[i + 2]) * toHiRes);
             }
         }
         return true;
