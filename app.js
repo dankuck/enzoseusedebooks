@@ -6686,10 +6686,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
     props: ['book'],
+    mounted() {
+        this.bookImage; // cause a load
+    },
+    data() {
+        return {
+            imageLoaded: false
+        };
+    },
     computed: {
         description() {
             const lines = [];
@@ -6700,6 +6709,14 @@ __webpack_require__.r(__webpack_exports__);
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
             return lines.join("\n");
+        },
+        bookImage() {
+            this.imageLoaded = false;
+            const img = new Image();
+            img.src = this.book.image.url;
+            img.crossOrigin = 'Anonymous';
+            img.addEventListener('load', () => this.imageLoaded = true);
+            return img;
         }
     },
     methods: {
@@ -7951,15 +7968,17 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("easel-bitmap", {
-        attrs: {
-          image: _vm.book.image.url,
-          x: _vm.app.canvas.pixelWidth / 2 - 6,
-          y: _vm.app.canvas.pixelHeight / 2,
-          align: "center-right",
-          "x-filters": [["ColorReducer", 4]]
-        }
-      }),
+      _vm.imageLoaded
+        ? _c("easel-bitmap", {
+            attrs: {
+              image: _vm.bookImage,
+              x: _vm.app.canvas.pixelWidth / 2 - 6,
+              y: _vm.app.canvas.pixelHeight / 2,
+              align: "center-right",
+              filters: [["ColorReducer", 6]]
+            }
+          })
+        : _vm._e(),
       _vm._v(" "),
       _c("enzo-text", {
         attrs: {

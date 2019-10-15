@@ -12,11 +12,12 @@
         </easel-shape>
 
         <easel-bitmap
-            :image="book.image.url"
+            v-if="imageLoaded"
+            :image="bookImage"
             :x="app.canvas.pixelWidth / 2 - 6"
             :y="app.canvas.pixelHeight / 2"
             align="center-right"
-            :x-filters="[['ColorReducer', 4]]"
+            :filters="[['ColorReducer', 6]]"
         >
         </easel-bitmap>
 
@@ -53,6 +54,14 @@
 export default {
     inject: ['app'],
     props: ['book'],
+    mounted() {
+        this.bookImage; // cause a load
+    },
+    data() {
+        return {
+            imageLoaded: false,
+        };
+    },
     computed: {
         description() {
             const lines = [];
@@ -63,6 +72,14 @@ export default {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
             return lines.join("\n");
+        },
+        bookImage() {
+            this.imageLoaded = false;
+            const img = new Image();
+            img.src = this.book.image.url;
+            img.crossOrigin = 'Anonymous';
+            img.addEventListener('load', () => this.imageLoaded = true);
+            return img;
         },
     },
     methods: {
