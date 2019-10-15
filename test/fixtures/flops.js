@@ -28,5 +28,5 @@ export function estimateOperations(cb) {
     cb();
     const finish = new Date();
     const ms = finish.valueOf() - start.valueOf();
-    return ms * flopms;
+    return Math.round(ms * flopms);
 }
