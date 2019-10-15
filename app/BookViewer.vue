@@ -16,6 +16,7 @@
             :x="app.canvas.pixelWidth / 2 - 6"
             :y="app.canvas.pixelHeight / 2"
             align="center-right"
+            :x-filters="[['ColorReducer', 4]]"
         >
         </easel-bitmap>
 

@@ -31,6 +31,7 @@ import JsonStorage from '@libs/JsonStorage';
 import World from '@world/World';
 import reviver from '@app/reviver';
 import axios from 'axios';
+import ColorReducer from '@libs/ColorReducer';
 
 // Expose these variables for devtools
 window.Vue = require('vue');
@@ -39,6 +40,7 @@ window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios;
 
 Vue.use(VueEaseljs);
+VueEaseljs.registerFilter('ColorReducer', ColorReducer);
 
 Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);

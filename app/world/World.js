@@ -46,6 +46,12 @@ export default class World
         Object.assign(this, data);
         this.version = upgrader.upgrade(this.version || 0, this);
     }
+
+    ruffleLobbyPlant() {
+        this.lobbyPlant.name = 'Ruffled Plant';
+        this.lobbyPlant.response = "Hasn't this plant been through enough?";
+        this.lobbyPlant.ruffled = true;
+    }
 };
 
 World.registerReviver = function (reviver) {

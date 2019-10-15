@@ -44,10 +44,10 @@
         </enzo-click-spot>
 
         <big-plant
-            :name="plant.name"
+            :name="this.app.world.lobbyPlant.name"
             x="330"
             y="160"
-            :ruffled="plant.ruffled"
+            :ruffled="this.app.world.lobbyPlant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
@@ -138,9 +138,6 @@ export default {
         };
     },
     computed: {
-        plant() {
-            return this.app.world.lobbyPlant;
-        },
         books() {
             return [
                 ['book1', 252, 203, 11],
@@ -163,10 +160,8 @@ export default {
     },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
-            this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been through enough?";
-            this.plant.ruffled = true;
+            this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
+            this.app.world.ruffleLobbyPlant();
         },
     },
 };

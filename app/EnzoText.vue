@@ -15,8 +15,8 @@
         :y="shiftedY"
         :align="align"
         color="yellow"
-        :shadow="['black', 1, 1, 5]"
         :font="`${fontWidth}px 'Press Start 2P'`"
+        :filters="[['PixelStrokeFilter', [], 4, {antiAlias: false}]]"
     >
     </easel-text>
 </template>
