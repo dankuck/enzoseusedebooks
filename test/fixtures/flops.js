@@ -6,7 +6,7 @@
  | operation count of a callback.
  */
 let time = 0;
-let ops = 100000;
+let ops = 500000;
 
 // retry this loop until time is at least 4 ms
 do {
