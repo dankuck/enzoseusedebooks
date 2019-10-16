@@ -3519,6 +3519,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/FictionStack.vue":
+/*!******************************!*\
+  !*** ./app/FictionStack.vue ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FictionStack.vue?vue&type=template&id=b67060a0& */ "./app/FictionStack.vue?vue&type=template&id=b67060a0&");
+/* harmony import */ var _FictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FictionStack.vue?vue&type=script&lang=js& */ "./app/FictionStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/FictionStack.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/FictionStack.vue?vue&type=script&lang=js&":
+/*!*******************************************************!*\
+  !*** ./app/FictionStack.vue?vue&type=script&lang=js& ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./FictionStack.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/FictionStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/FictionStack.vue?vue&type=template&id=b67060a0&":
+/*!*************************************************************!*\
+  !*** ./app/FictionStack.vue?vue&type=template&id=b67060a0& ***!
+  \*************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./FictionStack.vue?vue&type=template&id=b67060a0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/FictionStack.vue?vue&type=template&id=b67060a0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FictionStack_vue_vue_type_template_id_b67060a0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/Lobby.vue":
 /*!***********************!*\
   !*** ./app/Lobby.vue ***!
@@ -4103,22 +4172,68 @@ class CallbackRing {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ColorReducer; });
+/**
+ |--------------------
+ | ColorReducer
+ |--------------------
+ | Rounds the values in each RGB channel to a reduced set of values.
+ |
+ | `new ColorReducer(2)` would make each channel have 2 values, 0 and 255, so
+ | the 8 colors (2^3) would be:
+ | [  0,   0,   0] = black    [255,   0,   0] = red
+ | [  0,   0, 255] = blue     [255,   0, 255] = magenta
+ |
+ | [  0, 255,   0] = green    [255, 255,   0] = yellow
+ | [  0, 255, 255] = cyan     [255, 255, 255] = white
+ |
+ |
+ | `new ColorReducer(3)` would make each channel have 3 values, 0, 128, and
+ | 255, so the 27 (3^3) colors would be:
+ | [  0,   0,   0] = black          [128,   0,   0] = dark red        [255,   0,   0] = red
+ | [  0,   0, 128] = dark blue      [128,   0, 128] = dark pink       [255,   0, 128] = pink
+ | [  0,   0, 255] = blue           [128,   0, 255] = purple          [255,   0, 255] = magenta
+ |
+ | [  0, 128,   0] = dark green     [128, 128,   0] = dark yellow     [255, 128,   0] = leaf orange
+ | [  0, 128, 128] = dark cyan      [128, 128, 128] = grey            [255, 128, 128] = pastel pink
+ | [  0, 128, 255] = sky blue       [128, 128, 255] = light purple    [255, 128, 255] = bubble gum pink
+ |
+ | [  0, 255,   0] = green          [128, 255,   0] = bright green    [255, 255,   0] = yellow
+ | [  0, 255, 128] = light green    [128, 255, 128] = pastel gren     [255, 255, 128] = pastel yellow
+ | [  0, 255, 255] = cyan           [128, 255, 255] = light cyan      [255, 255, 255] = white
+ */
+
+const colorDepthMaps = {};
+
+const getMap = function (colorsPerChannel) {
+    if (colorDepthMaps[colorsPerChannel]) {
+        return colorDepthMaps[colorsPerChannel];
+    }
+    const segments = colorsPerChannel - 1;
+    const toLowRes = segments / 255;
+    const toHiRes = 255 / segments;
+    const map = [];
+    for (let i = 0; i <= 255; i++) {
+        map[i] = Math.round(Math.round(toLowRes * i) * toHiRes);
+    }
+    colorDepthMaps[colorsPerChannel] = map;
+    return colorDepthMaps[colorsPerChannel];
+};
 
 class ColorReducer {
 
     constructor(colorsPerChannel) {
-        this.colorsPerChannel = colorsPerChannel;
+        this.map = getMap(colorsPerChannel);
     }
 
     adjustImageData(imageData) {
         const data = imageData.data;
         const length = data.length;
-        const segments = this.colorsPerChannel - 1;
+        const map = this.map;
         for (let i = 0; i < length; i += 4) {
             if (data[i + 3] > 0) {
-                data[i + 0] = Math.round(Math.round(segments * data[i + 0] / 255) * 255 / segments);
-                data[i + 1] = Math.round(Math.round(segments * data[i + 1] / 255) * 255 / segments);
-                data[i + 2] = Math.round(Math.round(segments * data[i + 2] / 255) * 255 / segments);
+                data[i + 0] = map[data[i + 0]];
+                data[i + 1] = map[data[i + 1]];
+                data[i + 2] = map[data[i + 2]];
             }
         }
         return true;
@@ -6867,8 +6982,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
-/* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
-/* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
+/* harmony import */ var _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/FictionStack */ "./app/FictionStack.vue");
+/* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
+/* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
 //
 //
 //
@@ -6911,6 +7027,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -6919,10 +7036,139 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"],
-        DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_1__["default"],
-        DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_2__["default"]
+        FictionStack: _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__["default"],
+        DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_2__["default"],
+        DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
     inject: ['app']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/FictionStack.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/FictionStack.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    components: {
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__["default"]
+    },
+    data() {
+        // this.app.world.collections.fiction.load();
+        return {
+            viewBook: null
+        };
+    },
+    computed: {
+        shelves() {
+            return [this.buildBookList(9, 300, 67, 69), this.buildBookList(11, 349, 119, 119), this.buildBookList(40, 349, 171, 164), this.buildBookList(13, 349, 216, 211), this.buildBookList(14, 349, 260, 255)];
+        }
+    },
+    methods: {
+        buildBookList(minX, maxX, minY, maxY) {
+            const books = [];
+            const colors = ['#dd971f', '#d5ae57', '#dfc290', '#151580', '#b93109'];
+            const slope = (maxY - minY) / (maxX - minX);
+            for (let x = minX; x < maxX;) {
+                const width = 10 + Math.floor(Math.random() * 10);
+                const height = 30 + Math.floor(Math.random() * 10);
+                const book = {
+                    fill: colors[Math.floor(Math.random() * colors.length)],
+                    dimensions: [width, height],
+                    x,
+                    y: minY + slope * (x - minX)
+                };
+                books.push(book);
+                x += book.dimensions[0];
+            }
+            return books;
+        },
+        goTo(where) {
+            if (where) {
+                this.app.world.location = where;
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -6939,6 +7185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+//
 //
 //
 //
@@ -7040,7 +7287,8 @@ __webpack_require__.r(__webpack_exports__);
                 x: 118,
                 y: 87,
                 dimensionSets: [['rect', -23, -37, [46, 84]]],
-                name: "Musty Books"
+                name: "Musty Books",
+                goTo: 'fiction-stack'
             }, {
                 x: 37,
                 y: 97,
@@ -7071,6 +7319,11 @@ __webpack_require__.r(__webpack_exports__);
         checkPlant(vuePlant) {
             this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
             this.app.world.ruffleLobbyPlant();
+        },
+        goTo(where) {
+            if (where) {
+                this.app.world.location = where;
+            }
         }
     }
 });
@@ -7130,6 +7383,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -8174,6 +8428,90 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/FictionStack.vue?vue&type=template&id=b67060a0&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/FictionStack.vue?vue&type=template&id=b67060a0& ***!
+  \*******************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    [
+      _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+      _vm._v(" "),
+      _vm._l(_vm.shelves, function(shelf, shelfIndex) {
+        return _vm._l(shelf, function(book, bookIndex) {
+          return _c(
+            "easel-shape",
+            _vm._b(
+              {
+                key: shelfIndex + ":" + bookIndex,
+                attrs: { form: "rect", stroke: "#351601", align: "bottom-left" }
+              },
+              "easel-shape",
+              book,
+              false
+            )
+          )
+        })
+      }),
+      _vm._v(" "),
+      _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+      _vm._v(" "),
+      _c(
+        "enzo-click-spot",
+        {
+          attrs: { name: "Lobby", x: "5", y: "150" },
+          on: {
+            click: function($event) {
+              return _vm.goTo("lobby")
+            }
+          }
+        },
+        [
+          _c("easel-shape", {
+            attrs: {
+              form: "rect",
+              x: "-5",
+              y: "-150",
+              dimensions: [7, 300],
+              fill: "black"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.viewBook
+        ? _c("book-viewer", {
+            attrs: { book: _vm.viewBook },
+            on: {
+              close: function($event) {
+                _vm.viewBook = null
+              }
+            }
+          })
+        : _c("text-layer")
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Lobby.vue?vue&type=template&id=11abb0aa&":
 /*!************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/Lobby.vue?vue&type=template&id=11abb0aa& ***!
@@ -8207,7 +8545,14 @@ var render = function() {
         return _c(
           "enzo-click-spot",
           _vm._b(
-            { key: "aisle:" + aisleIndex },
+            {
+              key: "aisle:" + aisleIndex,
+              on: {
+                click: function($event) {
+                  return _vm.goTo(aisle.goTo)
+                }
+              }
+            },
             "enzo-click-spot",
             aisle,
             false
@@ -8361,7 +8706,11 @@ var render = function() {
                 text: "(" + point.x + ", " + point.y + ")",
                 color: "red",
                 font: "4px Arial",
-                shadow: ["black", 0, 0, 3]
+                shadow: ["black", 0, 0, 3],
+                align: [
+                  "top",
+                  point.x > _vm.app.canvas.pixelWidth / 2 ? "right" : "left"
+                ]
               }
             })
           ],
