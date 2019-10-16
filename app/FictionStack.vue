@@ -20,15 +20,13 @@
         <template
             v-for="(shelf, shelfIndex) in shelves"
         >
-            <easel-shape
+            <stack-book
                 v-for="(book, bookIndex) in shelf"
-                :key="shelfIndex + ':' + bookIndex"
-                form="rect"
-                v-bind="book"
-                stroke="#351601"
-                align="bottom-left"
+                :key="'book:' + shelfIndex + ':' + bookIndex"
+                :book="book"
+                @click="viewBook = book.book"
             >
-            </easel-shape>
+            </stack-book>
         </template>
 
         <easel-bitmap
@@ -69,31 +67,34 @@
 <script>
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
+import StackBook from '@app/StackBook';
 
 export default {
     mixins: [HasTextLayer],
     components: {
         BookViewer,
+        StackBook,
     },
     data() {
-        // this.app.world.collections.fiction.load();
+        this.app.world.collections.fiction.load();
         return {
             viewBook: null,
         };
     },
     computed: {
         shelves() {
+            const bookCodes = [...this.app.world.collections.fiction.codes];
             return [
-                this.buildBookList(9, 300, 67, 69),
-                this.buildBookList(11, 349, 119, 119),
-                this.buildBookList(40, 349, 171, 164),
-                this.buildBookList(13, 349, 216, 211),
-                this.buildBookList(14, 349, 260, 255),
+                this.buildBookList(9, 300, 67, 69, bookCodes),
+                this.buildBookList(11, 349, 119, 119, bookCodes),
+                this.buildBookList(40, 349, 171, 164, bookCodes),
+                this.buildBookList(13, 349, 216, 211, bookCodes),
+                this.buildBookList(14, 349, 260, 255, bookCodes),
             ];
         },
     },
     methods: {
-        buildBookList(minX, maxX, minY, maxY) {
+        buildBookList(minX, maxX, minY, maxY, bookCodes) {
             const books = [];
             const colors = [
                 '#dd971f',
@@ -103,14 +104,17 @@ export default {
                 '#b93109',
             ];
             const slope = (maxY - minY) / (maxX - minX);
-            for (let x = minX; x < maxX;) {
-                const width = 10 + Math.floor(Math.random() * 10);
-                const height = 30 + Math.floor(Math.random() * 10);
+            const pixelsPerInch = 10;
+            for (let x = minX; x < maxX && bookCodes.length > 0;) {
+                const bookCode = bookCodes.shift();
+                const bookData = this.app.world.collections.fiction[bookCode];
+                const {width, height} = this.getDimensions(bookData);
                 const book = {
-                    fill: colors[Math.floor(Math.random() * colors.length)],
+                    fill: colors[bookData.title.length % colors.length],
                     dimensions: [width, height],
                     x,
-                    y: minY + slope * (x - minX),
+                    y: Math.round(minY + slope * (x - minX)),
+                    book: bookData,
                 };
                 books.push(book);
                 x += book.dimensions[0];
@@ -120,6 +124,28 @@ export default {
         goTo(where) {
             if (where) {
                 this.app.world.location = where;
+            }
+        },
+        getDimensions(bookData) {
+            if (!bookData.dimensions) {
+                return {width: 5, height: 30};
+            } else {
+                let realWidth = bookData.dimensions.width;
+                let realHeight = bookData.dimensions.height;
+                if (realWidth > realHeight) { // somebody did these backwards
+                    [realWidth, realHeight] = [realHeight, realWidth];
+                }
+                const width = realWidth <= .5
+                    ? 10
+                    : realWidth <= 1
+                    ? 12
+                    : 15;
+                const height = realHeight <= 8
+                    ? 30
+                    : realHeight <= 10
+                    ? 35
+                    : 40;
+                return {width, height};
             }
         },
     },

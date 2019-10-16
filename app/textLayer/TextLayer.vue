@@ -66,9 +66,9 @@ export default {
             } else {
                 const component = this.textLayer.hoverer.message;
                 return {
-                    text: component.name || component.hoverName || '',
-                    x: component.x,
-                    y: component.y,
+                    text: component.hoverName || component.name || '',
+                    x: component.hoverX || component.x,
+                    y: component.hoverY || component.y,
                 };
             }
         },

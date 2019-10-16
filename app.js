@@ -3657,6 +3657,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/StackBook.vue":
+/*!***************************!*\
+  !*** ./app/StackBook.vue ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StackBook.vue?vue&type=template&id=e2452236& */ "./app/StackBook.vue?vue&type=template&id=e2452236&");
+/* harmony import */ var _StackBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StackBook.vue?vue&type=script&lang=js& */ "./app/StackBook.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StackBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/StackBook.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/StackBook.vue?vue&type=script&lang=js&":
+/*!****************************************************!*\
+  !*** ./app/StackBook.vue?vue&type=script&lang=js& ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StackBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./StackBook.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/StackBook.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StackBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/StackBook.vue?vue&type=template&id=e2452236&":
+/*!**********************************************************!*\
+  !*** ./app/StackBook.vue?vue&type=template&id=e2452236& ***!
+  \**********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./StackBook.vue?vue&type=template&id=e2452236& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/StackBook.vue?vue&type=template&id=e2452236&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StackBook_vue_vue_type_template_id_e2452236___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/app.js":
 /*!********************!*\
   !*** ./app/app.js ***!
@@ -5070,6 +5139,17 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
             codes: ['book1', 'book2', 'book3', 'book4', 'book5', 'book6', 'book7', 'book8', 'book9', 'book10', 'book11', 'book12']
         })
     };
+}).version(5, world => {
+    const codes = [];
+    for (let i = 0; i < 150; i++) {
+        codes.push('book' + i);
+    }
+    world.collections.fiction = new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        url: './data/fiction.json',
+        key: ['title'],
+        default: { title: '' },
+        codes
+    });
 });
 
 class World {
@@ -7056,6 +7136,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+/* harmony import */ var _app_StackBook__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/StackBook */ "./app/StackBook.vue");
 //
 //
 //
@@ -7122,8 +7203,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 
 
 
@@ -7131,32 +7211,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     components: {
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__["default"]
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__["default"],
+        StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
     data() {
-        // this.app.world.collections.fiction.load();
+        this.app.world.collections.fiction.load();
         return {
             viewBook: null
         };
     },
     computed: {
         shelves() {
-            return [this.buildBookList(9, 300, 67, 69), this.buildBookList(11, 349, 119, 119), this.buildBookList(40, 349, 171, 164), this.buildBookList(13, 349, 216, 211), this.buildBookList(14, 349, 260, 255)];
+            const bookCodes = [...this.app.world.collections.fiction.codes];
+            return [this.buildBookList(9, 300, 67, 69, bookCodes), this.buildBookList(11, 349, 119, 119, bookCodes), this.buildBookList(40, 349, 171, 164, bookCodes), this.buildBookList(13, 349, 216, 211, bookCodes), this.buildBookList(14, 349, 260, 255, bookCodes)];
         }
     },
     methods: {
-        buildBookList(minX, maxX, minY, maxY) {
+        buildBookList(minX, maxX, minY, maxY, bookCodes) {
             const books = [];
             const colors = ['#dd971f', '#d5ae57', '#dfc290', '#151580', '#b93109'];
             const slope = (maxY - minY) / (maxX - minX);
-            for (let x = minX; x < maxX;) {
-                const width = 10 + Math.floor(Math.random() * 10);
-                const height = 30 + Math.floor(Math.random() * 10);
+            const pixelsPerInch = 10;
+            for (let x = minX; x < maxX && bookCodes.length > 0;) {
+                const bookCode = bookCodes.shift();
+                const bookData = this.app.world.collections.fiction[bookCode];
+                const { width, height } = this.getDimensions(bookData);
                 const book = {
-                    fill: colors[Math.floor(Math.random() * colors.length)],
+                    fill: colors[bookData.title.length % colors.length],
                     dimensions: [width, height],
                     x,
-                    y: minY + slope * (x - minX)
+                    y: Math.round(minY + slope * (x - minX)),
+                    book: bookData
                 };
                 books.push(book);
                 x += book.dimensions[0];
@@ -7166,6 +7251,21 @@ __webpack_require__.r(__webpack_exports__);
         goTo(where) {
             if (where) {
                 this.app.world.location = where;
+            }
+        },
+        getDimensions(bookData) {
+            if (!bookData.dimensions) {
+                return { width: 5, height: 30 };
+            } else {
+                let realWidth = bookData.dimensions.width;
+                let realHeight = bookData.dimensions.height;
+                if (realWidth > realHeight) {
+                    // somebody did these backwards
+                    [realWidth, realHeight] = [realHeight, realWidth];
+                }
+                const width = realWidth <= .5 ? 10 : realWidth <= 1 ? 12 : 15;
+                const height = realHeight <= 8 ? 30 : realHeight <= 10 ? 35 : 40;
+                return { width, height };
             }
         }
     }
@@ -7324,6 +7424,53 @@ __webpack_require__.r(__webpack_exports__);
             if (where) {
                 this.app.world.location = where;
             }
+        }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/StackBook.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/StackBook.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    props: ['book'],
+    computed: {
+        hoverName() {
+            return this.book.book.title;
+        },
+        hoverX() {
+            return this.book.x + this.book.dimensions[0] / 2;
+        },
+        hoverY() {
+            return this.book.y - this.book.dimensions[1];
         }
     }
 });
@@ -7664,9 +7811,9 @@ __webpack_require__.r(__webpack_exports__);
             } else {
                 const component = this.textLayer.hoverer.message;
                 return {
-                    text: component.name || component.hoverName || '',
-                    x: component.x,
-                    y: component.y
+                    text: component.hoverName || component.name || '',
+                    x: component.hoverX || component.x,
+                    y: component.hoverY || component.y
                 };
             }
         }
@@ -8450,18 +8597,15 @@ var render = function() {
       _vm._v(" "),
       _vm._l(_vm.shelves, function(shelf, shelfIndex) {
         return _vm._l(shelf, function(book, bookIndex) {
-          return _c(
-            "easel-shape",
-            _vm._b(
-              {
-                key: shelfIndex + ":" + bookIndex,
-                attrs: { form: "rect", stroke: "#351601", align: "bottom-left" }
-              },
-              "easel-shape",
-              book,
-              false
-            )
-          )
+          return _c("stack-book", {
+            key: "book:" + shelfIndex + ":" + bookIndex,
+            attrs: { book: book },
+            on: {
+              click: function($event) {
+                _vm.viewBook = book.book
+              }
+            }
+          })
         })
       }),
       _vm._v(" "),
@@ -8615,6 +8759,58 @@ var render = function() {
         : _c("text-layer")
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/StackBook.vue?vue&type=template&id=e2452236&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/StackBook.vue?vue&type=template&id=e2452236& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    [
+      _c(
+        "easel-shape",
+        _vm._b(
+          {
+            attrs: {
+              form: "rect",
+              stroke: "#351601",
+              align: "bottom-left",
+              cursor: "pointer"
+            },
+            on: {
+              mouseover: _vm.hover,
+              mouseout: _vm.unhover,
+              click: function($event) {
+                return _vm.$emit("click", $event)
+              }
+            }
+          },
+          "easel-shape",
+          _vm.book,
+          false
+        )
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []
