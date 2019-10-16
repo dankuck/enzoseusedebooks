@@ -98,11 +98,11 @@ describe('ColorReducer', function () {
             data[i + 2] = i % 255;
             data[i + 3] = 255;
         }
-        const reducer = new ColorReducer(24);
+        const reducer = new ColorReducer(Math.round(Math.random() * 255));
         let result;
         const ops = estimateOperations(() => result = reducer.adjustImageData(imageData));
         assert(result);
-        // 12.8 million is the largest measured value, so we compare to something a bit larger
-        assert(ops < 20e6, `Process completed in ${ops} operations >= 20 million`);
+        // 11.8 million is the largest measured value, so we compare to something a bit larger
+        assert(ops < 14e6, `Process completed in ${ops} operations >= 14 million`);
     });
 });
