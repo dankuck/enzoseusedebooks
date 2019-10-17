@@ -38,6 +38,7 @@ window.Vue = require('vue');
 window.VueEaseljs = require('vue-easeljs');
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios;
+window.reviver = reviver;
 
 Vue.use(VueEaseljs);
 VueEaseljs.registerFilter('ColorReducer', ColorReducer);
