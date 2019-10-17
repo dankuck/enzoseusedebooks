@@ -82,6 +82,6 @@ describe('Reviver', function () {
         reviver.beforeReplace();
         const replaced = reviver.replace('x', new X());
         reviver.afterReplace();
-        equal({__class__: 'X', __value__: 'i am json'});
+        equal({__class__: 'X', __value__: 'i am json'}, replaced);
     });
 });
