@@ -30,7 +30,7 @@
             v-for="(aisle, aisleIndex) in aisles"
             :key="'aisle:' + aisleIndex"
             v-bind="aisle"
-            @click="goTo(aisle.goTo)"
+            @click="app.world.goTo(aisle.goTo)"
         >
             <easel-shape
                 v-for="(dimensions, index) in aisle.dimensionSets"
@@ -106,7 +106,9 @@ export default {
                     dimensionSets: [
                         ['rect', -23, -37, [46, 84]],
                     ],
-                    name: "Musty Books",
+                    name: this.app.world.hasGoneTo('fiction-stack')
+                        ? 'Musty Fiction'
+                        : 'Musty Books',
                     goTo: 'fiction-stack',
                 },
                 {
@@ -164,11 +166,6 @@ export default {
         checkPlant(vuePlant) {
             this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
             this.app.world.ruffleLobbyPlant();
-        },
-        goTo(where) {
-            if (where) {
-                this.app.world.location = where;
-            }
         },
     },
 };

@@ -11,7 +11,9 @@
 -->
 
 <template>
-    <easel-container>
+    <easel-container
+        v-if="loaded"
+    >
         <easel-bitmap
             image="bookcase2-back.gif"
         >
@@ -23,6 +25,7 @@
             <stack-book
                 v-for="(book, bookIndex) in shelf"
                 :key="'book:' + shelfIndex + ':' + bookIndex"
+                v-if="book.book != viewBook"
                 :book="book"
                 @click="viewBook = book.book"
             >
@@ -38,7 +41,7 @@
             name="Lobby"
             x="5"
             y="150"
-            @click="goTo('lobby')"
+            @click="app.world.goTo('lobby')"
         >
             <easel-shape
                 form="rect"
@@ -75,10 +78,14 @@ export default {
         BookViewer,
         StackBook,
     },
+    mounted() {
+        this.app.world.collections.fiction.load()
+            .then(() => this.loaded = true);
+    },
     data() {
-        this.app.world.collections.fiction.load();
         return {
             viewBook: null,
+            loaded: false,
         };
     },
     computed: {
@@ -120,11 +127,6 @@ export default {
                 x += book.dimensions[0];
             }
             return books;
-        },
-        goTo(where) {
-            if (where) {
-                this.app.world.location = where;
-            }
         },
         getDimensions(bookData) {
             if (!bookData.dimensions) {

@@ -50,6 +50,9 @@ const upgrader = new VersionUpgrader()
             codes,
         });
     })
+    .version(6, world => {
+        world.locationHistory = [{location: world.location, date: new Date()}];
+    })
     ;
 
 export default class World
@@ -63,6 +66,19 @@ export default class World
         this.lobbyPlant.name = 'Ruffled Plant';
         this.lobbyPlant.response = "Hasn't this plant been through enough?";
         this.lobbyPlant.ruffled = true;
+    }
+
+    goTo(location) {
+        if (!location) {
+            throw new Error('Cannot go nowhere');
+        }
+        this.location = location;
+        this.locationHistory.push({location, date: new Date()});
+    }
+
+    hasGoneTo(location) {
+        return this.locationHistory
+            .reduce((found, record) => found || record.location === location, false);
     }
 };
 

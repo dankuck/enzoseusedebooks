@@ -60,12 +60,56 @@ describe('World', function () {
             assert(world.collections.bargain.book12);
         });
 
+        it('should have fiction books', function () {
+            const world = new World(worldObject);
+            assert(world.collections);
+            assert(world.collections.fiction instanceof Collection);
+            for (let i = 0; i < 150; i++) {
+                assert(world.collections.fiction['book' + i]);
+            }
+        });
+
         it('should be able to ruffle the plant', function () {
             const world = new World(worldObject);
             world.ruffleLobbyPlant();
             assert(world.lobbyPlant.name, 'Ruffled Plant');
             assert(world.lobbyPlant.response, "Hasn't this plant been through enough?");
             assert(world.lobbyPlant.ruffled, true);
+        });
+
+        it('should visit another place', function () {
+            const world = new World(worldObject);
+            const place = Math.random();
+            assert(world.locationHistory.length === 1);
+            world.goTo(place);
+            assert(world.location === place);
+            assert(world.locationHistory.length === 2);
+        });
+
+        it('should not go nowhere', function () {
+            const world = new World(worldObject);
+            assert(world.locationHistory.length === 1);
+            let caughtError;
+            try {
+                world.goTo();
+            } catch (e) {
+                caughtError = e;
+            }
+            assert(caughtError);
+            assert(world.location);
+            assert(world.locationHistory.length === 1);
+        });
+
+        it('should know where it has been', function () {
+            const world = new World(worldObject);
+            const place1 = Math.random();
+            const place2 = Math.random();
+            const place3 = Math.random();
+            world.goTo(place1);
+            world.goTo(place2);
+            assert(world.hasGoneTo(place1));
+            assert(world.hasGoneTo(place2));
+            assert(!world.hasGoneTo(place3));
         });
     };
 

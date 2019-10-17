@@ -3784,6 +3784,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "../vue-easeljs/dist/index.js");
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios__WEBPACK_IMPORTED_MODULE_7___default.a;
+window.reviver = _app_reviver__WEBPACK_IMPORTED_MODULE_6__["default"];
 
 Vue.use(VueEaseljs);
 VueEaseljs.registerFilter('ColorReducer', _libs_ColorReducer__WEBPACK_IMPORTED_MODULE_8__["default"]);
@@ -4587,6 +4588,9 @@ class Reviver {
 
     replace(key, value) {
         const match = this.findMatch(value);
+        if (/2019/.test(value) && !match) {
+            console.log('no match on date', key, value, value instanceof Date, value.constructor);
+        }
         if (!match) {
             return value;
         } else {
@@ -4774,6 +4778,7 @@ __webpack_require__.r(__webpack_exports__);
 const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_1__["default"]();
 
 reviver.register(_world_World__WEBPACK_IMPORTED_MODULE_0__["default"]);
+reviver.add(Date, (key, value) => new Date(value), (key, value) => value);
 
 /* harmony default export */ __webpack_exports__["default"] = (reviver);
 
@@ -5150,6 +5155,8 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
         default: { title: '' },
         codes
     });
+}).version(6, world => {
+    world.locationHistory = [{ location: world.location, date: new Date() }];
 });
 
 class World {
@@ -5162,6 +5169,18 @@ class World {
         this.lobbyPlant.name = 'Ruffled Plant';
         this.lobbyPlant.response = "Hasn't this plant been through enough?";
         this.lobbyPlant.ruffled = true;
+    }
+
+    goTo(location) {
+        if (!location) {
+            throw new Error('Cannot go nowhere');
+        }
+        this.location = location;
+        this.locationHistory.push({ location, date: new Date() });
+    }
+
+    hasGoneTo(location) {
+        return this.locationHistory.reduce((found, record) => found || record.location === location, false);
     }
 };
 
@@ -7203,6 +7222,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -7214,10 +7236,13 @@ __webpack_require__.r(__webpack_exports__);
         BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__["default"],
         StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
+    mounted() {
+        this.app.world.collections.fiction.load().then(() => this.loaded = true);
+    },
     data() {
-        this.app.world.collections.fiction.load();
         return {
-            viewBook: null
+            viewBook: null,
+            loaded: false
         };
     },
     computed: {
@@ -7247,11 +7272,6 @@ __webpack_require__.r(__webpack_exports__);
                 x += book.dimensions[0];
             }
             return books;
-        },
-        goTo(where) {
-            if (where) {
-                this.app.world.location = where;
-            }
         },
         getDimensions(bookData) {
             if (!bookData.dimensions) {
@@ -7387,7 +7407,7 @@ __webpack_require__.r(__webpack_exports__);
                 x: 118,
                 y: 87,
                 dimensionSets: [['rect', -23, -37, [46, 84]]],
-                name: "Musty Books",
+                name: this.app.world.hasGoneTo('fiction-stack') ? 'Musty Fiction' : 'Musty Books',
                 goTo: 'fiction-stack'
             }, {
                 x: 37,
@@ -7419,11 +7439,6 @@ __webpack_require__.r(__webpack_exports__);
         checkPlant(vuePlant) {
             this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
             this.app.world.ruffleLobbyPlant();
-        },
-        goTo(where) {
-            if (where) {
-                this.app.world.location = where;
-            }
         }
     }
 });
@@ -8590,64 +8605,68 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "easel-container",
-    [
-      _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
-      _vm._v(" "),
-      _vm._l(_vm.shelves, function(shelf, shelfIndex) {
-        return _vm._l(shelf, function(book, bookIndex) {
-          return _c("stack-book", {
-            key: "book:" + shelfIndex + ":" + bookIndex,
-            attrs: { book: book },
-            on: {
-              click: function($event) {
-                _vm.viewBook = book.book
-              }
-            }
-          })
-        })
-      }),
-      _vm._v(" "),
-      _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
-      _vm._v(" "),
-      _c(
-        "enzo-click-spot",
-        {
-          attrs: { name: "Lobby", x: "5", y: "150" },
-          on: {
-            click: function($event) {
-              return _vm.goTo("lobby")
-            }
-          }
-        },
+  return _vm.loaded
+    ? _c(
+        "easel-container",
         [
-          _c("easel-shape", {
-            attrs: {
-              form: "rect",
-              x: "-5",
-              y: "-150",
-              dimensions: [7, 300],
-              fill: "black"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.viewBook
-        ? _c("book-viewer", {
-            attrs: { book: _vm.viewBook },
-            on: {
-              close: function($event) {
-                _vm.viewBook = null
+          _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+          _vm._v(" "),
+          _vm._l(_vm.shelves, function(shelf, shelfIndex) {
+            return _vm._l(shelf, function(book, bookIndex) {
+              return book.book != _vm.viewBook
+                ? _c("stack-book", {
+                    key: "book:" + shelfIndex + ":" + bookIndex,
+                    attrs: { book: book },
+                    on: {
+                      click: function($event) {
+                        _vm.viewBook = book.book
+                      }
+                    }
+                  })
+                : _vm._e()
+            })
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+          _vm._v(" "),
+          _c(
+            "enzo-click-spot",
+            {
+              attrs: { name: "Lobby", x: "5", y: "150" },
+              on: {
+                click: function($event) {
+                  return _vm.app.world.goTo("lobby")
+                }
               }
-            }
-          })
-        : _c("text-layer")
-    ],
-    2
-  )
+            },
+            [
+              _c("easel-shape", {
+                attrs: {
+                  form: "rect",
+                  x: "-5",
+                  y: "-150",
+                  dimensions: [7, 300],
+                  fill: "black"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.viewBook
+            ? _c("book-viewer", {
+                attrs: { book: _vm.viewBook },
+                on: {
+                  close: function($event) {
+                    _vm.viewBook = null
+                  }
+                }
+              })
+            : _c("text-layer")
+        ],
+        2
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -8693,7 +8712,7 @@ var render = function() {
               key: "aisle:" + aisleIndex,
               on: {
                 click: function($event) {
-                  return _vm.goTo(aisle.goTo)
+                  return _vm.app.world.goTo(aisle.goTo)
                 }
               }
             },
