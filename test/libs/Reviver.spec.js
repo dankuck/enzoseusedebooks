@@ -77,11 +77,11 @@ describe('Reviver', function () {
         reviver.add(
             X,
             (k, v) => v,
-            (k, v) => v,
+            (k, v) => v.toJSON(),
         );
         reviver.beforeReplace();
         const replaced = reviver.replace('x', new X());
         reviver.afterReplace();
-        equal({__class__: 'X', __value__: 'i am json'}, replaced);
+        equal({__class__: 'X', __data__: 'i am json'}, replaced);
     });
 });

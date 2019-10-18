@@ -15,6 +15,8 @@ export default class JsonStorage
         this.rootKey = rootKey;
         this.reviver = (key, value) => transformer && transformer.revive ? transformer.revive(key, value) : value;
         this.replacer = (key, value) => transformer && transformer.replace ? transformer.replace(key, value) : value;
+        this.beforeReplace = () => transformer && transformer.beforeReplace && transformer.beforeReplace();
+        this.afterReplace = () => transformer && transformer.afterReplace && transformer.afterReplace();
     }
 
     getRoot()
@@ -24,7 +26,9 @@ export default class JsonStorage
 
     setRoot(root)
     {
+        this.beforeReplace();
         this.storage[this.rootKey] = JSON.stringify(root, this.replacer);
+        this.afterReplace();
     }
 
     deleteRoot()

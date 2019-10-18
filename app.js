@@ -4401,6 +4401,8 @@ class JsonStorage {
         this.rootKey = rootKey;
         this.reviver = (key, value) => transformer && transformer.revive ? transformer.revive(key, value) : value;
         this.replacer = (key, value) => transformer && transformer.replace ? transformer.replace(key, value) : value;
+        this.beforeReplace = () => transformer && transformer.beforeReplace && transformer.beforeReplace();
+        this.afterReplace = () => transformer && transformer.afterReplace && transformer.afterReplace();
     }
 
     getRoot() {
@@ -4408,7 +4410,9 @@ class JsonStorage {
     }
 
     setRoot(root) {
+        this.beforeReplace();
         this.storage[this.rootKey] = JSON.stringify(root, this.replacer);
+        this.afterReplace();
     }
 
     deleteRoot() {
@@ -4552,6 +4556,7 @@ __webpack_require__.r(__webpack_exports__);
 class Reviver {
     constructor() {
         this.classes = [];
+        this.toJSONs = new Map();
     }
 
     add(classToRevive, revive, replace) {
@@ -4560,6 +4565,9 @@ class Reviver {
             revive: revive,
             replace: replace
         });
+        if (classToRevive.prototype.toJSON) {
+            this.toJSONs.set(classToRevive, classToRevive.prototype.toJSON);
+        }
     }
 
     findMatch(value) {
@@ -4588,17 +4596,39 @@ class Reviver {
 
     replace(key, value) {
         const match = this.findMatch(value);
-        if (/2019/.test(value) && !match) {
-            console.log('no match on date', key, value, value instanceof Date, value.constructor);
-        }
         if (!match) {
             return value;
         } else {
-            return {
-                __class__: match.class.name,
-                __data__: match.replace(key, value)
-            };
+            return this.withJSONs(() => {
+                let data = match.replace(key, value);
+                if (data === value && data.toJSON) {
+                    data = data.toJSON();
+                }
+                return {
+                    __class__: match.class.name,
+                    __data__: data
+                };
+            });
         }
+    }
+
+    beforeReplace() {
+        this.toJSONs.forEach((value, key) => {
+            delete key.prototype.toJSON;
+        });
+    }
+
+    afterReplace() {
+        this.toJSONs.forEach((value, key) => {
+            key.prototype.toJSON = value;
+        });
+    }
+
+    withJSONs(cb) {
+        this.afterReplace();
+        const result = cb();
+        this.beforeReplace();
+        return result;
     }
 
     register(classToRegister) {
