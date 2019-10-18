@@ -1,4 +1,12 @@
 
+class ReviverStandin {
+
+    constructor(original, asJSON) {
+        this.original = original;
+        this.asJSON = asJSON;
+    }
+}
+
 export default class Reviver
 {
     constructor() {
@@ -46,40 +54,34 @@ export default class Reviver
     }
 
     replace(key, value) {
-        const match = this.findMatch(value);
+        const {original, asJSON} = value instanceof ReviverStandin
+            ? value
+            : {original: value, asJSON: value};
+        const match = this.findMatch(original);
         if (!match) {
-            return value;
+            return original;
         } else {
-            return this.withJSONs(() => {
-                let data = match.replace(key, value);
-                if (data === value && data.toJSON) {
-                    data = data.toJSON();
-                }
-                return {
-                    __class__: match.class.name,
-                    __data__: data,
-                };
-            });
+            const replaced = match.replace(key, original);
+            return {
+                __class__: match.class.name,
+                __data__: replaced === original ? asJSON : replaced,
+            };
         }
     }
 
     beforeReplace() {
-        this.toJSONs.forEach((value, key) => {
-            delete key.prototype.toJSON;
+        this.toJSONs.forEach((toJSON, targetClass) => {
+            targetClass.prototype.toJSON = function () {
+                const asJSON = toJSON.apply(this, arguments);
+                return new ReviverStandin(this, asJSON);
+            };
         });
     }
 
     afterReplace() {
-        this.toJSONs.forEach((value, key) => {
-            key.prototype.toJSON = value;
+        this.toJSONs.forEach((toJSON, targetClass) => {
+            targetClass.prototype.toJSON = toJSON;
         });
-    }
-
-    withJSONs(cb) {
-        this.afterReplace();
-        const result = cb();
-        this.beforeReplace();
-        return result;
     }
 
     register(classToRegister) {

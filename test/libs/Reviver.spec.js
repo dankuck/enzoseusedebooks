@@ -64,12 +64,14 @@ describe('Reviver', function () {
     });
 
     it('does not let toJSON run before it', function () {
+        let calledToJSON = false;
         // If a class has toJSON (e.g., the Date class), the toJSON gets called
         // before the replacer() function. That can prevent us from recognizing
         // the data as an instance of that class.
         // We remove the toJSON before running replace, and use it ourselves when the time is right.
         class X {
             toJSON() {
+                calledToJSON = true;
                 return 'i am json';
             }
         };
@@ -77,11 +79,12 @@ describe('Reviver', function () {
         reviver.add(
             X,
             (k, v) => v,
-            (k, v) => v.toJSON(),
+            (k, v) => v,
         );
         reviver.beforeReplace();
-        const replaced = reviver.replace('x', new X());
+        const json = JSON.stringify(new X(), (k, v) => reviver.replace(k, v));
         reviver.afterReplace();
-        equal({__class__: 'X', __data__: 'i am json'}, replaced);
+        assert(calledToJSON);
+        equal({__class__: 'X', __data__: 'i am json'}, JSON.parse(json));
     });
 });
