@@ -4960,6 +4960,9 @@ function sizeText(text, maxLength, maxLines = Infinity) {
         throw new Error('maxLength must be at least 2');
     }
     return text.split(/\n/).map(text => {
+        if (text.trim().length === 0) {
+            return [''];
+        }
         const lines = [];
         let next = '';
         text.split(/(\s+)/).forEach(segment => {
@@ -7183,9 +7186,12 @@ const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
             } else if (this.book.by.length > 1) {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
+            lines.push('');
             if (this.lastPrice) {
-                lines.push('');
                 lines.push('Last Price: ' + this.lastPriceDescription);
+            }
+            if (this.publishedYear) {
+                lines.push('Published: ' + this.publishedYear);
             }
             return lines.join("\n");
         },
@@ -7205,6 +7211,13 @@ const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
                 return '???';
             } else {
                 return this.lastPrice;
+            }
+        },
+        publishedYear() {
+            if (this.book.published_at) {
+                return new Date(this.book.published_at).getFullYear();
+            } else {
+                return null;
             }
         }
     },
@@ -7467,7 +7480,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
 /* harmony import */ var _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/FictionStack */ "./app/FictionStack.vue");
 /* harmony import */ var _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/NonfictionStack */ "./app/NonfictionStack.vue");
-/* harmony import */ var _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @app/ChildrenStack */ "./app/ChildrenStack.vue");
+/* harmony import */ var _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/ChildrenStack */ "./app/ChildrenStack.vue");
 /* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
 /* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
 //
@@ -7525,7 +7538,7 @@ __webpack_require__.r(__webpack_exports__);
         Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"],
         FictionStack: _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__["default"],
         NonfictionStack: _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__["default"],
-        ChildrenStack: _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_6__["default"],
+        ChildrenStack: _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_3__["default"],
         DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_4__["default"],
         DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_5__["default"]
     },

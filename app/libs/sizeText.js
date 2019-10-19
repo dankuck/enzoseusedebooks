@@ -14,6 +14,9 @@ export default function sizeText(text, maxLength, maxLines = Infinity) {
     }
     return text.split(/\n/)
         .map(text => {
+            if (text.trim().length === 0) {
+                return [''];
+            }
             const lines = [];
             let next = '';
             text.split(/(\s+)/).forEach(segment => {

@@ -73,9 +73,12 @@ export default {
             } else if (this.book.by.length > 1) {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
+            lines.push('');
             if (this.lastPrice) {
-                lines.push('');
                 lines.push('Last Price: ' + this.lastPriceDescription);
+            }
+            if (this.publishedYear) {
+                lines.push('Published: ' + this.publishedYear);
             }
             return lines.join("\n");
         },
@@ -102,6 +105,13 @@ export default {
                 return '???';
             } else {
                 return this.lastPrice;
+            }
+        },
+        publishedYear() {
+            if (this.book.published_at) {
+                return new Date(this.book.published_at).getFullYear();
+            } else {
+                return null;
             }
         },
     },
