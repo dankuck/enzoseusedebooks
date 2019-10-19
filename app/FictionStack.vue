@@ -19,18 +19,14 @@
         >
         </easel-bitmap>
 
-        <template
-            v-for="(shelf, shelfIndex) in shelves"
+        <stack-book
+            v-for="book in books"
+            v-if="book.book != viewBook"
+            :key="'book:' + book.bookCode"
+            v-bind="book"
+            @click="viewBook = book.book"
         >
-            <stack-book
-                v-for="(book, bookIndex) in shelf"
-                :key="'book:' + shelfIndex + ':' + bookIndex"
-                v-if="book.book != viewBook"
-                :book="book"
-                @click="viewBook = book.book"
-            >
-            </stack-book>
-        </template>
+        </stack-book>
 
         <easel-bitmap
             image="bookcase2-front.gif"
@@ -89,15 +85,14 @@ export default {
         };
     },
     computed: {
-        shelves() {
+        books() {
             const bookCodes = [...this.app.world.collections.fiction.codes];
-            return [
-                this.buildBookList(9, 300, 67, 69, bookCodes),
-                this.buildBookList(11, 349, 119, 119, bookCodes),
-                this.buildBookList(40, 349, 171, 164, bookCodes),
-                this.buildBookList(13, 349, 216, 211, bookCodes),
-                this.buildBookList(14, 349, 260, 255, bookCodes),
-            ];
+            return []
+                .concat(this.buildBookList(10, 300, 67, 69, bookCodes))
+                .concat(this.buildBookList(11, 349, 119, 119, bookCodes))
+                .concat(this.buildBookList(40, 349, 171, 164, bookCodes))
+                .concat(this.buildBookList(13, 349, 216, 211, bookCodes))
+                .concat(this.buildBookList(14, 349, 260, 255, bookCodes))
         },
     },
     methods: {
@@ -116,15 +111,16 @@ export default {
                 const bookCode = bookCodes.shift();
                 const bookData = this.app.world.collections.fiction[bookCode];
                 const {width, height} = this.getDimensions(bookData);
-                const book = {
-                    fill: colors[bookData.title.length % colors.length],
-                    dimensions: [width, height],
+                books.push({
+                    color: colors[bookData.title.length % colors.length],
+                    width,
+                    height,
                     x,
                     y: Math.round(minY + slope * (x - minX)),
                     book: bookData,
-                };
-                books.push(book);
-                x += book.dimensions[0];
+                    bookCode,
+                });
+                x += width;
             }
             return books;
         },

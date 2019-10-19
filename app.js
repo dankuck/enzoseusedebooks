@@ -7251,10 +7251,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -7276,9 +7272,9 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     computed: {
-        shelves() {
+        books() {
             const bookCodes = [...this.app.world.collections.fiction.codes];
-            return [this.buildBookList(9, 300, 67, 69, bookCodes), this.buildBookList(11, 349, 119, 119, bookCodes), this.buildBookList(40, 349, 171, 164, bookCodes), this.buildBookList(13, 349, 216, 211, bookCodes), this.buildBookList(14, 349, 260, 255, bookCodes)];
+            return [].concat(this.buildBookList(10, 300, 67, 69, bookCodes)).concat(this.buildBookList(11, 349, 119, 119, bookCodes)).concat(this.buildBookList(40, 349, 171, 164, bookCodes)).concat(this.buildBookList(13, 349, 216, 211, bookCodes)).concat(this.buildBookList(14, 349, 260, 255, bookCodes));
         }
     },
     methods: {
@@ -7291,15 +7287,16 @@ __webpack_require__.r(__webpack_exports__);
                 const bookCode = bookCodes.shift();
                 const bookData = this.app.world.collections.fiction[bookCode];
                 const { width, height } = this.getDimensions(bookData);
-                const book = {
-                    fill: colors[bookData.title.length % colors.length],
-                    dimensions: [width, height],
+                books.push({
+                    color: colors[bookData.title.length % colors.length],
+                    width,
+                    height,
                     x,
                     y: Math.round(minY + slope * (x - minX)),
-                    book: bookData
-                };
-                books.push(book);
-                x += book.dimensions[0];
+                    book: bookData,
+                    bookCode
+                });
+                x += width;
             }
             return books;
         },
@@ -7501,21 +7498,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['book'],
+    props: ['book', 'color', 'width', 'height', 'x', 'y'],
     computed: {
         hoverName() {
-            return this.book.book.title;
+            return this.book.title;
         },
         hoverX() {
-            return this.book.x + this.book.dimensions[0] / 2;
+            return this.x + this.width / 2;
         },
         hoverY() {
-            return this.book.y - this.book.dimensions[1];
+            return this.y - this.height;
         }
     }
 });
@@ -8641,20 +8641,25 @@ var render = function() {
         [
           _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
           _vm._v(" "),
-          _vm._l(_vm.shelves, function(shelf, shelfIndex) {
-            return _vm._l(shelf, function(book, bookIndex) {
-              return book.book != _vm.viewBook
-                ? _c("stack-book", {
-                    key: "book:" + shelfIndex + ":" + bookIndex,
-                    attrs: { book: book },
-                    on: {
-                      click: function($event) {
-                        _vm.viewBook = book.book
+          _vm._l(_vm.books, function(book) {
+            return book.book != _vm.viewBook
+              ? _c(
+                  "stack-book",
+                  _vm._b(
+                    {
+                      key: "book:" + book.bookCode,
+                      on: {
+                        click: function($event) {
+                          _vm.viewBook = book.book
+                        }
                       }
-                    }
-                  })
-                : _vm._e()
-            })
+                    },
+                    "stack-book",
+                    book,
+                    false
+                  )
+                )
+              : _vm._e()
           }),
           _vm._v(" "),
           _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
@@ -8835,29 +8840,25 @@ var render = function() {
   return _c(
     "easel-container",
     [
-      _c(
-        "easel-shape",
-        _vm._b(
-          {
-            attrs: {
-              form: "rect",
-              stroke: "#351601",
-              align: "bottom-left",
-              cursor: "pointer"
-            },
-            on: {
-              mouseover: _vm.hover,
-              mouseout: _vm.unhover,
-              click: function($event) {
-                return _vm.$emit("click", $event)
-              }
-            }
-          },
-          "easel-shape",
-          _vm.book,
-          false
-        )
-      )
+      _c("easel-shape", {
+        attrs: {
+          form: "rect",
+          x: _vm.x,
+          y: _vm.y,
+          dimensions: [_vm.width, _vm.height],
+          fill: _vm.color,
+          stroke: "#351601",
+          align: "bottom-left",
+          cursor: "pointer"
+        },
+        on: {
+          mouseover: _vm.hover,
+          mouseout: _vm.unhover,
+          click: function($event) {
+            return _vm.$emit("click", $event)
+          }
+        }
+      })
     ],
     1
   )
