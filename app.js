@@ -3657,6 +3657,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/NonfictionStack.vue":
+/*!*********************************!*\
+  !*** ./app/NonfictionStack.vue ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NonfictionStack.vue?vue&type=template&id=62100916& */ "./app/NonfictionStack.vue?vue&type=template&id=62100916&");
+/* harmony import */ var _NonfictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NonfictionStack.vue?vue&type=script&lang=js& */ "./app/NonfictionStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _NonfictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/NonfictionStack.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/NonfictionStack.vue?vue&type=script&lang=js&":
+/*!**********************************************************!*\
+  !*** ./app/NonfictionStack.vue?vue&type=script&lang=js& ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_NonfictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./NonfictionStack.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/NonfictionStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_NonfictionStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/NonfictionStack.vue?vue&type=template&id=62100916&":
+/*!****************************************************************!*\
+  !*** ./app/NonfictionStack.vue?vue&type=template&id=62100916& ***!
+  \****************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./NonfictionStack.vue?vue&type=template&id=62100916& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/NonfictionStack.vue?vue&type=template&id=62100916&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NonfictionStack_vue_vue_type_template_id_62100916___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/Stack.vue":
 /*!***********************!*\
   !*** ./app/Stack.vue ***!
@@ -5256,6 +5325,17 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     });
 }).version(6, world => {
     world.locationHistory = [{ location: world.location, date: new Date() }];
+}).version(7, world => {
+    const codes = [];
+    for (let i = 0; i < 150; i++) {
+        codes.push('book' + i);
+    }
+    world.collections.nonfiction = new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        url: './data/nonfiction.json',
+        key: ['title'],
+        default: { title: '' },
+        codes
+    });
 });
 
 class World {
@@ -7181,8 +7261,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
 /* harmony import */ var _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/FictionStack */ "./app/FictionStack.vue");
-/* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
-/* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
+/* harmony import */ var _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/NonfictionStack */ "./app/NonfictionStack.vue");
+/* harmony import */ var _develop_Tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @develop/Tools */ "./app/develop/Tools.vue");
+/* harmony import */ var _develop_Elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @develop/Elements */ "./app/develop/Elements.vue");
 //
 //
 //
@@ -7225,6 +7306,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -7235,8 +7317,9 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"],
         FictionStack: _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__["default"],
-        DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_2__["default"],
-        DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_3__["default"]
+        NonfictionStack: _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__["default"],
+        DevTools: _develop_Tools__WEBPACK_IMPORTED_MODULE_3__["default"],
+        DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_4__["default"]
     },
     inject: ['app']
 });
@@ -7253,6 +7336,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Stack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Stack */ "./app/Stack.vue");
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
 //
 //
 //
@@ -7281,19 +7366,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
-        Stack: _app_Stack__WEBPACK_IMPORTED_MODULE_0__["default"]
+        Stack: _app_Stack__WEBPACK_IMPORTED_MODULE_0__["default"],
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
     inject: ['app'],
     data() {
-        return {};
+        return {
+            viewBook: null
+        };
     },
     computed: {},
-    methods: {}
+    methods: {
+        selectBook(book) {
+            this.viewBook = book;
+        }
+    }
 });
 
 /***/ }),
@@ -7418,7 +7552,8 @@ __webpack_require__.r(__webpack_exports__);
                 x: 37,
                 y: 97,
                 dimensionSets: [['rect', -18, -39, [36, 78]]],
-                name: "Ratty Books"
+                name: this.app.world.hasGoneTo('nonfiction-stack') ? 'Ratty Non-Fiction' : 'Ratty Books',
+                goTo: 'nonfiction-stack'
             }, {
                 x: 295,
                 y: 64,
@@ -7450,6 +7585,112 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/NonfictionStack.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/NonfictionStack.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_Stack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Stack */ "./app/Stack.vue");
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
+    components: {
+        Stack: _app_Stack__WEBPACK_IMPORTED_MODULE_0__["default"],
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
+    },
+    inject: ['app'],
+    data() {
+        return {
+            viewBook: null
+        };
+    },
+    computed: {},
+    methods: {
+        selectBook(book) {
+            this.viewBook = book;
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/Stack.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/Stack.vue?vue&type=script&lang=js& ***!
@@ -7459,11 +7700,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
-/* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
-/* harmony import */ var _app_StackBook__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/StackBook */ "./app/StackBook.vue");
-/* harmony import */ var lodash_shuffle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash.shuffle */ "./node_modules/lodash.shuffle/index.js");
-/* harmony import */ var lodash_shuffle__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_shuffle__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _app_StackBook__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/StackBook */ "./app/StackBook.vue");
+/* harmony import */ var lodash_shuffle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash.shuffle */ "./node_modules/lodash.shuffle/index.js");
+/* harmony import */ var lodash_shuffle__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_shuffle__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -7493,54 +7732,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['background', 'foreground', 'collection', 'shelves'],
+    props: ['collection', 'shelves'],
     components: {
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_1__["default"],
-        StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_2__["default"]
+        StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
         this.collection.load().then(() => this.loaded = true);
@@ -7559,7 +7758,7 @@ __webpack_require__.r(__webpack_exports__);
             }, []);
         },
         booksRandomized() {
-            return lodash_shuffle__WEBPACK_IMPORTED_MODULE_3___default()(this.books);
+            return lodash_shuffle__WEBPACK_IMPORTED_MODULE_1___default()(this.books);
         }
     },
     methods: {
@@ -9942,20 +10141,64 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("stack", {
-    attrs: {
-      backgground: "bookcase2-back.gif",
-      foreground: "bookcase2-front.gif",
-      collection: _vm.app.world.collections.fiction,
-      shelves: [
-        [10, 300, 66, 69],
-        [11, 349, 118, 118],
-        [40, 349, 169, 162],
-        [13, 349, 214, 209],
-        [14, 349, 260, 255]
-      ]
-    }
-  })
+  return _c(
+    "easel-container",
+    [
+      _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+      _vm._v(" "),
+      _c("stack", {
+        attrs: {
+          collection: _vm.app.world.collections.fiction,
+          shelves: [
+            [10, 300, 66, 69],
+            [11, 349, 118, 118],
+            [40, 349, 169, 162],
+            [13, 349, 214, 209],
+            [14, 349, 260, 255]
+          ]
+        },
+        on: { clickBook: _vm.selectBook }
+      }),
+      _vm._v(" "),
+      _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+      _vm._v(" "),
+      _c(
+        "enzo-click-spot",
+        {
+          attrs: { name: "Lobby", x: "5", y: "150" },
+          on: {
+            click: function($event) {
+              return _vm.app.world.goTo("lobby")
+            }
+          }
+        },
+        [
+          _c("easel-shape", {
+            attrs: {
+              form: "rect",
+              x: "-5",
+              y: "-150",
+              dimensions: [7, 300],
+              fill: "black"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.viewBook
+        ? _c("book-viewer", {
+            attrs: { book: _vm.viewBook },
+            on: {
+              close: function($event) {
+                _vm.viewBook = null
+              }
+            }
+          })
+        : _c("text-layer")
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -10076,6 +10319,87 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/NonfictionStack.vue?vue&type=template&id=62100916&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/NonfictionStack.vue?vue&type=template&id=62100916& ***!
+  \**********************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    [
+      _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+      _vm._v(" "),
+      _c("stack", {
+        attrs: {
+          collection: _vm.app.world.collections.nonfiction,
+          shelves: [
+            [10, 349, 66, 69],
+            [11, 349, 118, 118],
+            [12, 349, 169, 162],
+            [13, 349, 214, 209],
+            [14, 349, 260, 255]
+          ]
+        },
+        on: { clickBook: _vm.selectBook }
+      }),
+      _vm._v(" "),
+      _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+      _vm._v(" "),
+      _c(
+        "enzo-click-spot",
+        {
+          attrs: { name: "Lobby", x: "5", y: "150" },
+          on: {
+            click: function($event) {
+              return _vm.app.world.goTo("lobby")
+            }
+          }
+        },
+        [
+          _c("easel-shape", {
+            attrs: {
+              form: "rect",
+              x: "-5",
+              y: "-150",
+              dimensions: [7, 300],
+              fill: "black"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.viewBook
+        ? _c("book-viewer", {
+            attrs: { book: _vm.viewBook },
+            on: {
+              close: function($event) {
+                _vm.viewBook = null
+              }
+            }
+          })
+        : _c("text-layer")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Stack.vue?vue&type=template&id=1a0c2348&":
 /*!************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/Stack.vue?vue&type=template&id=1a0c2348& ***!
@@ -10094,68 +10418,27 @@ var render = function() {
   return _vm.loaded
     ? _c(
         "easel-container",
-        [
-          _c("easel-bitmap", { attrs: { image: _vm.background } }),
-          _vm._v(" "),
-          _vm._l(_vm.booksRandomized, function(book) {
-            return book.book != _vm.viewBook
-              ? _c(
-                  "stack-book",
-                  _vm._b(
-                    {
-                      key: "book:" + book.bookCode,
-                      on: {
-                        click: function($event) {
-                          _vm.viewBook = book.book
-                        }
+        _vm._l(_vm.booksRandomized, function(book) {
+          return book.book != _vm.viewBook
+            ? _c(
+                "stack-book",
+                _vm._b(
+                  {
+                    key: "book:" + book.bookCode,
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("clickBook", book.book)
                       }
-                    },
-                    "stack-book",
-                    book,
-                    false
-                  )
+                    }
+                  },
+                  "stack-book",
+                  book,
+                  false
                 )
-              : _vm._e()
-          }),
-          _vm._v(" "),
-          _c("easel-bitmap", { attrs: { image: _vm.foreground } }),
-          _vm._v(" "),
-          _c(
-            "enzo-click-spot",
-            {
-              attrs: { name: "Lobby", x: "5", y: "150" },
-              on: {
-                click: function($event) {
-                  return _vm.app.world.goTo("lobby")
-                }
-              }
-            },
-            [
-              _c("easel-shape", {
-                attrs: {
-                  form: "rect",
-                  x: "-5",
-                  y: "-150",
-                  dimensions: [7, 300],
-                  fill: "black"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _vm.viewBook
-            ? _c("book-viewer", {
-                attrs: { book: _vm.viewBook },
-                on: {
-                  close: function($event) {
-                    _vm.viewBook = null
-                  }
-                }
-              })
-            : _c("text-layer")
-        ],
-        2
+              )
+            : _vm._e()
+        }),
+        1
       )
     : _vm._e()
 }

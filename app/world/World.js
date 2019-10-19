@@ -53,6 +53,18 @@ const upgrader = new VersionUpgrader()
     .version(6, world => {
         world.locationHistory = [{location: world.location, date: new Date()}];
     })
+    .version(7, world => {
+        const codes = [];
+        for (let i = 0; i < 150; i++) {
+            codes.push('book' + i);
+        }
+        world.collections.nonfiction = new Collection({
+            url:     './data/nonfiction.json',
+            key:     ['title'],
+            default: {title: ''},
+            codes,
+        });
+    })
     ;
 
 export default class World

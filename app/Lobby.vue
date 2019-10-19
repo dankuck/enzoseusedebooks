@@ -117,7 +117,10 @@ export default {
                     dimensionSets: [
                         ['rect', -18, -39, [36, 78]],
                     ],
-                    name: "Ratty Books",
+                    name: this.app.world.hasGoneTo('nonfiction-stack')
+                        ? 'Ratty Non-Fiction'
+                        : 'Ratty Books',
+                    goTo: 'nonfiction-stack',
                 },
                 {
                     x: 295,

@@ -43,6 +43,7 @@
 <script>
 import Lobby from '@app/Lobby';
 import FictionStack from '@app/FictionStack';
+import NonfictionStack from '@app/NonfictionStack';
 import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 
@@ -50,6 +51,7 @@ export default {
     components: {
         Lobby,
         FictionStack,
+        NonfictionStack,
         DevTools,
         DevElements,
     },

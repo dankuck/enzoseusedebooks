@@ -1,7 +1,7 @@
 <!--
 /**
  |---------------------------------
- | FictionStack
+ | NonfictionStack
  |---------------------------------
  | This component is a visual context.
  |
@@ -18,11 +18,11 @@
         </easel-bitmap>
 
         <stack
-            :collection="app.world.collections.fiction"
+            :collection="app.world.collections.nonfiction"
             :shelves="[
-                [10, 300, 66, 69],
+                [10, 349, 66, 69],
                 [11, 349, 118, 118],
-                [40, 349, 169, 162],
+                [12, 349, 169, 162],
                 [13, 349, 214, 209],
                 [14, 349, 260, 255],
             ]"
