@@ -51,6 +51,8 @@
 </template>
 
 <script>
+const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
+
 export default {
     inject: ['app'],
     props: ['book'],
@@ -71,6 +73,10 @@ export default {
             } else if (this.book.by.length > 1) {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
+            if (this.lastPrice) {
+                lines.push('');
+                lines.push('Last Price: ' + this.lastPriceDescription);
+            }
             return lines.join("\n");
         },
         bookImage() {
@@ -80,6 +86,23 @@ export default {
             img.crossOrigin = 'Anonymous';
             img.addEventListener('load', () => this.imageLoaded = true);
             return img;
+        },
+        lastPrice() {
+            return Object.values(this.book.prices || {})
+                .reduce(
+                    (bestPrice, price) =>
+                        bestPrice === null || priceValue(price) < priceValue(bestPrice)
+                            ? price
+                            : bestPrice,
+                    null
+                );
+        },
+        lastPriceDescription() {
+            if (!this.lastPrice) {
+                return '???';
+            } else {
+                return this.lastPrice;
+            }
         },
     },
     methods: {

@@ -11,13 +11,11 @@
 -->
 
 <template>
-    <easel-container
-        v-if="loaded"
-    >
+    <easel-container>
 
         <stack-book
             v-for="book in booksRandomized"
-            v-if="book.book != viewBook && book.book.title"
+            v-if="!hideBooks.includes(book.book)"
             :key="'book:' + book.bookCode"
             v-bind="book"
             @click="$emit('clickBook', book.book)"
@@ -32,21 +30,29 @@ import StackBook from '@app/StackBook';
 import shuffle from 'lodash.shuffle';
 
 export default {
-    props: [
-        'collection',
-        'shelves',
-    ],
+    props: {
+        collection: {
+            required: true,
+        },
+        shelves: {
+            required: true,
+        },
+        align: {
+            default: 'left',
+        },
+        hideBooks: {
+            default: [],
+        },
+    },
     components: {
         StackBook,
     },
     mounted() {
         this.collection.load()
-            .finally(() => this.loaded = true);
+            .finally(() => this.$emit('loaded'));
     },
     data() {
         return {
-            viewBook: null,
-            loaded: false,
         };
     },
     computed: {
@@ -74,18 +80,27 @@ export default {
             for (let x = minX; x < maxX && bookCodes.length > 0;) {
                 const bookCode = bookCodes.shift();
                 const book = this.collection[bookCode];
+                if (!book.title) {
+                    continue;
+                }
                 const {width, height} = this.getDimensions(book);
                 books.push({
                     color: colors[book.title.length % colors.length],
                     width,
                     height,
                     x,
-                    y: Math.round(minY + slope * (x - minX)),
                     book,
                     bookCode,
                 });
                 x += width;
             }
+            if (books.length && this.align === 'right') {
+                const lastBook = books[books.length - 1];
+                const currentRight = lastBook.x + lastBook.width;
+                const shift = maxX - currentRight;
+                books.forEach(book => book.x += shift);
+            }
+            books.forEach(book => book.y = Math.round(minY + slope * (book.x - minX)));
             return books;
         },
         getDimensions(bookData) {

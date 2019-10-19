@@ -67,7 +67,7 @@ const upgrader = new VersionUpgrader()
     })
     .version(8, world => {
         const codes = [];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 100; i++) {
             codes.push('book' + i);
         }
         world.collections.children = new Collection({

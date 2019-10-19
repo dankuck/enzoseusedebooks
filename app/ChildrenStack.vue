@@ -11,7 +11,7 @@
 -->
 
 <template>
-    <easel-container>
+    <easel-container :visible="loaded">
         <easel-bitmap
             image="bookcase3-back.gif"
         >
@@ -20,13 +20,15 @@
         <stack
             :collection="app.world.collections.children"
             :shelves="[
-                [0, 350 - 10, 69, 66],
-                [0, 350 - 11, 118, 118],
-                [0, 350 - 12, 162, 169],
-                [0, 350 - 13, 209, 214],
                 [0, 350 - 14, 255, 260],
+                [0, 350 - 13, 209, 214],
+                [0, 350 - 12, 162, 169],
+                [0, 350 - 11, 118, 118],
+                [0, 350 - 10, 69, 66],
             ]"
+            align="right"
             @clickBook="selectBook"
+            @loaded="loaded = true"
         >
         </stack>
 
@@ -80,6 +82,7 @@ export default {
     data() {
         return {
             viewBook: null,
+            loaded: false,
         };
     },
     computed: {

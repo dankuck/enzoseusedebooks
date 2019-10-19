@@ -11,7 +11,7 @@
 -->
 
 <template>
-    <easel-container>
+    <easel-container :visible="loaded">
         <easel-bitmap
             image="bookcase2-back.gif"
         >
@@ -26,7 +26,9 @@
                 [13, 349, 214, 209],
                 [14, 349, 260, 255],
             ]"
+            :hide-books="[viewBook]"
             @clickBook="selectBook"
+            @loaded="loaded = true"
         >
         </stack>
 
@@ -80,6 +82,7 @@ export default {
     data() {
         return {
             viewBook: null,
+            loaded: false,
         };
     },
     computed: {

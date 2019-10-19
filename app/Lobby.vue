@@ -91,61 +91,6 @@ export default {
         this.app.world.collections.bargain.load();
         return {
             viewBook: null,
-            aisles: [
-                {
-                    x: 197 + 20,
-                    y: 53 + 42,
-                    dimensionSets: [
-                        ['rect', -20, -42, [40, 84]],
-                    ],
-                    name: "Old Books",
-                    name: this.app.world.hasGoneTo('children-stack')
-                        ? 'Old Children\'s Books'
-                        : 'Old Books',
-                    goTo: 'children-stack',
-                },
-                {
-                    x: 118,
-                    y: 87,
-                    dimensionSets: [
-                        ['rect', -23, -37, [46, 84]],
-                    ],
-                    name: this.app.world.hasGoneTo('fiction-stack')
-                        ? 'Musty Fiction'
-                        : 'Musty Books',
-                    goTo: 'fiction-stack',
-                },
-                {
-                    x: 37,
-                    y: 97,
-                    dimensionSets: [
-                        ['rect', -18, -39, [36, 78]],
-                    ],
-                    name: this.app.world.hasGoneTo('nonfiction-stack')
-                        ? 'Ratty Non-Fiction'
-                        : 'Ratty Books',
-                    goTo: 'nonfiction-stack',
-                },
-                {
-                    x: 295,
-                    y: 64,
-                    dimensionSets: [
-                        ['rect', -6, -25, [12, 50]],
-                        ['rect', -12, 28, [17, 46]],
-                    ],
-                    name: "Shadowy Area",
-                },
-                {
-                    x: 0,
-                    y: 168,
-                    dimensionSets: [
-                        ['ellipse', 23, 0, [108, 54]],
-                        ['rect', 0, 0, [70, 90]],
-                        ['rect', 0, 36, [127, 55]],
-                    ],
-                    name: "Shabby Desk",
-                },
-            ],
         };
     },
     computed: {
@@ -167,6 +112,62 @@ export default {
                 const book = this.app.world.collections.bargain[id];
                 return {id, x, y, r, book};
             });
+        },
+        aisles() {
+            return [
+                {
+                    x: 197 + 20,
+                    y: 53 + 42,
+                    dimensionSets: [
+                        ['rect', -20, -42, [40, 84]],
+                    ],
+                    name: this.app.world.hasGoneTo('children-stack')
+                        ? 'Musty Children\'s Books'
+                        : 'Musty Books',
+                    goTo: 'children-stack',
+                },
+                {
+                    x: 118,
+                    y: 87,
+                    dimensionSets: [
+                        ['rect', -23, -37, [46, 84]],
+                    ],
+                    name: this.app.world.hasGoneTo('fiction-stack')
+                        ? 'Crusty Fiction'
+                        : 'Crusty Books',
+                    goTo: 'fiction-stack',
+                },
+                {
+                    x: 37,
+                    y: 97,
+                    dimensionSets: [
+                        ['rect', -18, -39, [36, 78]],
+                    ],
+                    name: this.app.world.hasGoneTo('nonfiction-stack')
+                        ? 'Dusty Non-Fiction'
+                        : 'Dusty Books',
+                    goTo: 'nonfiction-stack',
+                },
+                {
+                    x: 295,
+                    y: 64,
+                    dimensionSets: [
+                        ['rect', -6, -25, [12, 50]],
+                        ['rect', -12, 28, [17, 46]],
+                    ],
+                    name: "Shadowy Area",
+                },
+                {
+                    x: 0,
+                    y: 168,
+                    dimensionSets: [
+                        ['ellipse', 23, 0, [108, 54]],
+                        ['rect', 0, 0, [70, 90]],
+                        ['rect', 0, 36, [127, 55]],
+                    ],
+                    name: "Shabby Desk",
+                },
+            ];
         },
     },
     methods: {

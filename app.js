@@ -5407,7 +5407,7 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     });
 }).version(8, world => {
     const codes = [];
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 100; i++) {
         codes.push('book' + i);
     }
     world.collections.children = new _world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -7161,6 +7161,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
     props: ['book'],
@@ -7181,6 +7183,10 @@ __webpack_require__.r(__webpack_exports__);
             } else if (this.book.by.length > 1) {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
+            if (this.lastPrice) {
+                lines.push('');
+                lines.push('Last Price: ' + this.lastPriceDescription);
+            }
             return lines.join("\n");
         },
         bookImage() {
@@ -7190,6 +7196,16 @@ __webpack_require__.r(__webpack_exports__);
             img.crossOrigin = 'Anonymous';
             img.addEventListener('load', () => this.imageLoaded = true);
             return img;
+        },
+        lastPrice() {
+            return Object.values(this.book.prices || {}).reduce((bestPrice, price) => bestPrice === null || priceValue(price) < priceValue(bestPrice) ? price : bestPrice, null);
+        },
+        lastPriceDescription() {
+            if (!this.lastPrice) {
+                return '???';
+            } else {
+                return this.lastPrice;
+            }
         }
     },
     methods: {
@@ -7280,6 +7296,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -7294,7 +7312,8 @@ __webpack_require__.r(__webpack_exports__);
     inject: ['app'],
     data() {
         return {
-            viewBook: null
+            viewBook: null,
+            loaded: false
         };
     },
     computed: {},
@@ -7594,6 +7613,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -7608,7 +7629,8 @@ __webpack_require__.r(__webpack_exports__);
     inject: ['app'],
     data() {
         return {
-            viewBook: null
+            viewBook: null,
+            loaded: false
         };
     },
     computed: {},
@@ -7725,25 +7747,34 @@ __webpack_require__.r(__webpack_exports__);
     data() {
         this.app.world.collections.bargain.load();
         return {
-            viewBook: null,
-            aisles: [{
+            viewBook: null
+        };
+    },
+    computed: {
+        books() {
+            return [['book1', 252, 203, 11], ['book2', 278, 200, 10], ['book3', 304, 200, 10], ['book4', 330, 193, 10], ['book5', 256, 224, 11], ['book6', 286, 223, 11], ['book7', 272, 213, 11], ['book8', 311, 213, 11], ['book9', 328, 214, 11], ['book10', 315, 225, 7], ['book11', 342, 205, 7], ['book12', 345, 223, 7]].map(([id, x, y, r]) => {
+                const book = this.app.world.collections.bargain[id];
+                return { id, x, y, r, book };
+            });
+        },
+        aisles() {
+            return [{
                 x: 197 + 20,
                 y: 53 + 42,
                 dimensionSets: [['rect', -20, -42, [40, 84]]],
-                name: "Old Books",
-                name: this.app.world.hasGoneTo('children-stack') ? 'Old Children\'s Books' : 'Old Books',
+                name: this.app.world.hasGoneTo('children-stack') ? 'Musty Children\'s Books' : 'Musty Books',
                 goTo: 'children-stack'
             }, {
                 x: 118,
                 y: 87,
                 dimensionSets: [['rect', -23, -37, [46, 84]]],
-                name: this.app.world.hasGoneTo('fiction-stack') ? 'Musty Fiction' : 'Musty Books',
+                name: this.app.world.hasGoneTo('fiction-stack') ? 'Crusty Fiction' : 'Crusty Books',
                 goTo: 'fiction-stack'
             }, {
                 x: 37,
                 y: 97,
                 dimensionSets: [['rect', -18, -39, [36, 78]]],
-                name: this.app.world.hasGoneTo('nonfiction-stack') ? 'Ratty Non-Fiction' : 'Ratty Books',
+                name: this.app.world.hasGoneTo('nonfiction-stack') ? 'Dusty Non-Fiction' : 'Dusty Books',
                 goTo: 'nonfiction-stack'
             }, {
                 x: 295,
@@ -7755,15 +7786,7 @@ __webpack_require__.r(__webpack_exports__);
                 y: 168,
                 dimensionSets: [['ellipse', 23, 0, [108, 54]], ['rect', 0, 0, [70, 90]], ['rect', 0, 36, [127, 55]]],
                 name: "Shabby Desk"
-            }]
-        };
-    },
-    computed: {
-        books() {
-            return [['book1', 252, 203, 11], ['book2', 278, 200, 10], ['book3', 304, 200, 10], ['book4', 330, 193, 10], ['book5', 256, 224, 11], ['book6', 286, 223, 11], ['book7', 272, 213, 11], ['book8', 311, 213, 11], ['book9', 328, 214, 11], ['book10', 315, 225, 7], ['book11', 342, 205, 7], ['book12', 345, 223, 7]].map(([id, x, y, r]) => {
-                const book = this.app.world.collections.bargain[id];
-                return { id, x, y, r, book };
-            });
+            }];
         }
     },
     methods: {
@@ -7855,6 +7878,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -7869,7 +7894,8 @@ __webpack_require__.r(__webpack_exports__);
     inject: ['app'],
     data() {
         return {
-            viewBook: null
+            viewBook: null,
+            loaded: false
         };
     },
     computed: {},
@@ -7921,25 +7947,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['collection', 'shelves'],
+    props: {
+        collection: {
+            required: true
+        },
+        shelves: {
+            required: true
+        },
+        align: {
+            default: 'left'
+        },
+        hideBooks: {
+            default: []
+        }
+    },
     components: {
         StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
-        this.collection.load().finally(() => this.loaded = true);
+        this.collection.load().finally(() => this.$emit('loaded'));
     },
     data() {
-        return {
-            viewBook: null,
-            loaded: false
-        };
+        return {};
     },
     computed: {
         books() {
@@ -7960,18 +7994,27 @@ __webpack_require__.r(__webpack_exports__);
             for (let x = minX; x < maxX && bookCodes.length > 0;) {
                 const bookCode = bookCodes.shift();
                 const book = this.collection[bookCode];
+                if (!book.title) {
+                    continue;
+                }
                 const { width, height } = this.getDimensions(book);
                 books.push({
                     color: colors[book.title.length % colors.length],
                     width,
                     height,
                     x,
-                    y: Math.round(minY + slope * (x - minX)),
                     book,
                     bookCode
                 });
                 x += width;
             }
+            if (books.length && this.align === 'right') {
+                const lastBook = books[books.length - 1];
+                const currentRight = lastBook.x + lastBook.width;
+                const shift = maxX - currentRight;
+                books.forEach(book => book.x += shift);
+            }
+            books.forEach(book => book.y = Math.round(minY + slope * (book.x - minX)));
             return books;
         },
         getDimensions(bookData) {
@@ -10179,6 +10222,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
+    { attrs: { visible: _vm.loaded } },
     [
       _c("easel-bitmap", { attrs: { image: "bookcase3-back.gif" } }),
       _vm._v(" "),
@@ -10186,14 +10230,20 @@ var render = function() {
         attrs: {
           collection: _vm.app.world.collections.children,
           shelves: [
-            [0, 350 - 10, 69, 66],
-            [0, 350 - 11, 118, 118],
-            [0, 350 - 12, 162, 169],
+            [0, 350 - 14, 255, 260],
             [0, 350 - 13, 209, 214],
-            [0, 350 - 14, 255, 260]
-          ]
+            [0, 350 - 12, 162, 169],
+            [0, 350 - 11, 118, 118],
+            [0, 350 - 10, 69, 66]
+          ],
+          align: "right"
         },
-        on: { clickBook: _vm.selectBook }
+        on: {
+          clickBook: _vm.selectBook,
+          loaded: function($event) {
+            _vm.loaded = true
+          }
+        }
       }),
       _vm._v(" "),
       _c("easel-bitmap", { attrs: { image: "bookcase3-front.gif" } }),
@@ -10415,6 +10465,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
+    { attrs: { visible: _vm.loaded } },
     [
       _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
       _vm._v(" "),
@@ -10427,9 +10478,15 @@ var render = function() {
             [40, 349, 169, 162],
             [13, 349, 214, 209],
             [14, 349, 260, 255]
-          ]
+          ],
+          "hide-books": [_vm.viewBook]
         },
-        on: { clickBook: _vm.selectBook }
+        on: {
+          clickBook: _vm.selectBook,
+          loaded: function($event) {
+            _vm.loaded = true
+          }
+        }
       }),
       _vm._v(" "),
       _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
@@ -10608,6 +10665,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
+    { attrs: { visible: _vm.loaded } },
     [
       _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
       _vm._v(" "),
@@ -10620,9 +10678,15 @@ var render = function() {
             [12, 349, 169, 162],
             [13, 349, 214, 209],
             [14, 349, 260, 255]
-          ]
+          ],
+          "hide-books": [_vm.viewBook]
         },
-        on: { clickBook: _vm.selectBook }
+        on: {
+          clickBook: _vm.selectBook,
+          loaded: function($event) {
+            _vm.loaded = true
+          }
+        }
       }),
       _vm._v(" "),
       _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
@@ -10687,32 +10751,30 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.loaded
-    ? _c(
-        "easel-container",
-        _vm._l(_vm.booksRandomized, function(book) {
-          return book.book != _vm.viewBook && book.book.title
-            ? _c(
-                "stack-book",
-                _vm._b(
-                  {
-                    key: "book:" + book.bookCode,
-                    on: {
-                      click: function($event) {
-                        return _vm.$emit("clickBook", book.book)
-                      }
-                    }
-                  },
-                  "stack-book",
-                  book,
-                  false
-                )
-              )
-            : _vm._e()
-        }),
-        1
-      )
-    : _vm._e()
+  return _c(
+    "easel-container",
+    _vm._l(_vm.booksRandomized, function(book) {
+      return !_vm.hideBooks.includes(book.book)
+        ? _c(
+            "stack-book",
+            _vm._b(
+              {
+                key: "book:" + book.bookCode,
+                on: {
+                  click: function($event) {
+                    return _vm.$emit("clickBook", book.book)
+                  }
+                }
+              },
+              "stack-book",
+              book,
+              false
+            )
+          )
+        : _vm._e()
+    }),
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
