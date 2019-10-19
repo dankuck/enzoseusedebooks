@@ -69,6 +69,15 @@ describe('World', function () {
             }
         });
 
+        it('should have nonfiction books', function () {
+            const world = new World(worldObject);
+            assert(world.collections);
+            assert(world.collections.nonfiction instanceof Collection);
+            for (let i = 0; i < 150; i++) {
+                assert(world.collections.nonfiction['book' + i]);
+            }
+        });
+
         it('should be able to ruffle the plant', function () {
             const world = new World(worldObject);
             world.ruffleLobbyPlant();

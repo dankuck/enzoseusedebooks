@@ -17,7 +17,7 @@
 
         <stack-book
             v-for="book in booksRandomized"
-            v-if="book.book != viewBook"
+            v-if="book.book != viewBook && book.book.title"
             :key="'book:' + book.bookCode"
             v-bind="book"
             @click="$emit('clickBook', book.book)"
@@ -41,7 +41,7 @@ export default {
     },
     mounted() {
         this.collection.load()
-            .then(() => this.loaded = true);
+            .finally(() => this.loaded = true);
     },
     data() {
         return {

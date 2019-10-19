@@ -44,6 +44,7 @@
 import Lobby from '@app/Lobby';
 import FictionStack from '@app/FictionStack';
 import NonfictionStack from '@app/NonfictionStack';
+import ChildrenStack from '@app/ChildrenStack';
 import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 
@@ -52,6 +53,7 @@ export default {
         Lobby,
         FictionStack,
         NonfictionStack,
+        ChildrenStack,
         DevTools,
         DevElements,
     },

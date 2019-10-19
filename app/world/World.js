@@ -65,6 +65,18 @@ const upgrader = new VersionUpgrader()
             codes,
         });
     })
+    .version(8, world => {
+        const codes = [];
+        for (let i = 0; i < 150; i++) {
+            codes.push('book' + i);
+        }
+        world.collections.children = new Collection({
+            url:     './data/children.json',
+            key:     ['title'],
+            default: {title: ''},
+            codes,
+        });
+    })
     ;
 
 export default class World

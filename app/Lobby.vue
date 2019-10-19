@@ -99,6 +99,10 @@ export default {
                         ['rect', -20, -42, [40, 84]],
                     ],
                     name: "Old Books",
+                    name: this.app.world.hasGoneTo('children-stack')
+                        ? 'Old Children\'s Books'
+                        : 'Old Books',
+                    goTo: 'children-stack',
                 },
                 {
                     x: 118,
