@@ -60,6 +60,13 @@ describe('sizeText', function () {
         );
     });
 
+    it('retains double-newlines', function () {
+        equal(
+            "hello\n\nworld",
+            sizeText("hello\n\nworld", Infinity)
+        );
+    });
+
     describe('with random sentences', function () {
 
         const words = [

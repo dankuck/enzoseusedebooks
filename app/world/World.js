@@ -38,6 +38,45 @@ const upgrader = new VersionUpgrader()
             }),
         };
     })
+    .version(5, world => {
+        const codes = [];
+        for (let i = 0; i < 150; i++) {
+            codes.push('book' + i);
+        }
+        world.collections.fiction = new Collection({
+            url:     './data/fiction.json',
+            key:     ['title'],
+            default: {title: ''},
+            codes,
+        });
+    })
+    .version(6, world => {
+        world.locationHistory = [{location: world.location, date: new Date()}];
+    })
+    .version(7, world => {
+        const codes = [];
+        for (let i = 0; i < 150; i++) {
+            codes.push('book' + i);
+        }
+        world.collections.nonfiction = new Collection({
+            url:     './data/nonfiction.json',
+            key:     ['title'],
+            default: {title: ''},
+            codes,
+        });
+    })
+    .version(8, world => {
+        const codes = [];
+        for (let i = 0; i < 100; i++) {
+            codes.push('book' + i);
+        }
+        world.collections.children = new Collection({
+            url:     './data/children.json',
+            key:     ['title'],
+            default: {title: ''},
+            codes,
+        });
+    })
     ;
 
 export default class World
@@ -45,6 +84,25 @@ export default class World
     constructor(data = {}) {
         Object.assign(this, data);
         this.version = upgrader.upgrade(this.version || 0, this);
+    }
+
+    ruffleLobbyPlant() {
+        this.lobbyPlant.name = 'Ruffled Plant';
+        this.lobbyPlant.response = "Hasn't this plant been through enough?";
+        this.lobbyPlant.ruffled = true;
+    }
+
+    goTo(location) {
+        if (!location) {
+            throw new Error('Cannot go nowhere');
+        }
+        this.location = location;
+        this.locationHistory.push({location, date: new Date()});
+    }
+
+    hasGoneTo(location) {
+        return this.locationHistory
+            .reduce((found, record) => found || record.location === location, false);
     }
 };
 

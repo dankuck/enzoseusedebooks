@@ -1,8 +1,17 @@
 
+class ReviverStandin {
+
+    constructor(original, asJSON) {
+        this.original = original;
+        this.asJSON = asJSON;
+    }
+}
+
 export default class Reviver
 {
     constructor() {
         this.classes = [];
+        this.toJSONs = new Map();
     }
 
     add(classToRevive, revive, replace) {
@@ -11,6 +20,9 @@ export default class Reviver
             revive: revive,
             replace: replace,
         });
+        if (classToRevive.prototype.toJSON) {
+            this.toJSONs.set(classToRevive, classToRevive.prototype.toJSON);
+        }
     }
 
     findMatch(value) {
@@ -42,15 +54,34 @@ export default class Reviver
     }
 
     replace(key, value) {
-        const match = this.findMatch(value);
+        const {original, asJSON} = value instanceof ReviverStandin
+            ? value
+            : {original: value, asJSON: value};
+        const match = this.findMatch(original);
         if (!match) {
-            return value;
+            return original;
         } else {
+            const replaced = match.replace(key, original);
             return {
                 __class__: match.class.name,
-                __data__: match.replace(key, value)
+                __data__: replaced === original ? asJSON : replaced,
             };
         }
+    }
+
+    beforeReplace() {
+        this.toJSONs.forEach((toJSON, targetClass) => {
+            targetClass.prototype.toJSON = function () {
+                const asJSON = toJSON.apply(this, arguments);
+                return new ReviverStandin(this, asJSON);
+            };
+        });
+    }
+
+    afterReplace() {
+        this.toJSONs.forEach((toJSON, targetClass) => {
+            targetClass.prototype.toJSON = toJSON;
+        });
     }
 
     register(classToRegister) {

@@ -27,6 +27,7 @@
                 color="red"
                 font="4px Arial"
                 :shadow="['black', 0, 0, 3]"
+                :align="['top', point.x > app.canvas.pixelWidth / 2 ? 'right' : 'left']"
             >
             </easel-text>
         </div>

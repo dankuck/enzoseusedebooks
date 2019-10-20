@@ -30,6 +30,7 @@
             v-for="(aisle, aisleIndex) in aisles"
             :key="'aisle:' + aisleIndex"
             v-bind="aisle"
+            @click="app.world.goTo(aisle.goTo)"
         >
             <easel-shape
                 v-for="(dimensions, index) in aisle.dimensionSets"
@@ -44,10 +45,10 @@
         </enzo-click-spot>
 
         <big-plant
-            :name="plant.name"
+            :name="this.app.world.lobbyPlant.name"
             x="330"
             y="160"
-            :ruffled="plant.ruffled"
+            :ruffled="this.app.world.lobbyPlant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
@@ -90,14 +91,40 @@ export default {
         this.app.world.collections.bargain.load();
         return {
             viewBook: null,
-            aisles: [
+        };
+    },
+    computed: {
+        books() {
+            return [
+                ['book1', 252, 203, 11],
+                ['book2', 278, 200, 10],
+                ['book3', 304, 200, 10],
+                ['book4', 330, 193, 10],
+                ['book5', 256, 224, 11],
+                ['book6', 286, 223, 11],
+                ['book7', 272, 213, 11],
+                ['book8', 311, 213, 11],
+                ['book9', 328, 214, 11],
+                ['book10', 315, 225, 7],
+                ['book11', 342, 205, 7],
+                ['book12', 345, 223, 7],
+            ].map(([id, x, y, r]) => {
+                const book = this.app.world.collections.bargain[id];
+                return {id, x, y, r, book};
+            });
+        },
+        aisles() {
+            return [
                 {
                     x: 197 + 20,
                     y: 53 + 42,
                     dimensionSets: [
                         ['rect', -20, -42, [40, 84]],
                     ],
-                    name: "Old Books",
+                    name: this.app.world.hasGoneTo('children-stack')
+                        ? 'Musty Children\'s Books'
+                        : 'Musty Books',
+                    goTo: 'children-stack',
                 },
                 {
                     x: 118,
@@ -105,7 +132,10 @@ export default {
                     dimensionSets: [
                         ['rect', -23, -37, [46, 84]],
                     ],
-                    name: "Musty Books",
+                    name: this.app.world.hasGoneTo('fiction-stack')
+                        ? 'Crusty Fiction'
+                        : 'Crusty Books',
+                    goTo: 'fiction-stack',
                 },
                 {
                     x: 37,
@@ -113,7 +143,10 @@ export default {
                     dimensionSets: [
                         ['rect', -18, -39, [36, 78]],
                     ],
-                    name: "Ratty Books",
+                    name: this.app.world.hasGoneTo('nonfiction-stack')
+                        ? 'Dusty Non-Fiction'
+                        : 'Dusty Books',
+                    goTo: 'nonfiction-stack',
                 },
                 {
                     x: 295,
@@ -134,39 +167,13 @@ export default {
                     ],
                     name: "Shabby Desk",
                 },
-            ],
-        };
-    },
-    computed: {
-        plant() {
-            return this.app.world.lobbyPlant;
-        },
-        books() {
-            return [
-                ['book1', 252, 203, 11],
-                ['book2', 278, 200, 10],
-                ['book3', 304, 200, 10],
-                ['book4', 330, 193, 10],
-                ['book5', 256, 224, 11],
-                ['book6', 286, 223, 11],
-                ['book7', 272, 213, 11],
-                ['book8', 311, 213, 11],
-                ['book9', 328, 214, 11],
-                ['book10', 315, 225, 7],
-                ['book11', 342, 205, 7],
-                ['book12', 345, 223, 7],
-            ].map(([id, x, y, r]) => {
-                const book = this.app.world.collections.bargain[id];
-                return {id, x, y, r, book};
-            });
+            ];
         },
     },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.plant.response, vuePlant.x, vuePlant.y);
-            this.plant.name = 'Ruffled Plant';
-            this.plant.response = "Hasn't this plant been through enough?";
-            this.plant.ruffled = true;
+            this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
+            this.app.world.ruffleLobbyPlant();
         },
     },
 };

@@ -12,10 +12,12 @@
         </easel-shape>
 
         <easel-bitmap
-            :image="book.image.url"
+            v-if="imageLoaded"
+            :image="bookImage"
             :x="app.canvas.pixelWidth / 2 - 6"
             :y="app.canvas.pixelHeight / 2"
             align="center-right"
+            :filters="[['ColorReducer', 6]]"
         >
         </easel-bitmap>
 
@@ -49,9 +51,19 @@
 </template>
 
 <script>
+const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
+
 export default {
     inject: ['app'],
     props: ['book'],
+    mounted() {
+        this.bookImage; // cause a load
+    },
+    data() {
+        return {
+            imageLoaded: false,
+        };
+    },
     computed: {
         description() {
             const lines = [];
@@ -61,7 +73,46 @@ export default {
             } else if (this.book.by.length > 1) {
                 lines.push('by ' + this.book.by[0] + ' and others');
             }
+            lines.push('');
+            if (this.lastPrice) {
+                lines.push('Last Price: ' + this.lastPriceDescription);
+            }
+            if (this.publishedYear) {
+                lines.push('Published: ' + this.publishedYear);
+            }
             return lines.join("\n");
+        },
+        bookImage() {
+            this.imageLoaded = false;
+            const img = new Image();
+            img.src = this.book.image.url;
+            img.crossOrigin = 'Anonymous';
+            img.addEventListener('load', () => this.imageLoaded = true);
+            return img;
+        },
+        lastPrice() {
+            return Object.values(this.book.prices || {})
+                .reduce(
+                    (bestPrice, price) =>
+                        bestPrice === null || priceValue(price) < priceValue(bestPrice)
+                            ? price
+                            : bestPrice,
+                    null
+                );
+        },
+        lastPriceDescription() {
+            if (!this.lastPrice) {
+                return '???';
+            } else {
+                return this.lastPrice;
+            }
+        },
+        publishedYear() {
+            if (this.book.published_at) {
+                return new Date(this.book.published_at).getFullYear();
+            } else {
+                return null;
+            }
         },
     },
     methods: {
