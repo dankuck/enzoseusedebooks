@@ -68,17 +68,10 @@ export default {
         description() {
             const lines = [];
             lines.push(this.book.title);
-            if (this.book.by.length === 1) {
-                lines.push('by ' + this.book.by[0]);
-            } else if (this.book.by.length > 1) {
-                lines.push('by ' + this.book.by[0] + ' and others');
-            }
+            lines.push(this.byLine + (this.publishedYear ? ', ' + this.publishedYear : ''));
             lines.push('');
             if (this.lastPrice) {
                 lines.push('Last Price: ' + this.lastPriceDescription);
-            }
-            if (this.publishedYear) {
-                lines.push('Published: ' + this.publishedYear);
             }
             return lines.join("\n");
         },
@@ -89,6 +82,9 @@ export default {
             img.crossOrigin = 'Anonymous';
             img.addEventListener('load', () => this.imageLoaded = true);
             return img;
+        },
+        byLine() {
+            return 'by ' + this.book.by[0] + (this.book.by.length > 1 ? ' and others' : '');
         },
         lastPrice() {
             return Object.values(this.book.prices || {})

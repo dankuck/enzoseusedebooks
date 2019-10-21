@@ -41,7 +41,7 @@ export default {
             default: 'left',
         },
         hideBooks: {
-            default: [],
+            default: () => { return [] },
         },
     },
     components: {
