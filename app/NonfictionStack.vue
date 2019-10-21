@@ -13,18 +13,18 @@
 <template>
     <easel-container :visible="loaded">
         <easel-bitmap
-            image="bookcase2-back.gif"
+            image="bookcase1-back.gif"
         >
         </easel-bitmap>
 
         <stack
             :collection="app.world.collections.nonfiction"
             :shelves="[
-                [10, 349, 66, 69],
-                [11, 349, 118, 118],
-                [12, 349, 169, 162],
-                [13, 349, 214, 209],
-                [14, 349, 260, 255],
+                [10 + 25, 349 + 25, 66, 69],
+                [11 + 25, 349 + 25, 118, 118],
+                [12 + 25, 349 + 25, 169, 162],
+                [13 + 25, 349 + 25, 214, 209],
+                [14 + 25, 349 + 25, 260, 255],
             ]"
             :hide-books="[viewBook]"
             @clickBook="selectBook"
@@ -33,21 +33,27 @@
         </stack>
 
         <easel-bitmap
-            image="bookcase2-front.gif"
+            image="bookcase1-front.gif"
+        >
+        </easel-bitmap>
+
+        <easel-bitmap
+            image="bookcase1-shadow.gif"
+            alpha=".5"
         >
         </easel-bitmap>
 
         <enzo-click-spot
             name="Lobby"
-            x="5"
+            x="15"
             y="150"
             @click="app.world.goTo('lobby')"
         >
             <easel-shape
                 form="rect"
-                x="-5"
+                x="-15"
                 y="-150"
-                :dimensions="[7, 300]"
+                :dimensions="[30, 255]"
                 fill="black"
             >
             </easel-shape>
