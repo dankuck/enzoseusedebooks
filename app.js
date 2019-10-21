@@ -7684,6 +7684,9 @@ __webpack_require__.r(__webpack_exports__);
         fittedText() {
             const maxLength = this.app.canvas.pixelWidth / 2 / this.fontWidth;
             return Object(_libs_sizeText_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.text, maxLength);
+        },
+        strokeSize() {
+            return 2 * window.devicePixelRatio;
         }
     }
 });
@@ -8333,6 +8336,11 @@ __webpack_require__.r(__webpack_exports__);
                     continue;
                 }
                 const { width, height } = this.getDimensions(book);
+                if (x + width > maxX) {
+                    // no space for this book, put it back
+                    bookCodes.unshift(bookCode);
+                    break;
+                }
                 books.push({
                     color: colors[book.title.length % colors.length],
                     width,
@@ -8351,6 +8359,19 @@ __webpack_require__.r(__webpack_exports__);
             }
             books.forEach(book => book.y = Math.round(minY + slope * (book.x - minX)));
             return books;
+        },
+        takeBookCodes(maxWidth, bookCodes) {
+            let i = 0;
+            let totalWidth = 0;
+            for (; i < bookCodes.length; i++) {
+                const { width } = this.getDimensions(this.collection[bookCodes]);
+                if (totalWidth + width < maxWidth) {
+                    totalWidth += width;
+                } else {
+                    break;
+                }
+            }
+            return bookCodes.splice(0, i);
         },
         getDimensions(bookData) {
             if (!bookData.dimensions) {
@@ -10755,7 +10776,7 @@ var render = function() {
       align: _vm.align,
       color: "yellow",
       font: _vm.fontWidth + "px 'Press Start 2P'",
-      filters: [["PixelStrokeFilter", [], 4, { antiAlias: false }]]
+      filters: [["PixelStrokeFilter", [], _vm.strokeSize, { antiAlias: false }]]
     }
   })
 }

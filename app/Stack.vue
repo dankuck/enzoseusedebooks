@@ -84,6 +84,11 @@ export default {
                     continue;
                 }
                 const {width, height} = this.getDimensions(book);
+                if (x + width > maxX) {
+                    // no space for this book, put it back
+                    bookCodes.unshift(bookCode);
+                    break;
+                }
                 books.push({
                     color: colors[book.title.length % colors.length],
                     width,
