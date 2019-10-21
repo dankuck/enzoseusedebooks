@@ -68,7 +68,6 @@ export default {
     },
     methods: {
         buildBookList(minX, maxX, minY, maxY, bookCodes) {
-            const books = [];
             const colors = [
                 '#dd971f',
                 '#d5ae57',
@@ -76,36 +75,58 @@ export default {
                 '#151580',
                 '#b93109',
             ];
-            const slope = (maxY - minY) / (maxX - minX);
-            for (let x = minX; x < maxX && bookCodes.length > 0;) {
-                const bookCode = bookCodes.shift();
-                const book = this.collection[bookCode];
-                if (!book.title) {
-                    continue;
-                }
-                const {width, height} = this.getDimensions(book);
-                if (x + width > maxX) {
-                    // no space for this book, put it back
-                    bookCodes.unshift(bookCode);
+            const codes = this.takeBookCodes(maxX - minX, bookCodes);
+            const books = codes
+                .map(bookCode => {
+                    const book = this.collection[bookCode];
+                    if (!book.title) {
+                        return null;
+                    }
+                    const {width, height} = this.getDimensions(book);
+                    return {
+                        bookCode,
+                        book,
+                        width,
+                        height,
+                        color: colors[book.title.length % colors.length],
+                    };
+                })
+                .filter(Boolean);
+            return this.positionBooks(books, minX, maxX, minY, maxY);
+        },
+        takeBookCodes(maxWidth, bookCodes) {
+            let i = 0;
+            let totalWidth = 0;
+            for (; i < bookCodes.length; i++) {
+                const {width} = this.getDimensions(this.collection[bookCodes[i]]);
+                if (totalWidth + width < maxWidth) {
+                    totalWidth += width;
+                } else {
                     break;
                 }
-                books.push({
-                    color: colors[book.title.length % colors.length],
-                    width,
-                    height,
-                    x,
-                    book,
-                    bookCode,
-                });
-                x += width;
             }
-            if (books.length && this.align === 'right') {
-                const lastBook = books[books.length - 1];
-                const currentRight = lastBook.x + lastBook.width;
-                const shift = maxX - currentRight;
-                books.forEach(book => book.x += shift);
-            }
-            books.forEach(book => book.y = Math.round(minY + slope * (book.x - minX)));
+            return bookCodes.splice(0, i);
+        },
+        positionBooks(books, minX, maxX, minY, maxY) {
+            const slope = (maxY - minY) / (maxX - minX);
+            let [sizer, x] = this.align === 'left'
+                ? [
+                    entry => {
+                        entry.x = x;
+                        entry.y = Math.round(minY + slope * (x - minX));
+                        x += entry.width;
+                    },
+                    minX
+                ]
+                : [
+                    entry => {
+                        x -= entry.width;
+                        entry.x = x;
+                        entry.y = Math.round(minY + slope * (x - minX));
+                    },
+                    maxX
+                ];
+            books.forEach(sizer);
             return books;
         },
         getDimensions(bookData) {

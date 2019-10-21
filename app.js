@@ -8326,45 +8326,29 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         buildBookList(minX, maxX, minY, maxY, bookCodes) {
-            const books = [];
             const colors = ['#dd971f', '#d5ae57', '#dfc290', '#151580', '#b93109'];
-            const slope = (maxY - minY) / (maxX - minX);
-            for (let x = minX; x < maxX && bookCodes.length > 0;) {
-                const bookCode = bookCodes.shift();
+            const codes = this.takeBookCodes(maxX - minX, bookCodes);
+            const books = codes.map(bookCode => {
                 const book = this.collection[bookCode];
                 if (!book.title) {
-                    continue;
+                    return null;
                 }
                 const { width, height } = this.getDimensions(book);
-                if (x + width > maxX) {
-                    // no space for this book, put it back
-                    bookCodes.unshift(bookCode);
-                    break;
-                }
-                books.push({
-                    color: colors[book.title.length % colors.length],
+                return {
+                    bookCode,
+                    book,
                     width,
                     height,
-                    x,
-                    book,
-                    bookCode
-                });
-                x += width;
-            }
-            if (books.length && this.align === 'right') {
-                const lastBook = books[books.length - 1];
-                const currentRight = lastBook.x + lastBook.width;
-                const shift = maxX - currentRight;
-                books.forEach(book => book.x += shift);
-            }
-            books.forEach(book => book.y = Math.round(minY + slope * (book.x - minX)));
-            return books;
+                    color: colors[book.title.length % colors.length]
+                };
+            }).filter(Boolean);
+            return this.positionBooks(books, minX, maxX, minY, maxY);
         },
         takeBookCodes(maxWidth, bookCodes) {
             let i = 0;
             let totalWidth = 0;
             for (; i < bookCodes.length; i++) {
-                const { width } = this.getDimensions(this.collection[bookCodes]);
+                const { width } = this.getDimensions(this.collection[bookCodes[i]]);
                 if (totalWidth + width < maxWidth) {
                     totalWidth += width;
                 } else {
@@ -8372,6 +8356,20 @@ __webpack_require__.r(__webpack_exports__);
                 }
             }
             return bookCodes.splice(0, i);
+        },
+        positionBooks(books, minX, maxX, minY, maxY) {
+            const slope = (maxY - minY) / (maxX - minX);
+            let [sizer, x] = this.align === 'left' ? [entry => {
+                entry.x = x;
+                entry.y = Math.round(minY + slope * (x - minX));
+                x += entry.width;
+            }, minX] : [entry => {
+                x -= entry.width;
+                entry.x = x;
+                entry.y = Math.round(minY + slope * (x - minX));
+            }, maxX];
+            books.forEach(sizer);
+            return books;
         },
         getDimensions(bookData) {
             if (!bookData.dimensions) {
@@ -11074,7 +11072,7 @@ var render = function() {
     [
       _c(
         "sliding-window",
-        { attrs: { width: "400", "start-x": "25" } },
+        { attrs: { width: "400", "start-x": "10" } },
         [
           _c("easel-bitmap", { attrs: { image: "bookcase1-back.gif" } }),
           _vm._v(" "),

@@ -14,7 +14,7 @@
     <easel-container :visible="loaded">
         <sliding-window
             width="400"
-            start-x="25"
+            start-x="10"
         >
             <easel-bitmap
                 image="bookcase1-back.gif"
