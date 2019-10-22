@@ -68,22 +68,12 @@ const app = new Vue({
     },
     mounted() {
         this.resizer = () => {
-            const parent = this.$el.parentNode;
-            this.canvas.width = parent.offsetWidth;
-            this.canvas.height = parent.offsetHeight;
-            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
-            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
-            if (adjustedWidth < this.canvas.width) {
-                this.canvas.width = adjustedWidth;
-            }
-            if (adjustedHeight < this.canvas.height) {
-                this.canvas.height = adjustedHeight;
-            }
             // We want to know if this is mobile, but really that's just
             // because we want to know if there are pointing devices
             this.isMobile = window.matchMedia
                 ? window.matchMedia('(any-hover: none)').matches
                 : screen.width <= 768;
+            this.resize();
         };
         window.addEventListener('resize', this.resizer);
         this.resizer();
@@ -109,5 +99,28 @@ const app = new Vue({
             storage,
             world,
         };
+    },
+    watch: {
+        'canvas.pixelWidth': function () {
+            this.resize();
+        },
+        'canvas.pixelHeight': function () {
+            this.resize();
+        },
+    },
+    methods: {
+        resize() {
+            const parent = this.$el.parentNode;
+            this.canvas.width = parent.offsetWidth;
+            this.canvas.height = parent.offsetHeight;
+            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
+            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
+            if (adjustedWidth < this.canvas.width) {
+                this.canvas.width = adjustedWidth;
+            }
+            if (adjustedHeight < this.canvas.height) {
+                this.canvas.height = adjustedHeight;
+            }
+        },
     },
 });
