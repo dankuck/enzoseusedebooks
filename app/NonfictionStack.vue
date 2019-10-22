@@ -12,46 +12,62 @@
 
 <template>
     <easel-container :visible="loaded">
-        <easel-bitmap
-            image="bookcase2-back.gif"
+        <sliding-window
+            width="400"
+            start-x="10"
         >
-        </easel-bitmap>
-
-        <stack
-            :collection="app.world.collections.nonfiction"
-            :shelves="[
-                [10, 349, 66, 69],
-                [11, 349, 118, 118],
-                [12, 349, 169, 162],
-                [13, 349, 214, 209],
-                [14, 349, 260, 255],
-            ]"
-            :hide-books="[viewBook]"
-            @clickBook="selectBook"
-            @loaded="loaded = true"
-        >
-        </stack>
-
-        <easel-bitmap
-            image="bookcase2-front.gif"
-        >
-        </easel-bitmap>
-
-        <enzo-click-spot
-            name="Lobby"
-            x="5"
-            y="150"
-            @click="app.world.goTo('lobby')"
-        >
-            <easel-shape
-                form="rect"
-                x="-5"
-                y="-150"
-                :dimensions="[7, 300]"
-                fill="black"
+            <easel-bitmap
+                image="bookcase1-back.gif"
             >
-            </easel-shape>
-        </enzo-click-spot>
+            </easel-bitmap>
+
+            <stack
+                :collection="app.world.collections.nonfiction"
+                :shelves="[
+                    [10 + 25, 349 + 25, 66, 69],
+                    [11 + 25, 349 + 25, 118, 118],
+                    [12 + 25, 349 + 25, 169, 162],
+                    [13 + 25, 349 + 25, 214, 209],
+                    [14 + 25, 349 + 25, 260, 255],
+                ]"
+                :hide-books="[viewBook]"
+                @clickBook="selectBook"
+                @loaded="loaded = true"
+            >
+            </stack>
+
+            <easel-bitmap
+                image="bookcase1-front.gif"
+            >
+            </easel-bitmap>
+
+            <easel-bitmap
+                image="bookcase1-shadow.gif"
+                alpha=".5"
+            >
+            </easel-bitmap>
+
+            <enzo-click-spot
+                name="Lobby"
+                x="15"
+                y="150"
+                @click="app.world.goTo('lobby')"
+            >
+                <easel-shape
+                    form="rect"
+                    x="-15"
+                    y="-150"
+                    :dimensions="[30, 255]"
+                    fill="black"
+                >
+                </easel-shape>
+            </enzo-click-spot>
+
+            <text-layer
+                v-if="!viewBook"
+            >
+            </text-layer>
+        </sliding-window>
 
         <book-viewer
             v-if="viewBook"
@@ -59,11 +75,6 @@
             @close="viewBook = null"
         >
         </book-viewer>
-
-        <text-layer
-            v-else
-        >
-        </text-layer>
     </easel-container>
 </template>
 
@@ -71,12 +82,14 @@
 import Stack from '@app/Stack';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
+import SlidingWindow from '@app/SlidingWindow';
 
 export default {
     mixins: [HasTextLayer],
     components: {
         Stack,
         BookViewer,
+        SlidingWindow,
     },
     inject: ['app'],
     data() {

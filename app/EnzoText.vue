@@ -16,7 +16,7 @@
         :align="align"
         color="yellow"
         :font="`${fontWidth}px 'Press Start 2P'`"
-        :filters="[['PixelStrokeFilter', [], 4, {antiAlias: false}]]"
+        :filters="[['PixelStrokeFilter', [], strokeSize, {antiAlias: false}]]"
     >
     </easel-text>
 </template>
@@ -56,6 +56,9 @@ export default {
         fittedText() {
             const maxLength = (this.app.canvas.pixelWidth / 2) / this.fontWidth;
             return sizeText(this.text, maxLength);
+        },
+        strokeSize() {
+            return 2 * window.devicePixelRatio;
         },
     },
 };
