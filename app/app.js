@@ -79,7 +79,11 @@ const app = new Vue({
             if (adjustedHeight < this.canvas.height) {
                 this.canvas.height = adjustedHeight;
             }
-            this.isMobile = screen.width <= 768;
+            // We want to know if this is mobile, but really that's just
+            // because we want to know if there are pointing devices
+            this.isMobile = window.matchMedia
+                ? window.matchMedia('(any-hover: none)').matches
+                : screen.width <= 768;
         };
         window.addEventListener('resize', this.resizer);
         this.resizer();

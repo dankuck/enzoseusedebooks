@@ -3868,15 +3868,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************!*\
   !*** ./app/SlidingWindow.vue ***!
   \*******************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SlidingWindow_vue_vue_type_template_id_e5c176dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlidingWindow.vue?vue&type=template&id=e5c176dc& */ "./app/SlidingWindow.vue?vue&type=template&id=e5c176dc&");
 /* harmony import */ var _SlidingWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SlidingWindow.vue?vue&type=script&lang=js& */ "./app/SlidingWindow.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _SlidingWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _SlidingWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -3906,7 +3905,7 @@ component.options.__file = "app/SlidingWindow.vue"
 /*!********************************************************!*\
   !*** ./app/SlidingWindow.vue?vue&type=script&lang=js& ***!
   \********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4168,7 +4167,9 @@ const app = new Vue({
             if (adjustedHeight < this.canvas.height) {
                 this.canvas.height = adjustedHeight;
             }
-            this.isMobile = screen.width <= 768;
+            // We want to know if this is mobile, but really that's just
+            // because we want to know if there are pointing devices
+            this.isMobile = window.matchMedia ? window.matchMedia('(any-hover: none)').matches : screen.width <= 768;
         };
         window.addEventListener('resize', this.resizer);
         this.resizer();
@@ -7588,6 +7589,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -7612,6 +7615,7 @@ __webpack_require__.r(__webpack_exports__);
                 clearInterval(this.hovering);
             }
             this.hovering = setInterval(() => this.$emit('hovering'), 1000 / this.speed);
+            this.$emit('hovering');
         },
         endHover() {
             if (!this.hovering) {
@@ -7784,6 +7788,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Stack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Stack */ "./app/Stack.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+/* harmony import */ var _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/SlidingWindow */ "./app/SlidingWindow.vue");
 //
 //
 //
@@ -7853,6 +7858,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -7862,7 +7879,8 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         Stack: _app_Stack__WEBPACK_IMPORTED_MODULE_0__["default"],
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
+        SlidingWindow: _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
     inject: ['app'],
     data() {
@@ -10727,7 +10745,12 @@ var render = function() {
         cursor: "pointer",
         cache: true
       },
-      on: { rollover: _vm.beginHover, rollout: _vm.endHover }
+      on: {
+        rollover: _vm.beginHover,
+        rollout: _vm.endHover,
+        mousedown: _vm.beginHover,
+        pressup: _vm.endHover
+      }
     },
     [
       _vm._t("default", [
@@ -10870,50 +10893,63 @@ var render = function() {
     "easel-container",
     { attrs: { visible: _vm.loaded } },
     [
-      _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
-      _vm._v(" "),
-      _c("stack", {
-        attrs: {
-          collection: _vm.app.world.collections.fiction,
-          shelves: [
-            [10, 300, 66, 69],
-            [11, 349, 118, 118],
-            [40, 349, 169, 162],
-            [13, 349, 214, 209],
-            [14, 349, 260, 255]
-          ],
-          "hide-books": [_vm.viewBook]
-        },
-        on: {
-          clickBook: _vm.selectBook,
-          loaded: function($event) {
-            _vm.loaded = true
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
-      _vm._v(" "),
       _c(
-        "enzo-click-spot",
-        {
-          attrs: { name: "Lobby", x: "5", y: "150" },
-          on: {
-            click: function($event) {
-              return _vm.app.world.goTo("lobby")
-            }
-          }
-        },
+        "sliding-window",
+        { attrs: { width: "400", "start-x": "10" } },
         [
-          _c("easel-shape", {
+          _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+          _vm._v(" "),
+          _c("stack", {
             attrs: {
-              form: "rect",
-              x: "-5",
-              y: "-150",
-              dimensions: [7, 300],
-              fill: "black"
+              collection: _vm.app.world.collections.fiction,
+              shelves: [
+                [10 + 25, 300 + 25, 66, 69],
+                [11 + 25, 349 + 25, 118, 118],
+                [40 + 25, 349 + 25, 169, 162],
+                [13 + 25, 349 + 25, 214, 209],
+                [14 + 25, 349 + 25, 260, 255]
+              ],
+              "hide-books": [_vm.viewBook]
+            },
+            on: {
+              clickBook: _vm.selectBook,
+              loaded: function($event) {
+                _vm.loaded = true
+              }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: { image: "bookcase2-shadow.gif", alpha: ".5" }
+          }),
+          _vm._v(" "),
+          _c(
+            "enzo-click-spot",
+            {
+              attrs: { name: "Lobby", x: "15", y: "150" },
+              on: {
+                click: function($event) {
+                  return _vm.app.world.goTo("lobby")
+                }
+              }
+            },
+            [
+              _c("easel-shape", {
+                attrs: {
+                  form: "rect",
+                  x: "-15",
+                  y: "-150",
+                  dimensions: [30, 255],
+                  fill: "black"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          !_vm.viewBook ? _c("text-layer") : _vm._e()
         ],
         1
       ),
@@ -10927,7 +10963,7 @@ var render = function() {
               }
             }
           })
-        : _c("text-layer")
+        : _vm._e()
     ],
     1
   )

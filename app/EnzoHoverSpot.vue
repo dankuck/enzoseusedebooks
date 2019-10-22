@@ -22,6 +22,8 @@
         :cache="true"
         @rollover="beginHover"
         @rollout="endHover"
+        @mousedown="beginHover"
+        @pressup="endHover"
     >
         <slot>
             <easel-shape
@@ -64,6 +66,7 @@ export default {
                 clearInterval(this.hovering);
             }
             this.hovering = setInterval(() => this.$emit('hovering'), 1000 / this.speed);
+            this.$emit('hovering');
         },
         endHover() {
             if (!this.hovering) {
