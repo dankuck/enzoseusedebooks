@@ -5236,15 +5236,14 @@ __webpack_require__.r(__webpack_exports__);
     mounted() {
         this.$watch('app.isMobile', () => {
             this.startStopMobileHoverRing();
-        });
-        this.startStopMobileHoverRing();
+        }, { immediate: true });
     },
     data() {
         return {
             textLayer: {
-                messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](2500),
-                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](250),
-                mobileHoverRing: new _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__["default"](1500)
+                messager: new _libs_Messager__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.config.messagerSpeed || 2500),
+                hoverer: new _libs_Hoverer__WEBPACK_IMPORTED_MODULE_2__["default"](this.app.config.hovererLag || 250),
+                mobileHoverRing: new _libs_CallbackRing__WEBPACK_IMPORTED_MODULE_3__["default"](this.app.config.autoHoverSpeed || 2000)
             }
         };
     },
@@ -5623,7 +5622,32 @@ World.registerReviver = function (reviver) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-    developmentMode: true
+  /**
+   * Show the development tools button
+   * @type {Boolean}
+   */
+  developmentMode: true,
+
+  /**
+   * How long flash messages should be shown before going away or moving to
+   * the next message
+   * @type {Number} milliseconds
+   */
+  messagerSpeed: 2500,
+
+  /**
+   * How long hover names should be shown after the mouse leaves the hovered
+   * item. Hovering over a new item will immediately replace the message,
+   * disregarding this number.
+   * @type {Number} milliseconds
+   */
+  hovererLag: 250,
+
+  /**
+   * How long the auto-hover mechanism should linger on each item.
+   * @type {Number} milliseconds
+   */
+  autoHoverSpeed: 3000
 });
 
 /***/ }),
@@ -7394,6 +7418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Stack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Stack */ "./app/Stack.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+/* harmony import */ var _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/SlidingWindow */ "./app/SlidingWindow.vue");
 //
 //
 //
@@ -7463,6 +7488,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -7472,7 +7509,8 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         Stack: _app_Stack__WEBPACK_IMPORTED_MODULE_0__["default"],
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
+        SlidingWindow: _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
     inject: ['app'],
     data() {
@@ -10609,50 +10647,68 @@ var render = function() {
     "easel-container",
     { attrs: { visible: _vm.loaded } },
     [
-      _c("easel-bitmap", { attrs: { image: "bookcase3-back.gif" } }),
-      _vm._v(" "),
-      _c("stack", {
-        attrs: {
-          collection: _vm.app.world.collections.children,
-          shelves: [
-            [0, 350 - 14, 255, 260],
-            [0, 350 - 13, 209, 214],
-            [0, 350 - 12, 162, 169],
-            [0, 350 - 11, 118, 118],
-            [0, 350 - 10, 69, 66]
-          ],
-          align: "right"
-        },
-        on: {
-          clickBook: _vm.selectBook,
-          loaded: function($event) {
-            _vm.loaded = true
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c("easel-bitmap", { attrs: { image: "bookcase3-front.gif" } }),
-      _vm._v(" "),
       _c(
-        "enzo-click-spot",
+        "sliding-window",
         {
-          attrs: { name: "Lobby", x: "345", y: "150" },
-          on: {
-            click: function($event) {
-              return _vm.app.world.goTo("lobby")
-            }
+          attrs: {
+            width: "400",
+            "start-x": 400 - _vm.app.canvas.pixelWidth - 10
           }
         },
         [
-          _c("easel-shape", {
+          _c("easel-bitmap", { attrs: { image: "bookcase3-back.gif" } }),
+          _vm._v(" "),
+          _c("stack", {
             attrs: {
-              form: "rect",
-              x: "-5",
-              y: "-150",
-              dimensions: [7, 300],
-              fill: "black"
+              collection: _vm.app.world.collections.children,
+              shelves: [
+                [0 + 25, 350 - 14 + 25, 255, 260],
+                [0 + 25, 350 - 13 + 25, 209, 214],
+                [0 + 25, 350 - 12 + 25, 162, 169],
+                [0 + 25, 350 - 11 + 25, 118, 118],
+                [0 + 25, 350 - 10 + 25, 69, 66]
+              ],
+              align: "right"
+            },
+            on: {
+              clickBook: _vm.selectBook,
+              loaded: function($event) {
+                _vm.loaded = true
+              }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", { attrs: { image: "bookcase3-front.gif" } }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: { image: "bookcase3-shadow.gif", alpha: ".5" }
+          }),
+          _vm._v(" "),
+          _c(
+            "enzo-click-spot",
+            {
+              attrs: { name: "Lobby", x: 400 - 15, y: "150" },
+              on: {
+                click: function($event) {
+                  return _vm.app.world.goTo("lobby")
+                }
+              }
+            },
+            [
+              _c("easel-shape", {
+                attrs: {
+                  form: "rect",
+                  x: "-15",
+                  y: "-150",
+                  dimensions: [30, 255],
+                  fill: "black"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          !_vm.viewBook ? _c("text-layer") : _vm._e()
         ],
         1
       ),
@@ -10666,7 +10722,7 @@ var render = function() {
               }
             }
           })
-        : _c("text-layer")
+        : _vm._e()
     ],
     1
   )

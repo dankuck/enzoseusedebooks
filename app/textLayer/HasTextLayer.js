@@ -40,15 +40,14 @@ export default {
     mounted() {
         this.$watch('app.isMobile', () => {
             this.startStopMobileHoverRing();
-        });
-        this.startStopMobileHoverRing();
+        }, {immediate: true});
     },
     data() {
         return {
             textLayer: {
-                messager: new Messager(2500),
-                hoverer: new Hoverer(250),
-                mobileHoverRing: new CallbackRing(1500),
+                messager: new Messager(this.app.config.messagerSpeed || 2500),
+                hoverer: new Hoverer(this.app.config.hovererLag || 250),
+                mobileHoverRing: new CallbackRing(this.app.config.autoHoverSpeed || 2000),
             },
         };
     },
