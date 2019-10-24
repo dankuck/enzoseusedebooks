@@ -30,7 +30,7 @@
             v-for="(aisle, aisleIndex) in aisles"
             :key="'aisle:' + aisleIndex"
             v-bind="aisle"
-            @click="app.world.goTo(aisle.goTo)"
+            @click="aisle.click"
         >
             <easel-shape
                 v-for="(dimensions, index) in aisle.dimensionSets"
@@ -124,7 +124,7 @@ export default {
                     name: this.app.world.hasGoneTo('children-stack')
                         ? 'Musty Children\'s Books'
                         : 'Musty Books',
-                    goTo: 'children-stack',
+                    click: () => this.app.world.goTo('children-stack'),
                 },
                 {
                     x: 118,
@@ -135,7 +135,7 @@ export default {
                     name: this.app.world.hasGoneTo('fiction-stack')
                         ? 'Crusty Fiction'
                         : 'Crusty Books',
-                    goTo: 'fiction-stack',
+                    click: () => this.app.world.goTo('fiction-stack'),
                 },
                 {
                     x: 37,
@@ -146,7 +146,7 @@ export default {
                     name: this.app.world.hasGoneTo('nonfiction-stack')
                         ? 'Dusty Non-Fiction'
                         : 'Dusty Books',
-                    goTo: 'nonfiction-stack',
+                    click: () => this.app.world.goTo('nonfiction-stack'),
                 },
                 {
                     x: 295,
@@ -156,6 +156,7 @@ export default {
                         ['rect', -12, 28, [17, 46]],
                     ],
                     name: "Shadowy Area",
+                    click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64),
                 },
                 {
                     x: 0,
@@ -166,6 +167,7 @@ export default {
                         ['rect', 0, 36, [127, 55]],
                     ],
                     name: "Shabby Desk",
+                    click: () => this.showMessage("The desk is empty right now.", 0, 168),
                 },
             ];
         },

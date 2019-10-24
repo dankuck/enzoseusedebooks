@@ -8070,29 +8070,31 @@ __webpack_require__.r(__webpack_exports__);
                 y: 53 + 42,
                 dimensionSets: [['rect', -20, -42, [40, 84]]],
                 name: this.app.world.hasGoneTo('children-stack') ? 'Musty Children\'s Books' : 'Musty Books',
-                goTo: 'children-stack'
+                click: () => this.app.world.goTo('children-stack')
             }, {
                 x: 118,
                 y: 87,
                 dimensionSets: [['rect', -23, -37, [46, 84]]],
                 name: this.app.world.hasGoneTo('fiction-stack') ? 'Crusty Fiction' : 'Crusty Books',
-                goTo: 'fiction-stack'
+                click: () => this.app.world.goTo('fiction-stack')
             }, {
                 x: 37,
                 y: 97,
                 dimensionSets: [['rect', -18, -39, [36, 78]]],
                 name: this.app.world.hasGoneTo('nonfiction-stack') ? 'Dusty Non-Fiction' : 'Dusty Books',
-                goTo: 'nonfiction-stack'
+                click: () => this.app.world.goTo('nonfiction-stack')
             }, {
                 x: 295,
                 y: 64,
                 dimensionSets: [['rect', -6, -25, [12, 50]], ['rect', -12, 28, [17, 46]]],
-                name: "Shadowy Area"
+                name: "Shadowy Area",
+                click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64)
             }, {
                 x: 0,
                 y: 168,
                 dimensionSets: [['ellipse', 23, 0, [108, 54]], ['rect', 0, 0, [70, 90]], ['rect', 0, 36, [127, 55]]],
-                name: "Shabby Desk"
+                name: "Shabby Desk",
+                click: () => this.showMessage("The desk is empty right now.", 0, 168)
             }];
         }
     },
@@ -11077,14 +11079,7 @@ var render = function() {
         return _c(
           "enzo-click-spot",
           _vm._b(
-            {
-              key: "aisle:" + aisleIndex,
-              on: {
-                click: function($event) {
-                  return _vm.app.world.goTo(aisle.goTo)
-                }
-              }
-            },
+            { key: "aisle:" + aisleIndex, on: { click: aisle.click } },
             "enzo-click-spot",
             aisle,
             false
