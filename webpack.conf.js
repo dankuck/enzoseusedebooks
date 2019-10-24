@@ -2,7 +2,7 @@ const VueLoader = require('vue-loader');
 const path = require('path');
 
 module.exports = {
-    devtool: 'sourcemap',
+    devtool: 'source-map',
     entry: [
         './app/app.js'
     ],
