@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mochapack --webpack-config webpack.conf.js --glob '*.spec.js' test --recursive",
     "build": "node ./node_modules/webpack/bin/webpack.js --config webpack.conf.js",
-    "watch": "node ./node_modules/webpack/bin/webpack.js --config webpack.conf.js --watch"
+    "watch": "node ./node_modules/webpack/bin/webpack.js --config webpack.conf.js --watch",
+    "prod": "node ./node_modules/webpack/bin/webpack.js --config webpack.prod.conf.js"
   },
   "repository": {
     "type": "git",
