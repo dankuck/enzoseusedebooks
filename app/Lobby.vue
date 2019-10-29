@@ -125,10 +125,10 @@ export default {
         aisles() {
             return [
                 {
-                    x: 197 + 20,
+                    x: 213,
                     y: 53 + 42,
                     dimensionSets: [
-                        ['rect', -20, -42, [40, 84]],
+                        ['rect', -45, -42, [109, 84]],
                     ],
                     name: this.app.world.hasGoneTo('children-stack')
                         ? 'Musty Children\'s Books'
@@ -139,7 +139,7 @@ export default {
                     x: 118,
                     y: 87,
                     dimensionSets: [
-                        ['rect', -23, -37, [46, 84]],
+                        ['rect', -46, -37, [96, 84]],
                     ],
                     name: this.app.world.hasGoneTo('fiction-stack')
                         ? 'Crusty Fiction'
@@ -150,7 +150,7 @@ export default {
                     x: 37,
                     y: 97,
                     dimensionSets: [
-                        ['rect', -18, -39, [36, 78]],
+                        ['rect', -37, -39, [72, 78]],
                     ],
                     name: this.app.world.hasGoneTo('nonfiction-stack')
                         ? 'Dusty Non-Fiction'
@@ -161,8 +161,7 @@ export default {
                     x: 295,
                     y: 64,
                     dimensionSets: [
-                        ['rect', -6, -25, [12, 50]],
-                        ['rect', -12, 28, [17, 46]],
+                        ['rect', -18, -25, [24, 252]],
                     ],
                     name: "Shadowy Area",
                     click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64),
