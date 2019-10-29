@@ -1,5 +1,6 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
+import Inventory from '@world/Inventory';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -81,6 +82,9 @@ const upgrader = new VersionUpgrader()
             location: 'plant',
         };
     })
+    .version(10, world => {
+        world.inventory = new Inventory();
+    })
     ;
 
 export default class World
@@ -128,4 +132,5 @@ World.registerReviver = function (reviver) {
         (key, data) => { return {...data} }
     );
     reviver.register(Collection);
+    reviver.register(Inventory);
 };

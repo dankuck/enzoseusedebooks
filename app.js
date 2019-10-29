@@ -2489,6 +2489,77 @@ Collection.registerReviver = function (reviver) {
 
 /***/ }),
 
+/***/ "./app/world/Inventory.js":
+/*!********************************!*\
+  !*** ./app/world/Inventory.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Inventory; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+class Inventory {
+
+    constructor(data = {}) {
+        Object.assign(this, data);
+        if (!this.contents) {
+            this.contents = [];
+        }
+    }
+
+    add(item) {
+        this.contents.push(item);
+        return this;
+    }
+
+    remove(item) {
+        const index = this.contents.indexOf(item);
+        if (index < 0) {
+            return this;
+        }
+        this.contents.splice(index, 1);
+        return this;
+    }
+
+    firstWhere(...args) {
+        return this.where(...args)[0];
+    }
+
+    where(...args) {
+        let filter;
+        if (args[0] instanceof Function) {
+            [filter] = args;
+        } else {
+            const [field, value] = args;
+            filter = item => item[field] === value;
+        }
+        return this.contents.filter(filter);
+    }
+
+    removeWhere(...args) {
+        const items = this.where(...args);
+        items.forEach(item => this.remove(item));
+        return items;
+    }
+
+    isEmpty() {
+        return this.contents.length === 0;
+    }
+};
+
+Inventory.registerReviver = function (reviver) {
+    reviver.add('Inventory', Inventory, (key, value) => {
+        return new Inventory(value);
+    }, (key, value) => {
+        return _extends({}, value);
+    });
+};
+
+/***/ }),
+
 /***/ "./app/world/World.js":
 /*!****************************!*\
   !*** ./app/world/World.js ***!
@@ -2501,7 +2572,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
 /* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
 /* harmony import */ var _world_Collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/Collection */ "./app/world/Collection.js");
+/* harmony import */ var _world_Inventory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @world/Inventory */ "./app/world/Inventory.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -2563,6 +2636,8 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     world.battery = {
         location: 'plant'
     };
+}).version(10, world => {
+    world.inventory = new _world_Inventory__WEBPACK_IMPORTED_MODULE_2__["default"]();
 });
 
 class World {
@@ -2603,6 +2678,7 @@ World.registerReviver = function (reviver) {
         return _extends({}, data);
     });
     reviver.register(_world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    reviver.register(_world_Inventory__WEBPACK_IMPORTED_MODULE_2__["default"]);
 };
 
 /***/ }),

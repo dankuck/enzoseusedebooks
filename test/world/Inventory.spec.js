@@ -7,7 +7,7 @@ const {
 
 // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-describe.only('Inventory', function () {
+describe('Inventory', function () {
 
     it('instantiates', function () {
         new Inventory({});
