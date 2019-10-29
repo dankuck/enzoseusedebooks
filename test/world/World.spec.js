@@ -1,5 +1,6 @@
 import World from '@world/World';
 import Collection from '@world/Collection';
+import Reviver from '@libs/Reviver';
 import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
@@ -9,6 +10,21 @@ const {
 } = assert;
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const reviver = new Reviver();
+reviver.register(World);
+
+const buildBuilder = function (plain_object) {
+    const json = JSON.stringify(plain_object);
+    return function () {
+        return JSON
+            .parse(json, (k, v) => reviver.revive(k, v))
+            .world;
+    };
+};
+
+const build_version_3_world = buildBuilder(version_3_save);
+const build_version_4_world = buildBuilder(version_4_save);
 
 describe('World', function () {
 
@@ -25,10 +41,10 @@ describe('World', function () {
         equal(['version'], Object.keys(world).sort());
     });
 
-    const all_version_tests = function (worldObject) {
+    const all_version_tests = function (builder) {
 
         it('should have a lobbyPlant', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.lobbyPlant);
             assert(!world.plant); // this old name was deleted
             equal(
@@ -38,12 +54,12 @@ describe('World', function () {
         });
 
         it('should be in the lobby', function () {
-            const world = new World(worldObject);
+            const world = builder();
             equal('lobby', world.location);
         });
 
         it('should have bargain books', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.collections);
             assert(world.collections.bargain instanceof Collection);
             assert(world.collections.bargain.book1);
@@ -61,7 +77,7 @@ describe('World', function () {
         });
 
         it('should have fiction books', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.collections);
             assert(world.collections.fiction instanceof Collection);
             for (let i = 0; i < 150; i++) {
@@ -70,7 +86,7 @@ describe('World', function () {
         });
 
         it('should have nonfiction books', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.collections);
             assert(world.collections.nonfiction instanceof Collection);
             for (let i = 0; i < 150; i++) {
@@ -79,7 +95,7 @@ describe('World', function () {
         });
 
         it('should be able to ruffle the plant', function () {
-            const world = new World(worldObject);
+            const world = builder();
             world.ruffleLobbyPlant();
             assert(world.lobbyPlant.name, 'Ruffled Plant');
             assert(world.lobbyPlant.response, "Hasn't this plant been through enough?");
@@ -87,7 +103,7 @@ describe('World', function () {
         });
 
         it('should visit another place', function () {
-            const world = new World(worldObject);
+            const world = builder();
             const place = Math.random();
             assert(world.locationHistory.length === 1);
             world.goTo(place);
@@ -96,7 +112,7 @@ describe('World', function () {
         });
 
         it('should not go nowhere', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.locationHistory.length === 1);
             let caughtError;
             try {
@@ -110,7 +126,7 @@ describe('World', function () {
         });
 
         it('should know where it has been', function () {
-            const world = new World(worldObject);
+            const world = builder();
             const place1 = Math.random();
             const place2 = Math.random();
             const place3 = Math.random();
@@ -122,20 +138,20 @@ describe('World', function () {
         });
 
         it('should have a battery', function () {
-            const world = new World(worldObject);
+            const world = builder();
             assert(world.battery);
         });
     };
 
     describe('Fresh version', function () {
-        all_version_tests({});
+        all_version_tests(() => new World({}));
     });
 
     describe('Version 3 - ruffled plant', function () {
-        all_version_tests(version_3_save);
+        all_version_tests(build_version_3_world);
     });
 
     describe('Version 4 - ruffled plant, loaded books', function () {
-        all_version_tests(version_4_save);
+        all_version_tests(build_version_4_world);
     });
 });

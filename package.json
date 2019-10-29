@@ -27,14 +27,14 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-latest": "^6.24.1",
     "css-loader": "^0.26.4",
+    "lodash.shuffle": "^4.2.0",
     "mocha": "^6.2.0",
     "mochapack": "^1.1.5",
     "vue": "^2.6.10",
+    "vue-easeljs": "^0.1.13",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8",
-    "lodash.shuffle": "^4.2.0",
-    "vue-easeljs": "^0.1.13"
+    "webpack-cli": "^3.3.8"
   }
 }
