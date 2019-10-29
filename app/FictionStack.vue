@@ -17,7 +17,7 @@
             start-x="10"
         >
             <easel-bitmap
-                image="bookcase2-back.gif"
+                image="images/bookcase2-back.gif"
             >
             </easel-bitmap>
 
@@ -37,12 +37,12 @@
             </stack>
 
             <easel-bitmap
-                image="bookcase2-front.gif"
+                image="images/bookcase2-front.gif"
             >
             </easel-bitmap>
 
             <easel-bitmap
-                image="bookcase2-shadow.gif"
+                image="images/bookcase2-shadow.gif"
                 alpha=".5"
             >
             </easel-bitmap>

@@ -13,7 +13,7 @@
 <template>
     <easel-container>
         <easel-bitmap
-            image="lobby.gif"
+            image="images/lobby.gif"
         >
         </easel-bitmap>
 
@@ -45,13 +45,20 @@
         </enzo-click-spot>
 
         <big-plant
-            :name="this.app.world.lobbyPlant.name"
+            :name="app.world.lobbyPlant.name"
             x="330"
             y="160"
-            :ruffled="this.app.world.lobbyPlant.ruffled"
+            :ruffled="app.world.lobbyPlant.ruffled"
             @shake="checkPlant"
         >
         </big-plant>
+
+        <battery
+            v-if="app.world.battery.location === 'lobby-floor'"
+            x="320"
+            y="170"
+        >
+        </battery>
 
         <enzo-click-spot
             v-for="book in books"
@@ -80,12 +87,14 @@
 import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
+import Battery from '@app/Battery';
 
 export default {
     mixins: [HasTextLayer],
     components: {
         BigPlant,
         BookViewer,
+        Battery,
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -176,6 +185,8 @@ export default {
         checkPlant(vuePlant) {
             this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
             this.app.world.ruffleLobbyPlant();
+            this.app.world.battery.location = 'lobby-floor';
+            this.queueMessage(`Something fell out of the ${this.app.world.lobbyPlant.name}.`, vuePlant.x, vuePlant.y);
         },
     },
 };

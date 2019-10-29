@@ -217,7 +217,7 @@ describe('Collection', function () {
         // Capture the revival callbacks
         let revive;
         const reviver = {
-            add(cls, reviver, replacer) {
+            add(name, cls, reviver, replacer) {
                 if (cls === Collection) {
                     revive = {reviver, replacer};
                 }

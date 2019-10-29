@@ -77,6 +77,11 @@ const upgrader = new VersionUpgrader()
             codes,
         });
     })
+    .version(9, world => {
+        world.battery = {
+            location: 'plant',
+        };
+    })
     ;
 
 export default class World

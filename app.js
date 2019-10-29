@@ -86,6 +86,75 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./app/Battery.vue":
+/*!*************************!*\
+  !*** ./app/Battery.vue ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Battery.vue?vue&type=template&id=354b3061& */ "./app/Battery.vue?vue&type=template&id=354b3061&");
+/* harmony import */ var _Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Battery.vue?vue&type=script&lang=js& */ "./app/Battery.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/Battery.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/Battery.vue?vue&type=script&lang=js&":
+/*!**************************************************!*\
+  !*** ./app/Battery.vue?vue&type=script&lang=js& ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./Battery.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/Battery.vue?vue&type=template&id=354b3061&":
+/*!********************************************************!*\
+  !*** ./app/Battery.vue?vue&type=template&id=354b3061& ***!
+  \********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./Battery.vue?vue&type=template&id=354b3061& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=template&id=354b3061&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/BigPlant.vue":
 /*!**************************!*\
   !*** ./app/BigPlant.vue ***!
@@ -2491,6 +2560,10 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
         default: { title: '' },
         codes
     });
+}).version(9, world => {
+    world.battery = {
+        location: 'plant'
+    };
 });
 
 class World {
@@ -4120,6 +4193,44 @@ module.exports = function isBuffer(obj) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/Battery.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    inject: ['app'],
+    props: ['x', 'y'],
+    data() {
+        return {
+            name: 'AA Battery'
+        };
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=script&lang=js& ***!
@@ -4879,6 +4990,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
+/* harmony import */ var _app_Battery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/Battery */ "./app/Battery.vue");
 //
 //
 //
@@ -4957,6 +5069,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4966,7 +5086,8 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
+        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -5019,6 +5140,8 @@ __webpack_require__.r(__webpack_exports__);
         checkPlant(vuePlant) {
             this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
             this.app.world.ruffleLobbyPlant();
+            this.app.world.battery.location = 'lobby-floor';
+            this.queueMessage(`Something fell out of the ${this.app.world.lobbyPlant.name}.`, vuePlant.x, vuePlant.y);
         }
     }
 });
@@ -10491,6 +10614,38 @@ exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || t
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=template&id=354b3061&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/Battery.vue?vue&type=template&id=354b3061& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("easel-bitmap", {
+    attrs: {
+      image: "images/battery.gif",
+      x: _vm.x,
+      y: _vm.y,
+      cursor: "pointer"
+    },
+    on: { mouseover: _vm.hover, mouseout: _vm.unhover }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=template&id=1eb8cba7&":
 /*!***************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=template&id=1eb8cba7& ***!
@@ -10510,7 +10665,7 @@ var render = function() {
     "easel-sprite-sheet",
     {
       attrs: {
-        images: ["./big-plant-in-lobby-sprite.gif"],
+        images: ["images/big-plant-in-lobby-sprite.gif"],
         frames: { width: 90, height: 96 },
         animations: {
           rest: 1,
@@ -10663,7 +10818,7 @@ var render = function() {
           }
         },
         [
-          _c("easel-bitmap", { attrs: { image: "bookcase3-back.gif" } }),
+          _c("easel-bitmap", { attrs: { image: "images/bookcase3-back.gif" } }),
           _vm._v(" "),
           _c("stack", {
             attrs: {
@@ -10685,10 +10840,12 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("easel-bitmap", { attrs: { image: "bookcase3-front.gif" } }),
+          _c("easel-bitmap", {
+            attrs: { image: "images/bookcase3-front.gif" }
+          }),
           _vm._v(" "),
           _c("easel-bitmap", {
-            attrs: { image: "bookcase3-shadow.gif", alpha: ".5" }
+            attrs: { image: "images/bookcase3-shadow.gif", alpha: ".5" }
           }),
           _vm._v(" "),
           _c(
@@ -10973,7 +11130,7 @@ var render = function() {
         "sliding-window",
         { attrs: { width: "400", "start-x": "10" } },
         [
-          _c("easel-bitmap", { attrs: { image: "bookcase2-back.gif" } }),
+          _c("easel-bitmap", { attrs: { image: "images/bookcase2-back.gif" } }),
           _vm._v(" "),
           _c("stack", {
             attrs: {
@@ -10995,10 +11152,12 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("easel-bitmap", { attrs: { image: "bookcase2-front.gif" } }),
+          _c("easel-bitmap", {
+            attrs: { image: "images/bookcase2-front.gif" }
+          }),
           _vm._v(" "),
           _c("easel-bitmap", {
-            attrs: { image: "bookcase2-shadow.gif", alpha: ".5" }
+            attrs: { image: "images/bookcase2-shadow.gif", alpha: ".5" }
           }),
           _vm._v(" "),
           _c(
@@ -11069,7 +11228,7 @@ var render = function() {
   return _c(
     "easel-container",
     [
-      _c("easel-bitmap", { attrs: { image: "lobby.gif" } }),
+      _c("easel-bitmap", { attrs: { image: "images/lobby.gif" } }),
       _vm._v(" "),
       _c("enzo-click-spot", {
         attrs: { name: "Window", x: "326", y: "70", r: "25" },
@@ -11107,13 +11266,17 @@ var render = function() {
       _vm._v(" "),
       _c("big-plant", {
         attrs: {
-          name: this.app.world.lobbyPlant.name,
+          name: _vm.app.world.lobbyPlant.name,
           x: "330",
           y: "160",
-          ruffled: this.app.world.lobbyPlant.ruffled
+          ruffled: _vm.app.world.lobbyPlant.ruffled
         },
         on: { shake: _vm.checkPlant }
       }),
+      _vm._v(" "),
+      _vm.app.world.battery.location === "lobby-floor"
+        ? _c("battery", { attrs: { x: "320", y: "170" } })
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.books, function(book) {
         return _c(
@@ -11179,7 +11342,7 @@ var render = function() {
         "sliding-window",
         { attrs: { width: "400", "start-x": "10" } },
         [
-          _c("easel-bitmap", { attrs: { image: "bookcase1-back.gif" } }),
+          _c("easel-bitmap", { attrs: { image: "images/bookcase1-back.gif" } }),
           _vm._v(" "),
           _c("stack", {
             attrs: {
@@ -11201,10 +11364,12 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("easel-bitmap", { attrs: { image: "bookcase1-front.gif" } }),
+          _c("easel-bitmap", {
+            attrs: { image: "images/bookcase1-front.gif" }
+          }),
           _vm._v(" "),
           _c("easel-bitmap", {
-            attrs: { image: "bookcase1-shadow.gif", alpha: ".5" }
+            attrs: { image: "images/bookcase1-shadow.gif", alpha: ".5" }
           }),
           _vm._v(" "),
           _c(

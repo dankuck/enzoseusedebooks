@@ -120,6 +120,11 @@ describe('World', function () {
             assert(world.hasGoneTo(place2));
             assert(!world.hasGoneTo(place3));
         });
+
+        it('should have a battery', function () {
+            const world = new World(worldObject);
+            assert(world.battery);
+        });
     };
 
     describe('Fresh version', function () {

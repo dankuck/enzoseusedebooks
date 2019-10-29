@@ -17,7 +17,7 @@
             :start-x="(400 - app.canvas.pixelWidth) - 10"
         >
             <easel-bitmap
-                image="bookcase3-back.gif"
+                image="images/bookcase3-back.gif"
             >
             </easel-bitmap>
 
@@ -37,12 +37,12 @@
             </stack>
 
             <easel-bitmap
-                image="bookcase3-front.gif"
+                image="images/bookcase3-front.gif"
             >
             </easel-bitmap>
 
             <easel-bitmap
-                image="bookcase3-shadow.gif"
+                image="images/bookcase3-shadow.gif"
                 alpha=".5"
             >
             </easel-bitmap>

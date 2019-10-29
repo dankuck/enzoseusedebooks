@@ -9,7 +9,7 @@
 -->
 <template>
     <easel-sprite-sheet
-        :images="['./big-plant-in-lobby-sprite.gif']"
+        :images="['images/big-plant-in-lobby-sprite.gif']"
         :frames="{width: 90, height: 96}"
         :animations="{
             rest: 1,
