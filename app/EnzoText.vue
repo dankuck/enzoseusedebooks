@@ -39,10 +39,10 @@ export default {
     },
     computed: {
         align() {
-            const horizontal = this.x < this.app.canvas.pixelWidth / 2
+            const horizontal = this.x < this.app.viewport.width / 2
                 ? 'left'
                 : 'right';
-            const vertical = this.y < this.app.canvas.pixelHeight / 2
+            const vertical = this.y < this.app.viewport.height / 2
                 ? 'top'
                 : 'bottom';
             return [horizontal, vertical];
@@ -54,7 +54,7 @@ export default {
             return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         },
         fittedText() {
-            const maxLength = (this.app.canvas.pixelWidth / 2) / this.fontWidth;
+            const maxLength = (this.app.viewport.width / 2) / this.fontWidth;
             return sizeText(this.text, maxLength);
         },
         strokeSize() {

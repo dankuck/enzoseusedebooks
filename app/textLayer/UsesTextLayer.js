@@ -25,6 +25,7 @@ export default {
         this.addToHoverRing();
     },
     destroyed() {
+        this.unhover();
         this.removeFromHoverRing();
     },
 };

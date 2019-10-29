@@ -22,8 +22,8 @@
             id="canvas"
             :width="app.canvas.width"
             :height="app.canvas.height"
-            :viewport-width="app.canvas.pixelWidth"
-            :viewport-height="app.canvas.pixelHeight"
+            :viewport-width="app.viewport.width"
+            :viewport-height="app.viewport.height"
             :anti-alias="false"
         >
             <component :is="app.world.location"></component>

@@ -1085,10 +1085,14 @@ __webpack_require__.r(__webpack_exports__);
  | Data includes:
  |  config: data from config.js
  |  isMobile: dynamic boolean is true if the screen size looks like mobile
- |  canvas.pixelWidth: the width of the canvas internally
- |  canvas.pixelHeight: the height of the canvas internally
+ |  viewport.width: the width of the canvas internally
+ |  viewport.height: the height of the canvas internally
  |  canvas.width: the HTML page width of the canvas
  |  canvas.height: the HTML page height of the canvas
+ |  roomSize.width: the width of the room area
+ |  roomSize.height: the height of the room area
+ |  inventorySize.width: the width of the inventory area
+ |  inventorySize.height: the height of the inventory area
  |  storage: a JsonStorage object that persists data to localStorage
  |  world: the World object
  |
@@ -1154,20 +1158,34 @@ const app = new Vue({
             config: _config__WEBPACK_IMPORTED_MODULE_4__["default"],
             isMobile: false,
             canvas: {
-                pixelWidth: 350,
-                pixelHeight: 255,
                 width: 350,
                 height: 255
+            },
+            roomSize: {
+                width: 350,
+                height: 255
+            },
+            inventorySize: {
+                width: 350,
+                height: 50
             },
             storage,
             world
         };
     },
+    computed: {
+        viewport() {
+            return {
+                width: this.roomSize.width,
+                height: this.roomSize.height + (this.world.inventory.contents.length === 0 ? 0 : this.inventorySize.height)
+            };
+        }
+    },
     watch: {
-        'canvas.pixelWidth': function () {
+        'viewport.width': function () {
             this.resize();
         },
-        'canvas.pixelHeight': function () {
+        'viewport.height': function () {
             this.resize();
         }
     },
@@ -1176,8 +1194,8 @@ const app = new Vue({
             const parent = this.$el.parentNode;
             this.canvas.width = parent.offsetWidth;
             this.canvas.height = parent.offsetHeight;
-            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
-            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
+            const adjustedHeight = this.canvas.width * this.viewport.height / this.viewport.width;
+            const adjustedWidth = this.canvas.height * this.viewport.width / this.viewport.height;
             if (adjustedWidth < this.canvas.width) {
                 this.canvas.width = adjustedWidth;
             }
@@ -2393,6 +2411,7 @@ __webpack_require__.r(__webpack_exports__);
         this.addToHoverRing();
     },
     destroyed() {
+        this.unhover();
         this.removeFromHoverRing();
     }
 });
@@ -2656,6 +2675,12 @@ class World {
             this.battery.location = 'lobby-floor';
             queueMessage(`Something fell out of the ${this.lobbyPlant.name}.`);
         }
+    }
+
+    takeBattery(queueMessage) {
+        this.battery.location = 'inventory';
+        this.inventory.add({ name: 'AA Battery' });
+        queueMessage("You've taken the AA Battery");
     }
 
     goTo(location) {
@@ -4296,6 +4321,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4834,8 +4860,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     computed: {
         align() {
-            const horizontal = this.x < this.app.canvas.pixelWidth / 2 ? 'left' : 'right';
-            const vertical = this.y < this.app.canvas.pixelHeight / 2 ? 'top' : 'bottom';
+            const horizontal = this.x < this.app.viewport.width / 2 ? 'left' : 'right';
+            const vertical = this.y < this.app.viewport.height / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
@@ -4845,7 +4871,7 @@ __webpack_require__.r(__webpack_exports__);
             return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
         },
         fittedText() {
-            const maxLength = this.app.canvas.pixelWidth / 2 / this.fontWidth;
+            const maxLength = this.app.viewport.width / 2 / this.fontWidth;
             return Object(_libs_sizeText_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.text, maxLength);
         },
         strokeSize() {
@@ -5156,6 +5182,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -5172,7 +5199,11 @@ __webpack_require__.r(__webpack_exports__);
     data() {
         this.app.world.collections.bargain.load();
         return {
-            viewBook: null
+            viewBook: null,
+            battery: {
+                x: 320,
+                y: 170
+            }
         };
     },
     computed: {
@@ -5219,6 +5250,9 @@ __webpack_require__.r(__webpack_exports__);
     methods: {
         checkPlant(vuePlant) {
             this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
+        },
+        takeBattery() {
+            this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
         }
     }
 });
@@ -5410,10 +5444,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     computed: {
         handleWidth() {
-            return 0.15 * this.app.canvas.pixelWidth;
+            return 0.15 * this.app.viewport.width;
         },
         maxX() {
-            return this.width - this.app.canvas.pixelWidth;
+            return this.width - this.app.viewport.width;
         }
     },
     methods: {
@@ -10715,7 +10749,13 @@ var render = function() {
       y: _vm.y,
       cursor: "pointer"
     },
-    on: { mouseover: _vm.hover, mouseout: _vm.unhover }
+    on: {
+      mouseover: _vm.hover,
+      mouseout: _vm.unhover,
+      click: function($event) {
+        return _vm.$emit("click", $event)
+      }
+    }
   })
 }
 var staticRenderFns = []
@@ -10807,7 +10847,7 @@ var render = function() {
           form: "rect",
           x: "0",
           y: "0",
-          dimensions: [_vm.app.canvas.pixelWidth, _vm.app.canvas.pixelHeight],
+          dimensions: [_vm.app.viewport.width, _vm.app.viewport.height],
           fill: "black",
           alpha: ".5"
         },
@@ -10822,8 +10862,8 @@ var render = function() {
         ? _c("easel-bitmap", {
             attrs: {
               image: _vm.bookImage,
-              x: _vm.app.canvas.pixelWidth / 2 - 6,
-              y: _vm.app.canvas.pixelHeight / 2,
+              x: _vm.app.viewport.width / 2 - 6,
+              y: _vm.app.viewport.height / 2,
               align: "center-right",
               filters: [["ColorReducer", 6]]
             }
@@ -10833,15 +10873,15 @@ var render = function() {
       _c("enzo-text", {
         attrs: {
           text: _vm.description,
-          x: _vm.app.canvas.pixelWidth / 2 - 1,
-          y: _vm.app.canvas.pixelHeight / 2 - _vm.book.image.height / 2
+          x: _vm.app.viewport.width / 2 - 1,
+          y: _vm.app.viewport.height / 2 - _vm.book.image.height / 2
         }
       }),
       _vm._v(" "),
       _c("easel-shape", {
         attrs: {
-          x: _vm.app.canvas.pixelWidth / 2 - 2,
-          y: _vm.app.canvas.pixelHeight / 2 + _vm.book.image.height / 2,
+          x: _vm.app.viewport.width / 2 - 2,
+          y: _vm.app.viewport.height / 2 + _vm.book.image.height / 2,
           form: "rect",
           fill: "grey",
           dimensions: [130, 10],
@@ -10854,8 +10894,8 @@ var render = function() {
       _c("enzo-text", {
         attrs: {
           text: "Buy It On Amazon",
-          x: _vm.app.canvas.pixelWidth / 2 - 1,
-          y: _vm.app.canvas.pixelHeight / 2 + _vm.book.image.height / 2
+          x: _vm.app.viewport.width / 2 - 1,
+          y: _vm.app.viewport.height / 2 + _vm.book.image.height / 2
         }
       })
     ],
@@ -10891,10 +10931,7 @@ var render = function() {
       _c(
         "sliding-window",
         {
-          attrs: {
-            width: "400",
-            "start-x": 400 - _vm.app.canvas.pixelWidth - 10
-          }
+          attrs: { width: "400", "start-x": 400 - _vm.app.viewport.width - 10 }
         },
         [
           _c("easel-bitmap", { attrs: { image: "images/bookcase3-back.gif" } }),
@@ -11150,8 +11187,8 @@ var render = function() {
             id: "canvas",
             width: _vm.app.canvas.width,
             height: _vm.app.canvas.height,
-            "viewport-width": _vm.app.canvas.pixelWidth,
-            "viewport-height": _vm.app.canvas.pixelHeight,
+            "viewport-width": _vm.app.viewport.width,
+            "viewport-height": _vm.app.viewport.height,
             "anti-alias": false
           }
         },
@@ -11355,7 +11392,10 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.app.world.battery.location === "lobby-floor"
-        ? _c("battery", { attrs: { x: "320", y: "170" } })
+        ? _c("battery", {
+            attrs: { x: _vm.battery.x, y: _vm.battery.y },
+            on: { click: _vm.takeBattery }
+          })
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.books, function(book) {
@@ -11538,7 +11578,7 @@ var render = function() {
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [_vm.handleWidth, _vm.app.canvas.pixelHeight],
+                  dimensions: [_vm.handleWidth, _vm.app.viewport.height],
                   fill: "black"
                 }
               })
@@ -11553,7 +11593,7 @@ var render = function() {
             {
               attrs: {
                 speed: 8,
-                x: _vm.app.canvas.pixelWidth - _vm.handleWidth,
+                x: _vm.app.viewport.width - _vm.handleWidth,
                 y: 0
               },
               on: {
@@ -11567,7 +11607,7 @@ var render = function() {
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [_vm.handleWidth, _vm.app.canvas.pixelHeight],
+                  dimensions: [_vm.handleWidth, _vm.app.viewport.height],
                   fill: "black"
                 }
               })
@@ -11734,7 +11774,7 @@ var render = function() {
       _c("easel-shape", {
         attrs: {
           form: "rect",
-          dimensions: [_vm.app.canvas.pixelWidth, _vm.app.canvas.pixelHeight],
+          dimensions: [_vm.app.viewport.width, _vm.app.viewport.height],
           fill: "black",
           alpha: ".2"
         },
@@ -11766,7 +11806,7 @@ var render = function() {
                 shadow: ["black", 0, 0, 3],
                 align: [
                   "top",
-                  point.x > _vm.app.canvas.pixelWidth / 2 ? "right" : "left"
+                  point.x > _vm.app.viewport.width / 2 ? "right" : "left"
                 ]
               }
             })
@@ -11803,8 +11843,8 @@ var render = function() {
   return _c("enzo-text", {
     attrs: {
       text: _vm.DevSettings.showText,
-      x: _vm.app.canvas.pixelWidth / 2 - 1,
-      y: _vm.app.canvas.pixelHeight / 2 - 1
+      x: _vm.app.viewport.width / 2 - 1,
+      y: _vm.app.viewport.height / 2 - 1
     }
   })
 }

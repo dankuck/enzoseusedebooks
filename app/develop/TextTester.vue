@@ -1,8 +1,8 @@
 <template>
     <enzo-text
         :text="DevSettings.showText"
-        :x="app.canvas.pixelWidth / 2 - 1"
-        :y="app.canvas.pixelHeight / 2 - 1"
+        :x="app.viewport.width / 2 - 1"
+        :y="app.viewport.height / 2 - 1"
     >
     </enzo-text>
 </template>

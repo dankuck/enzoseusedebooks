@@ -55,8 +55,9 @@
 
         <battery
             v-if="app.world.battery.location === 'lobby-floor'"
-            x="320"
-            y="170"
+            :x="battery.x"
+            :y="battery.y"
+            @click="takeBattery"
         >
         </battery>
 
@@ -100,6 +101,10 @@ export default {
         this.app.world.collections.bargain.load();
         return {
             viewBook: null,
+            battery: {
+                x: 320,
+                y: 170,
+            },
         };
     },
     computed: {
@@ -183,6 +188,9 @@ export default {
     methods: {
         checkPlant(vuePlant) {
             this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
+        },
+        takeBattery() {
+            this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
         },
     },
 };

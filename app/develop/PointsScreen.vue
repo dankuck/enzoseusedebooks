@@ -2,7 +2,7 @@
     <easel-container>
         <easel-shape
             form="rect"
-            :dimensions="[app.canvas.pixelWidth, app.canvas.pixelHeight]"
+            :dimensions="[app.viewport.width, app.viewport.height]"
             fill="black"
             alpha=".2"
             @click="addPoint"
@@ -27,7 +27,7 @@
                 color="red"
                 font="4px Arial"
                 :shadow="['black', 0, 0, 3]"
-                :align="['top', point.x > app.canvas.pixelWidth / 2 ? 'right' : 'left']"
+                :align="['top', point.x > app.viewport.width / 2 ? 'right' : 'left']"
             >
             </easel-text>
         </div>

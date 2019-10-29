@@ -110,6 +110,12 @@ export default class World
         }
     }
 
+    takeBattery(queueMessage) {
+        this.battery.location = 'inventory';
+        this.inventory.add({name: 'AA Battery'});
+        queueMessage("You've taken the AA Battery");
+    }
+
     goTo(location) {
         if (!location) {
             throw new Error('Cannot go nowhere');

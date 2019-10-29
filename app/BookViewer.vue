@@ -4,7 +4,7 @@
             form="rect"
             x="0"
             y="0"
-            :dimensions="[app.canvas.pixelWidth, app.canvas.pixelHeight]"
+            :dimensions="[app.viewport.width, app.viewport.height]"
             fill="black"
             alpha=".5"
             @click="$emit('close')"
@@ -14,8 +14,8 @@
         <easel-bitmap
             v-if="imageLoaded"
             :image="bookImage"
-            :x="app.canvas.pixelWidth / 2 - 6"
-            :y="app.canvas.pixelHeight / 2"
+            :x="app.viewport.width / 2 - 6"
+            :y="app.viewport.height / 2"
             align="center-right"
             :filters="[['ColorReducer', 6]]"
         >
@@ -23,14 +23,14 @@
 
         <enzo-text
             :text="description"
-            :x="app.canvas.pixelWidth / 2 - 1"
-            :y="app.canvas.pixelHeight / 2 - book.image.height / 2"
+            :x="app.viewport.width / 2 - 1"
+            :y="app.viewport.height / 2 - book.image.height / 2"
         >
         </enzo-text>
 
         <easel-shape
-            :x="app.canvas.pixelWidth / 2 - 2"
-            :y="app.canvas.pixelHeight / 2 + book.image.height / 2"
+            :x="app.viewport.width / 2 - 2"
+            :y="app.viewport.height / 2 + book.image.height / 2"
             form="rect"
             fill="grey"
             :dimensions="[130, 10]"
@@ -42,8 +42,8 @@
 
         <enzo-text
             text="Buy It On Amazon"
-            :x="app.canvas.pixelWidth / 2 - 1"
-            :y="app.canvas.pixelHeight / 2 + book.image.height / 2"
+            :x="app.viewport.width / 2 - 1"
+            :y="app.viewport.height / 2 + book.image.height / 2"
         >
         </enzo-text>
 

@@ -11,10 +11,14 @@
  | Data includes:
  |  config: data from config.js
  |  isMobile: dynamic boolean is true if the screen size looks like mobile
- |  canvas.pixelWidth: the width of the canvas internally
- |  canvas.pixelHeight: the height of the canvas internally
+ |  viewport.width: the width of the canvas internally
+ |  viewport.height: the height of the canvas internally
  |  canvas.width: the HTML page width of the canvas
  |  canvas.height: the HTML page height of the canvas
+ |  roomSize.width: the width of the room area
+ |  roomSize.height: the height of the room area
+ |  inventorySize.width: the width of the inventory area
+ |  inventorySize.height: the height of the inventory area
  |  storage: a JsonStorage object that persists data to localStorage
  |  world: the World object
  |
@@ -91,20 +95,34 @@ const app = new Vue({
             config,
             isMobile: false,
             canvas: {
-                pixelWidth: 350,
-                pixelHeight: 255,
                 width: 350,
                 height: 255,
+            },
+            roomSize: {
+                width: 350,
+                height: 255,
+            },
+            inventorySize: {
+                width: 350,
+                height: 50,
             },
             storage,
             world,
         };
     },
+    computed: {
+        viewport() {
+            return {
+                width: this.roomSize.width,
+                height: this.roomSize.height + (this.world.inventory.contents.length === 0 ? 0 : this.inventorySize.height),
+            };
+        },
+    },
     watch: {
-        'canvas.pixelWidth': function () {
+        'viewport.width': function () {
             this.resize();
         },
-        'canvas.pixelHeight': function () {
+        'viewport.height': function () {
             this.resize();
         },
     },
@@ -113,8 +131,8 @@ const app = new Vue({
             const parent = this.$el.parentNode;
             this.canvas.width = parent.offsetWidth;
             this.canvas.height = parent.offsetHeight;
-            const adjustedHeight = this.canvas.width * this.canvas.pixelHeight / this.canvas.pixelWidth;
-            const adjustedWidth = this.canvas.height * this.canvas.pixelWidth / this.canvas.pixelHeight;
+            const adjustedHeight = this.canvas.width * this.viewport.height / this.viewport.width;
+            const adjustedWidth = this.canvas.height * this.viewport.width / this.viewport.height;
             if (adjustedWidth < this.canvas.width) {
                 this.canvas.width = adjustedWidth;
             }

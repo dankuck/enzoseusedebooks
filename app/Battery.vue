@@ -5,6 +5,7 @@
         :y="y"
         @mouseover="hover"
         @mouseout="unhover"
+        @click="$emit('click', $event)"
         cursor="pointer"
     >
     </easel-bitmap>
