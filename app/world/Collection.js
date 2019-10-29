@@ -71,6 +71,7 @@ export default class Collection
 
 Collection.registerReviver = function (reviver) {
     reviver.add(
+        'Collection',
         Collection,
         (key, data) => { return new Collection(data) },
         (key, data) => {

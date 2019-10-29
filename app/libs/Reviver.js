@@ -14,11 +14,12 @@ export default class Reviver
         this.toJSONs = new Map();
     }
 
-    add(classToRevive, revive, replace) {
+    add(name, classToRevive, revive, replace) {
         this.classes.push({
+            name,
             'class': classToRevive,
-            revive: revive,
-            replace: replace,
+            revive,
+            replace,
         });
         if (classToRevive.prototype.toJSON) {
             this.toJSONs.set(classToRevive, classToRevive.prototype.toJSON);
@@ -35,7 +36,7 @@ export default class Reviver
                     if (value instanceof match.class) {
                         return match;
                     }
-                    if (value && value.__class__ === match.class.name) {
+                    if (value && value.__class__ === match.name) {
                         return match;
                     }
                     return null;
@@ -47,7 +48,11 @@ export default class Reviver
     revive(key, value) {
         const match = this.findMatch(value);
         if (!match) {
-            return value;
+            if (value && value.__class__) {
+                return null; // sorry, your data is dead
+            } else {
+                return value;
+            }
         } else {
             return match.revive(key, value.__data__);
         }
@@ -63,7 +68,7 @@ export default class Reviver
         } else {
             const replaced = match.replace(key, original);
             return {
-                __class__: match.class.name,
+                __class__: match.name,
                 __data__: replaced === original ? asJSON : replaced,
             };
         }

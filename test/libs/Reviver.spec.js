@@ -15,16 +15,24 @@ describe('Reviver', function () {
         assert(date === replaced);
     });
 
-    it('revives nothing by default', function () {
+    it('revives no-changes by default', function () {
+        const reviver = new Reviver();
+        const date = {some: 'thing'};
+        const revived = reviver.revive('date', date);
+        assert(date === revived);
+    });
+
+    it('revives null for unmatched __class__', function () {
         const reviver = new Reviver();
         const date = {__class__: 'Date', __data__: '1985-10-26'};
         const revived = reviver.revive('date', date);
-        assert(date === revived);
+        assert(null === revived);
     });
 
     it('replaces according to added class', function () {
         const reviver = new Reviver();
         reviver.add(
+            'DateX',
             Date,
             null,
             (key, data) => {
@@ -34,12 +42,13 @@ describe('Reviver', function () {
         );
         const date = new Date('1985-10-26');
         const replaced = reviver.replace('date', date);
-        equal({__class__: 'Date', __data__: 'replaced data'}, replaced);
+        equal({__class__: 'DateX', __data__: 'replaced data'}, replaced);
     });
 
     it('revives according to added class', function () {
         const reviver = new Reviver();
         reviver.add(
+            'DateX',
             Date,
             (key, data) => {
                 assert(data === '1985-10-26');
@@ -47,7 +56,7 @@ describe('Reviver', function () {
             },
             null
         );
-        const date = {__class__: 'Date', __data__: '1985-10-26'};
+        const date = {__class__: 'DateX', __data__: '1985-10-26'};
         const revived = reviver.revive('date', date);
         equal('revived data', revived);
     });
@@ -77,6 +86,7 @@ describe('Reviver', function () {
         };
         const reviver = new Reviver();
         reviver.add(
+            'X',
             X,
             (k, v) => v,
             (k, v) => v,

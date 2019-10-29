@@ -108,6 +108,7 @@ export default class World
 
 World.registerReviver = function (reviver) {
     reviver.add(
+        'World',
         World,
         (key, data) => { return new World(data) },
         (key, data) => { return {...data} }

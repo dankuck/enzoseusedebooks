@@ -5,6 +5,7 @@ const reviver = new Reviver();
 
 reviver.register(World);
 reviver.add(
+    'Date',
     Date,
     (key, value) => new Date(value),
     (key, value) => value
