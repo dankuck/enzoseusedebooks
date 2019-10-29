@@ -4669,7 +4669,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -5320,6 +5319,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
@@ -5338,14 +5339,14 @@ __webpack_require__.r(__webpack_exports__);
         }
     },
     methods: {
-        scrollLeft() {
-            this.x -= 4;
+        scrollLeft(amount = 4) {
+            this.x -= amount;
             if (this.x < 0) {
                 this.x = 0;
             }
         },
-        scrollRight() {
-            this.x += 4;
+        scrollRight(amount = 4) {
+            this.x += amount;
             if (this.x > this.maxX) {
                 this.x = this.maxX;
             }
@@ -10981,8 +10982,9 @@ var render = function() {
       on: {
         rollover: _vm.beginHover,
         rollout: _vm.endHover,
-        mousedown: _vm.beginHover,
-        pressup: _vm.endHover
+        click: function($event) {
+          return _vm.$emit("click", $event)
+        }
       }
     },
     [
@@ -11447,13 +11449,18 @@ var render = function() {
             "enzo-hover-spot",
             {
               attrs: { speed: 8, x: 0, y: 0 },
-              on: { hovering: _vm.scrollLeft }
+              on: {
+                hovering: _vm.scrollLeft,
+                click: function($event) {
+                  return _vm.scrollLeft(_vm.handleWidth)
+                }
+              }
             },
             [
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [20, _vm.app.canvas.pixelHeight],
+                  dimensions: [_vm.handleWidth, _vm.app.canvas.pixelHeight],
                   fill: "black"
                 }
               })
@@ -11466,14 +11473,23 @@ var render = function() {
         ? _c(
             "enzo-hover-spot",
             {
-              attrs: { speed: 8, x: _vm.app.canvas.pixelWidth - 20, y: 0 },
-              on: { hovering: _vm.scrollRight }
+              attrs: {
+                speed: 8,
+                x: _vm.app.canvas.pixelWidth - _vm.handleWidth,
+                y: 0
+              },
+              on: {
+                hovering: _vm.scrollRight,
+                click: function($event) {
+                  return _vm.scrollRight(_vm.handleWidth)
+                }
+              }
             },
             [
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [20, _vm.app.canvas.pixelHeight],
+                  dimensions: [_vm.handleWidth, _vm.app.canvas.pixelHeight],
                   fill: "black"
                 }
               })

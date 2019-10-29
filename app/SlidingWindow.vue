@@ -12,10 +12,11 @@
             :x="0"
             :y="0"
             @hovering="scrollLeft"
+            @click="scrollLeft(handleWidth)"
         >
             <easel-shape
                 form="rect"
-                :dimensions="[20, app.canvas.pixelHeight]"
+                :dimensions="[handleWidth, app.canvas.pixelHeight]"
                 fill="black"
             >
             </easel-shape>
@@ -24,13 +25,14 @@
         <enzo-hover-spot
             v-if="x < maxX"
             :speed="8"
-            :x="app.canvas.pixelWidth - 20"
+            :x="app.canvas.pixelWidth - handleWidth"
             :y="0"
             @hovering="scrollRight"
+            @click="scrollRight(handleWidth)"
         >
             <easel-shape
                 form="rect"
-                :dimensions="[20, app.canvas.pixelHeight]"
+                :dimensions="[handleWidth, app.canvas.pixelHeight]"
                 fill="black"
             >
             </easel-shape>
@@ -56,14 +58,14 @@ export default {
         },
     },
     methods: {
-        scrollLeft() {
-            this.x -= 4;
+        scrollLeft(amount = 4) {
+            this.x -= amount;
             if (this.x < 0) {
                 this.x = 0;
             }
         },
-        scrollRight() {
-            this.x += 4;
+        scrollRight(amount = 4) {
+            this.x += amount;
             if (this.x > this.maxX) {
                 this.x = this.maxX;
             }

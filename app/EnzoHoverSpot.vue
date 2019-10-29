@@ -22,8 +22,7 @@
         :cache="true"
         @rollover="beginHover"
         @rollout="endHover"
-        @mousedown="beginHover"
-        @pressup="endHover"
+        @click="$emit('click', $event)"
     >
         <slot>
             <easel-shape
