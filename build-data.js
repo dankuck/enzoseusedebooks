@@ -6,6 +6,29 @@ const fs = require('fs');
 
 const selected = JSON.parse(fs.readFileSync(filename));
 
+const slimBook = function (book) {
+    const {
+        title,
+        isbn,
+        url,
+        image,
+        by,
+        dimensions,
+        published_at,
+        prices,
+    } = book;
+    return {
+        title,
+        isbn,
+        url,
+        image,
+        by,
+        dimensions,
+        published_at,
+        prices,
+    };
+};
+
 const groups = {
     bargain: {},
     fiction: {},
@@ -18,14 +41,15 @@ selected.forEach(book => {
     const is_childrens = /children/i.test(categories)
         && !/studies/i.test(categories)
         && !/adult/i.test(categories);
+    const slim = slimBook(book);
     if (book.tags.includes('bargain')) {
-        groups.bargain[book.title] = book;
+        groups.bargain[book.title] = slim;
     } else if (is_childrens) {
-        groups.children[book.title] = book;
+        groups.children[book.title] = slim;
     } else if (book.is_fiction) {
-        groups.fiction[book.title] = book;
+        groups.fiction[book.title] = slim;
     } else {
-        groups.nonfiction[book.title] = book;
+        groups.nonfiction[book.title] = slim;
     }
 });
 

@@ -2510,7 +2510,6 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     world.plant = {
         animation: 'rest',
         name: 'Suspicious Plant',
-        response: "You ruffled the plant. It's messy now.",
         ruffled: false
     };
 }).version(2, world => {
@@ -2572,10 +2571,16 @@ class World {
         this.version = upgrader.upgrade(this.version || 0, this);
     }
 
-    ruffleLobbyPlant() {
+    ruffleLobbyPlant(queueMessage) {
+        queueMessage(this.lobbyPlant.ruffled ? "Hasn't this plant been through enough?" : "You ruffled the plant. It's messy now.");
+
         this.lobbyPlant.name = 'Ruffled Plant';
-        this.lobbyPlant.response = "Hasn't this plant been through enough?";
         this.lobbyPlant.ruffled = true;
+
+        if (this.battery.location === 'plant') {
+            this.battery.location = 'lobby-floor';
+            queueMessage(`Something fell out of the ${this.lobbyPlant.name}.`);
+        }
     }
 
     goTo(location) {
@@ -5137,10 +5142,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
-            this.app.world.ruffleLobbyPlant();
-            this.app.world.battery.location = 'lobby-floor';
-            this.queueMessage(`Something fell out of the ${this.app.world.lobbyPlant.name}.`, vuePlant.x, vuePlant.y);
+            this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
         }
     }
 });

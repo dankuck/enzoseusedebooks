@@ -47,10 +47,10 @@ describe('World', function () {
             const world = builder();
             assert(world.lobbyPlant);
             assert(!world.plant); // this old name was deleted
-            equal(
-                ['animation', 'name', 'response', 'ruffled'].sort(),
-                Object.keys(world.lobbyPlant).sort()
-            );
+            const keys = Object.keys(world.lobbyPlant).sort();
+            assert(keys.includes('animation'));
+            assert(keys.includes('name'));
+            assert(keys.includes('ruffled'));
         });
 
         it('should be in the lobby', function () {
@@ -96,9 +96,16 @@ describe('World', function () {
 
         it('should be able to ruffle the plant', function () {
             const world = builder();
-            world.ruffleLobbyPlant();
+            const msgs = [];
+            if (!world.lobbyPlant.ruffled) {
+                world.ruffleLobbyPlant(msg => msgs.push(msg));
+                assert(world.lobbyPlant.name, 'Ruffled Plant');
+                assert(msgs.includes("You ruffled the plant. It's messy now."));
+                assert(world.lobbyPlant.ruffled, true);
+            }
+            world.ruffleLobbyPlant(msg => msgs.push(msg));
             assert(world.lobbyPlant.name, 'Ruffled Plant');
-            assert(world.lobbyPlant.response, "Hasn't this plant been through enough?");
+            assert(msgs.includes("Hasn't this plant been through enough?"));
             assert(world.lobbyPlant.ruffled, true);
         });
 

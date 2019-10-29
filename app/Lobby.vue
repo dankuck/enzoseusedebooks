@@ -182,10 +182,7 @@ export default {
     },
     methods: {
         checkPlant(vuePlant) {
-            this.showMessage(this.app.world.lobbyPlant.response, vuePlant.x, vuePlant.y);
-            this.app.world.ruffleLobbyPlant();
-            this.app.world.battery.location = 'lobby-floor';
-            this.queueMessage(`Something fell out of the ${this.app.world.lobbyPlant.name}.`, vuePlant.x, vuePlant.y);
+            this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
         },
     },
 };
