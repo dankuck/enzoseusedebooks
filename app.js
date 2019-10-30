@@ -2508,6 +2508,34 @@ Collection.registerReviver = function (reviver) {
 
 /***/ }),
 
+/***/ "./app/world/InventoryBattery.js":
+/*!***************************************!*\
+  !*** ./app/world/InventoryBattery.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InventoryBattery; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+class InventoryBattery {
+
+    constructor(data) {
+        this.image = 'images/battery.gif';
+        Object.assign(this, data);
+    }
+};
+
+InventoryBattery.registerReviver = function (reviver) {
+    reviver.add('InventoryBattery', InventoryBattery, (key, value) => new InventoryBattery(value), (key, value) => {
+        return _extends({}, value);
+    });
+};
+
+/***/ }),
+
 /***/ "./app/world/World.js":
 /*!****************************!*\
   !*** ./app/world/World.js ***!
@@ -2520,7 +2548,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
 /* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
 /* harmony import */ var _world_Collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/Collection */ "./app/world/Collection.js");
+/* harmony import */ var _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @world/InventoryBattery */ "./app/world/InventoryBattery.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -2606,7 +2636,7 @@ class World {
 
     takeBattery(queueMessage) {
         this.battery.location = 'inventory';
-        this.inventory.push({ name: 'AA Battery' });
+        this.inventory.push(new _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]({ name: 'AA Battery' }));
         queueMessage("You've taken the AA Battery");
     }
 
@@ -2630,6 +2660,7 @@ World.registerReviver = function (reviver) {
         return _extends({}, data);
     });
     reviver.register(_world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    reviver.register(_world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]);
 };
 
 /***/ }),
