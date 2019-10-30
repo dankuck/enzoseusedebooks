@@ -1,4 +1,13 @@
+import VersionUpgrader from '@libs/VersionUpgrader';
 import axios from 'axios';
+
+const upgrader = new VersionUpgrader()
+    .version(1, collection => {
+        collection.loadedAt = collection.codes.length === collection.pendingCodes.length
+            ? null
+            : new Date(); // in this case, we're upgrading from a previous state
+    })
+    ;
 
 export default class Collection
 {
@@ -22,6 +31,7 @@ export default class Collection
         }
         this.pendingCodes
             .forEach(code => this[code] = {...this.default});
+        this.version = upgrader.upgrade(this.version || 0, this);
     }
 
     load() {
@@ -34,6 +44,7 @@ export default class Collection
         this.loading = this.axios.get(this.url)
             .finally(() => delete this.loading)
             .then(response => {
+                this.loadedAt = new Date();
                 this.fulfillPending(this.removeUsed(response.data));
             });
         return this.loading;

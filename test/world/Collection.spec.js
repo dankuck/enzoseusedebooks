@@ -59,10 +59,12 @@ describe('Collection', function () {
             axios,
             codes: ['code1'],
         });
+        assert(collection.loadedAt === null);
         collection.load()
             .then(() => {
                 equal(data[0], collection.code1);
                 equal('url.com', caughtUrl);
+                assert(collection.loadedAt);
             })
             .then(done, done);
     });
@@ -291,7 +293,7 @@ describe('Collection', function () {
             collection.load().catch(() => {}); // force the `loading` key to exist
             const forSave = revive.replacer('collection', collection);
             equal(
-                ['codes', 'key', 'default', 'pendingCodes', 'code1'].sort(),
+                ['codes', 'key', 'default', 'pendingCodes', 'code1', 'loadedAt', 'version'].sort(),
                 Object.keys(forSave).sort()
             );
         });
