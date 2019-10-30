@@ -39,6 +39,24 @@ export default class Collection
         return this.loading;
     }
 
+    get(codes) {
+        return codes.map(code => this[code]);
+    }
+
+    all() {
+        return this.get(this.codes);
+    }
+
+    allLoaded() {
+        return this.get(
+            this.codes.filter(code => ! this.pendingCodes.includes(code))
+        );
+    }
+
+    allPending() {
+        return this.get(this.pendingCodes);
+    }
+
     fulfillPending(items) {
         items = [...items];
         this.pendingCodes = this.pendingCodes
@@ -70,15 +88,26 @@ export default class Collection
 };
 
 Collection.registerReviver = function (reviver) {
+    const revive = (key, data) => { return new Collection(data) };
+    const replace = (key, data) => {
+        const collection = {...data};
+        delete collection.axios;
+        delete collection.loading;
+        return collection;
+    };
     reviver.add(
         'Collection',
         Collection,
-        (key, data) => { return new Collection(data) },
-        (key, data) => {
-            const collection = {...data};
-            delete collection.axios;
-            delete collection.loading;
-            return collection;
-        }
+        revive,
+        replace,
+    );
+    // When we first launched Enzo's, we minimized all the code and Collection
+    // got renamed. Now we are safe against that happening, but we need to be
+    // able to handle names from that era.
+    reviver.add(
+        'it',
+        Collection,
+        revive,
+        replace,
     );
 };

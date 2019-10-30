@@ -45,10 +45,60 @@ describe('Reviver', function () {
         equal({__class__: 'DateX', __data__: 'replaced data'}, replaced);
     });
 
+    it('replaces according to first added class if two matches are added', function () {
+        const reviver = new Reviver();
+        reviver.add(
+            'DateX',
+            Date,
+            null,
+            (key, data) => {
+                assert(data === date);
+                return 'replaced data';
+            }
+        );
+        reviver.add(
+            'SOMETHING_ELSE',
+            Date,
+            null,
+            (key, data) => {
+                assert(data === date);
+                return 'replaced data';
+            }
+        );
+        const date = new Date('1985-10-26');
+        const replaced = reviver.replace('date', date);
+        equal({__class__: 'DateX', __data__: 'replaced data'}, replaced);
+    });
+
     it('revives according to added class', function () {
         const reviver = new Reviver();
         reviver.add(
             'DateX',
+            Date,
+            (key, data) => {
+                assert(data === '1985-10-26');
+                return 'revived data';
+            },
+            null
+        );
+        const date = {__class__: 'DateX', __data__: '1985-10-26'};
+        const revived = reviver.revive('date', date);
+        equal('revived data', revived);
+    });
+
+    it('revives according to first added name when there are two names', function () {
+        const reviver = new Reviver();
+        reviver.add(
+            'DateX',
+            Date,
+            (key, data) => {
+                assert(data === '1985-10-26');
+                return 'revived data';
+            },
+            null
+        );
+        reviver.add(
+            'SOMETHING_ELSE',
             Date,
             (key, data) => {
                 assert(data === '1985-10-26');

@@ -22,6 +22,16 @@ describe('Collection', function () {
         equal({title: ''}, collection.code2);
     });
 
+    it('should give all its elements as an array', function () {
+        const collection = new Collection({
+            codes: ['code1', 'code2'],
+            default: {title: ''}
+        });
+        const all = collection.all();
+        equal({title: ''}, all[0]);
+        equal({title: ''}, all[1]);
+        assert(all.length === 2);
+    });
     it('should not overwrite elements pre-constructor elements', function () {
         const original = {title: 'good guy'};
         const collection = new Collection({
@@ -77,6 +87,49 @@ describe('Collection', function () {
                     assert(true);
                 }
             )
+            .then(done, done);
+    });
+
+    it('should give all loaded elements', function (done) {
+        const data = [
+            {title: 'name 1'},
+        ];
+        const axios = {
+            get() { return Promise.resolve({data: [...data]}) },
+        };
+        const collection = new Collection({
+            axios,
+            codes: ['code1', 'code2'],
+        });
+        collection.load()
+            .catch(() => {})
+            .then(() => {
+                const allLoaded = collection.allLoaded();
+                equal(data[0], allLoaded[0]);
+                assert(allLoaded.length === 1);
+            })
+            .then(done, done);
+    });
+
+    it('should give all pending elements', function (done) {
+        const data = [
+            {title: 'name 1'},
+        ];
+        const axios = {
+            get() { return Promise.resolve({data: [...data]}) },
+        };
+        const collection = new Collection({
+            axios,
+            codes: ['code1', 'code2'],
+            default: {title: ''},
+        });
+        collection.load()
+            .catch(() => {})
+            .then(() => {
+                const allPending = collection.allPending();
+                equal({title: ''}, allPending[0]);
+                assert(allPending.length === 1);
+            })
             .then(done, done);
     });
 

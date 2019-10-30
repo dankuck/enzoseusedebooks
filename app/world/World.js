@@ -85,6 +85,10 @@ const upgrader = new VersionUpgrader()
     .version(10, world => {
         world.inventory = [];
     })
+    .version(11, world => {
+        // Discard some unneeded data to save space in localStorage
+        world.slimDownBooks();
+    });
     ;
 
 export default class World
@@ -94,8 +98,15 @@ export default class World
         this.version = upgrader.upgrade(this.version || 0, this);
     }
 
-    ruffleLobbyPlant(queueMessage) {
-        queueMessage(
+    /**
+     * Set the plant in the lobby to ruffled. If battery is in the plant, move
+     * it to the lobby floor.
+     *
+     * @param  {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    ruffleLobbyPlant(print) {
+        print(
             this.lobbyPlant.ruffled
                 ? "Hasn't this plant been through enough?"
                 : "You ruffled the plant. It's messy now."
@@ -106,16 +117,27 @@ export default class World
 
         if (this.battery.location === 'plant') {
             this.battery.location = 'lobby-floor';
-            queueMessage(`Something fell out of the ${this.lobbyPlant.name}.`);
+            print(`Something fell out of the ${this.lobbyPlant.name}.`);
         }
     }
 
-    takeBattery(queueMessage) {
+    /**
+     * Move the battery into the inventory.
+     *
+     * @param  {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    takeBattery(print) {
         this.battery.location = 'inventory';
         this.inventory.push(new InventoryBattery({name: 'AA Battery'}));
-        queueMessage("You've taken the AA Battery");
+        print("You've taken the AA Battery");
     }
 
+    /**
+     * Attempt to move the user to this place
+     * @param  {String} location
+     * @return {void}
+     */
     goTo(location) {
         if (!location) {
             throw new Error('Cannot go nowhere');
@@ -124,15 +146,58 @@ export default class World
         this.locationHistory.push({location, date: new Date()});
     }
 
+    /**
+     * True iff the user has visited this place
+     *
+     * @param  {string}  location
+     * @return {Boolean}
+     */
     hasGoneTo(location) {
         return this.locationHistory
             .reduce((found, record) => found || record.location === location, false);
+    }
+
+    /**
+     * Some old books were too large, and we respect our users' storage
+     * restraints
+     *
+     * @return {void}
+     */
+    slimDownBooks() {
+        Object.values(this.collections)
+            .forEach(collection => {
+                collection.allLoaded().forEach(book => {
+                    delete book.small_image;
+                    delete book.large_image;
+                    delete book.is_adult_only;
+                    delete book.languages;
+                    delete book.has_english;
+                    delete book.pages;
+                    delete book.is_memorabilia;
+                    delete book.offer_counts;
+                    delete book.categories;
+                    delete book.full_categories;
+                    delete book.is_fiction;
+                    delete book.search;
+                    delete book.tags;
+                    delete book.format;
+                });
+            });
     }
 };
 
 World.registerReviver = function (reviver) {
     reviver.add(
         'World',
+        World,
+        (key, data) => { return new World(data) },
+        (key, data) => { return {...data} }
+    );
+    // When we first launched Enzo's, we minimized all the code and World got
+    // renamed. Now we are safe against that happening, but we need to be able
+    // to handle names from that era.
+    reviver.add(
+        'ot',
         World,
         (key, data) => { return new World(data) },
         (key, data) => { return {...data} }
