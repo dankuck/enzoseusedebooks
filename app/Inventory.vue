@@ -31,6 +31,11 @@ export default {
     },
     inject: ['app'],
     props: ['x', 'y', 'items'],
+    data() {
+        return {
+            noMobileHoverRing: true,
+        };
+    },
     computed: {
         itemSize() {
             return this.app.inventorySize.height;

@@ -2391,7 +2391,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         startStopMobileHoverRing() {
-            this.app.isMobile ? this.textLayer.mobileHoverRing.start() : this.textLayer.mobileHoverRing.stop();
+            if (this.noMobileHoverRing) {
+                return;
+            } else {
+                this.app.isMobile ? this.textLayer.mobileHoverRing.start() : this.textLayer.mobileHoverRing.stop();
+            }
         }
     }
 });
@@ -2566,17 +2570,23 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Collection; });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
+
+
+const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default"]().version(1, collection => {
+    collection.loadedAt = collection.codes.length === collection.pendingCodes.length ? null : new Date(); // in this case, we're upgrading from a previous state
+});
 
 class Collection {
     constructor(data = {}) {
         Object.assign(this, data);
         if (!this.axios) {
-            this.axios = axios__WEBPACK_IMPORTED_MODULE_0___default.a;
+            this.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
         }
         if (!this.key) {
             this.key = [];
@@ -2591,6 +2601,7 @@ class Collection {
             this.default = {};
         }
         this.pendingCodes.forEach(code => this[code] = _extends({}, this.default));
+        this.version = upgrader.upgrade(this.version || 0, this);
     }
 
     load() {
@@ -2601,9 +2612,26 @@ class Collection {
             return Promise.resolve();
         }
         this.loading = this.axios.get(this.url).finally(() => delete this.loading).then(response => {
+            this.loadedAt = new Date();
             this.fulfillPending(this.removeUsed(response.data));
         });
         return this.loading;
+    }
+
+    get(codes) {
+        return codes.map(code => this[code]);
+    }
+
+    all() {
+        return this.get(this.codes);
+    }
+
+    allLoaded() {
+        return this.get(this.codes.filter(code => !this.pendingCodes.includes(code)));
+    }
+
+    allPending() {
+        return this.get(this.pendingCodes);
     }
 
     fulfillPending(items) {
@@ -2634,14 +2662,20 @@ class Collection {
 };
 
 Collection.registerReviver = function (reviver) {
-    reviver.add('Collection', Collection, (key, data) => {
+    const revive = (key, data) => {
         return new Collection(data);
-    }, (key, data) => {
+    };
+    const replace = (key, data) => {
         const collection = _extends({}, data);
         delete collection.axios;
         delete collection.loading;
         return collection;
-    });
+    };
+    reviver.add('Collection', Collection, revive, replace);
+    // When we first launched Enzo's, we minimized all the code and Collection
+    // got renamed. Now we are safe against that happening, but we need to be
+    // able to handle names from that era.
+    reviver.add('it', Collection, revive, replace);
 };
 
 /***/ }),
@@ -2752,7 +2786,11 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     };
 }).version(10, world => {
     world.inventory = [];
+}).version(11, world => {
+    // Discard some unneeded data to save space in localStorage
+    world.slimDownBooks();
 });
+;
 
 class World {
     constructor(data = {}) {
@@ -2760,24 +2798,42 @@ class World {
         this.version = upgrader.upgrade(this.version || 0, this);
     }
 
-    ruffleLobbyPlant(queueMessage) {
-        queueMessage(this.lobbyPlant.ruffled ? "Hasn't this plant been through enough?" : "You ruffled the plant. It's messy now.");
+    /**
+     * Set the plant in the lobby to ruffled. If battery is in the plant, move
+     * it to the lobby floor.
+     *
+     * @param  {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    ruffleLobbyPlant(print) {
+        print(this.lobbyPlant.ruffled ? "Hasn't this plant been through enough?" : "You ruffled the plant. It's messy now.");
 
         this.lobbyPlant.name = 'Ruffled Plant';
         this.lobbyPlant.ruffled = true;
 
         if (this.battery.location === 'plant') {
             this.battery.location = 'lobby-floor';
-            queueMessage(`Something fell out of the ${this.lobbyPlant.name}.`);
+            print(`Something fell out of the ${this.lobbyPlant.name}.`);
         }
     }
 
-    takeBattery(queueMessage) {
+    /**
+     * Move the battery into the inventory.
+     *
+     * @param  {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    takeBattery(print) {
         this.battery.location = 'inventory';
         this.inventory.push(new _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]({ name: 'AA Battery' }));
-        queueMessage("You've taken the AA Battery");
+        print("You've taken the AA Battery");
     }
 
+    /**
+     * Attempt to move the user to this place
+     * @param  {String} location
+     * @return {void}
+     */
     goTo(location) {
         if (!location) {
             throw new Error('Cannot go nowhere');
@@ -2786,13 +2842,54 @@ class World {
         this.locationHistory.push({ location, date: new Date() });
     }
 
+    /**
+     * True iff the user has visited this place
+     *
+     * @param  {string}  location
+     * @return {Boolean}
+     */
     hasGoneTo(location) {
         return this.locationHistory.reduce((found, record) => found || record.location === location, false);
+    }
+
+    /**
+     * Some old books were too large, and we respect our users' storage
+     * restraints
+     *
+     * @return {void}
+     */
+    slimDownBooks() {
+        Object.values(this.collections).forEach(collection => {
+            collection.allLoaded().forEach(book => {
+                delete book.small_image;
+                delete book.large_image;
+                delete book.is_adult_only;
+                delete book.languages;
+                delete book.has_english;
+                delete book.pages;
+                delete book.is_memorabilia;
+                delete book.offer_counts;
+                delete book.categories;
+                delete book.full_categories;
+                delete book.is_fiction;
+                delete book.search;
+                delete book.tags;
+                delete book.format;
+            });
+        });
     }
 };
 
 World.registerReviver = function (reviver) {
     reviver.add('World', World, (key, data) => {
+        return new World(data);
+    }, (key, data) => {
+        return _extends({}, data);
+    });
+    // When we first launched Enzo's, we minimized all the code and World got
+    // renamed. Now we are safe against that happening, but we need to be able
+    // to handle names from that era.
+    reviver.add('ot', World, (key, data) => {
         return new World(data);
     }, (key, data) => {
         return _extends({}, data);
@@ -5235,6 +5332,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     inject: ['app'],
     props: ['x', 'y', 'items'],
+    data() {
+        return {
+            noMobileHoverRing: true
+        };
+    },
     computed: {
         itemSize() {
             return this.app.inventorySize.height;

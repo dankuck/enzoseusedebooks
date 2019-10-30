@@ -53,9 +53,13 @@ export default {
     },
     methods: {
         startStopMobileHoverRing() {
-            this.app.isMobile
-                ? this.textLayer.mobileHoverRing.start()
-                : this.textLayer.mobileHoverRing.stop();
+            if (this.noMobileHoverRing) {
+                return;
+            } else {
+                this.app.isMobile
+                    ? this.textLayer.mobileHoverRing.start()
+                    : this.textLayer.mobileHoverRing.stop();
+            }
         },
     },
 };
