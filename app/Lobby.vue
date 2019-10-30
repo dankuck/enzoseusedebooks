@@ -166,7 +166,7 @@ export default {
                     x: 295,
                     y: 64,
                     dimensionSets: [
-                        ['rect', -18, -25, [24, 252]],
+                        ['rect', -18, -25, [24, 98]],
                     ],
                     name: "Shadowy Area",
                     click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64),
