@@ -27,6 +27,14 @@
             :anti-alias="false"
         >
             <component :is="app.world.location"></component>
+
+            <inventory
+                :x="0"
+                :y="app.roomSize.height"
+                :items="app.world.inventory"
+            >
+            </inventory>
+
             <dev-elements v-if="app.config.developmentMode"></dev-elements>
         </easel-canvas>
         <easel-canvas>
@@ -47,6 +55,7 @@ import NonfictionStack from '@app/NonfictionStack';
 import ChildrenStack from '@app/ChildrenStack';
 import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
+import Inventory from '@app/Inventory';
 
 export default {
     components: {
@@ -56,6 +65,7 @@ export default {
         ChildrenStack,
         DevTools,
         DevElements,
+        Inventory,
     },
     inject: ['app'],
 };
