@@ -1,6 +1,5 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
-import Inventory from '@world/Inventory';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -83,7 +82,7 @@ const upgrader = new VersionUpgrader()
         };
     })
     .version(10, world => {
-        world.inventory = new Inventory();
+        world.inventory = [];
     })
     ;
 
@@ -112,7 +111,7 @@ export default class World
 
     takeBattery(queueMessage) {
         this.battery.location = 'inventory';
-        this.inventory.add({name: 'AA Battery'});
+        this.inventory.push({name: 'AA Battery'});
         queueMessage("You've taken the AA Battery");
     }
 
@@ -138,5 +137,4 @@ World.registerReviver = function (reviver) {
         (key, data) => { return {...data} }
     );
     reviver.register(Collection);
-    reviver.register(Inventory);
 };

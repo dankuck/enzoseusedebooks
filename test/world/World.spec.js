@@ -1,6 +1,5 @@
 import World from '@world/World';
 import Collection from '@world/Collection';
-import Inventory from '@world/Inventory';
 import Reviver from '@libs/Reviver';
 import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
@@ -152,7 +151,7 @@ describe('World', function () {
 
         it('should have an inventory', function () {
             const world = builder();
-            assert(world.inventory instanceof Inventory);
+            assert(world.inventory instanceof Array);
         });
     };
 

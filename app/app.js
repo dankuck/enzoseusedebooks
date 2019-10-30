@@ -114,7 +114,7 @@ const app = new Vue({
         viewport() {
             return {
                 width: this.roomSize.width,
-                height: this.roomSize.height + (this.world.inventory.contents.length === 0 ? 0 : this.inventorySize.height),
+                height: this.roomSize.height + (this.world.inventory.length === 0 ? 0 : this.inventorySize.height),
             };
         },
     },
