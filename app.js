@@ -4967,7 +4967,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -5299,6 +5298,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_InventoryItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/InventoryItem */ "./app/InventoryItem.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _textLayer_TextLayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @textLayer/TextLayer */ "./app/textLayer/TextLayer.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11393,13 +11399,7 @@ var render = function() {
   return _c(
     "easel-container",
     {
-      attrs: {
-        x: _vm.x,
-        y: _vm.y,
-        alpha: _vm.alpha,
-        cursor: "pointer",
-        cache: true
-      },
+      attrs: { x: _vm.x, y: _vm.y, alpha: _vm.alpha, cache: true },
       on: {
         rollover: _vm.beginHover,
         rollout: _vm.endHover,
@@ -11660,6 +11660,17 @@ var render = function() {
     "easel-container",
     { attrs: { x: _vm.x, y: _vm.y } },
     [
+      _c("easel-shape", {
+        attrs: {
+          form: "rect",
+          dimensions: [
+            _vm.app.inventorySize.width,
+            _vm.app.inventorySize.height
+          ],
+          fill: "black"
+        }
+      }),
+      _vm._v(" "),
       _vm._l(_vm.items, function(item, index) {
         return _c(
           "inventory-item",

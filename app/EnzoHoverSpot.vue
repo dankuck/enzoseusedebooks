@@ -18,7 +18,6 @@
         :x="x"
         :y="y"
         :alpha="alpha"
-        cursor="pointer"
         :cache="true"
         @rollover="beginHover"
         @rollout="endHover"
