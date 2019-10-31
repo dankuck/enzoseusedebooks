@@ -3,6 +3,13 @@
         :x="x"
         :y="y"
     >
+        <easel-shape
+            form="rect"
+            :dimensions="[app.inventorySize.width, app.inventorySize.height]"
+            fill="black"
+        >
+        </easel-shape>
+
         <inventory-item
             v-for="(item, index) in items"
             :key="item.name"
