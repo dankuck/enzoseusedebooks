@@ -88,7 +88,7 @@ const app = new Vue({
             {deep: true}
         );
 
-        analytics(this, (...args) => window.ga && ga(...args));
+        analytics(this);
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);

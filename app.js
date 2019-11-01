@@ -1200,8 +1200,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return analytics; });
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments);
+    }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-function analytics(app, ga) {
+function analytics(app) {
+
+    if (app.config.googleAnalytics && app.config.googleAnalytics.id) {
+        ga('create', app.config.googleAnalytics.id, 'auto');
+    }
 
     const send = function (...args) {
         if (app.config.googleAnalytics && app.config.googleAnalytics.on) {
@@ -1216,7 +1225,7 @@ function analytics(app, ga) {
 
     app.$watch('world.location', () => {
         send('pageview', app.world.location);
-    });
+    }, { immediate: true });
 
     app.$watch(() => {
         return [...app.world.inventory];
@@ -1332,7 +1341,7 @@ const app = new Vue({
         this.resizer();
         this.$watch('world', () => this.storage.write('world', this.world), { deep: true });
 
-        Object(_app_analytics_js__WEBPACK_IMPORTED_MODULE_10__["default"])(this, (...args) => window.ga && ga(...args));
+        Object(_app_analytics_js__WEBPACK_IMPORTED_MODULE_10__["default"])(this);
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);
@@ -2994,6 +3003,11 @@ __webpack_require__.r(__webpack_exports__);
    * What about Google Analytics?
    */
   googleAnalytics: {
+    /**
+     * The ID provided by Google Analytics website
+     */
+    id: 'UA-52383063-5',
+
     /**
      * Send events to Google Analytics
      * @type {Boolean}
