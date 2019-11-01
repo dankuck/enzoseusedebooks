@@ -111,7 +111,6 @@ const app = new Vue({
             },
             storage,
             world,
-            eventBus: new Vue(),
         };
     },
     computed: {
