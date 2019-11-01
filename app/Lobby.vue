@@ -169,7 +169,10 @@ export default {
                         ['rect', -18, -25, [24, 98]],
                     ],
                     name: "Shadowy Area",
-                    click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64),
+                    click: () => {
+                        this.showMessage("There's nothing in the shadowy area, yet.", 295, 64);
+                        this.app.event('shadowy-area.bounce');
+                    },
                 },
                 {
                     x: 0,
@@ -180,13 +183,17 @@ export default {
                         ['rect', 0, 36, [127, 55]],
                     ],
                     name: "Shabby Desk",
-                    click: () => this.showMessage("The desk is empty right now.", 0, 168),
+                    click: () => {
+                        this.showMessage("The desk is empty right now.", 0, 168);
+                        this.app.event('shabby-desk.bounce');
+                    },
                 },
             ];
         },
     },
     methods: {
         checkPlant(vuePlant) {
+            this.app.event('lobby.plant.shake');
             this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
         },
         takeBattery() {

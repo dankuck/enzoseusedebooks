@@ -1210,6 +1210,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _libs_ColorReducer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @libs/ColorReducer */ "./app/libs/ColorReducer.js");
+/* harmony import */ var _logs_GoogleAnalyticsEventer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @logs/GoogleAnalyticsEventer */ "./app/logs/GoogleAnalyticsEventer.js");
+/* harmony import */ var _logs_LogEventer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @logs/LogEventer */ "./app/logs/LogEventer.js");
+/* harmony import */ var _logs_NullEventer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @logs/NullEventer */ "./app/logs/NullEventer.js");
 /**
  |---------------------------------
  | app.js
@@ -1249,6 +1252,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 // Expose these variables for devtools
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-easeljs/dist/index.js");
@@ -1266,6 +1272,8 @@ Vue.component('enzo-hover-spot', _app_EnzoHoverSpot_vue__WEBPACK_IMPORTED_MODULE
 const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_5__["default"](window.localStorage, 'enzos-eused-ebooks', _app_reviver__WEBPACK_IMPORTED_MODULE_7__["default"]);
 
 const world = storage.read('world') || new _world_World__WEBPACK_IMPORTED_MODULE_6__["default"]();
+
+const event = _config__WEBPACK_IMPORTED_MODULE_4__["default"].events === 'google-analytics' ? Object(_logs_GoogleAnalyticsEventer__WEBPACK_IMPORTED_MODULE_10__["default"])(ga) : _config__WEBPACK_IMPORTED_MODULE_4__["default"].events === 'logs' ? _logs_LogEventer__WEBPACK_IMPORTED_MODULE_11__["default"] : _logs_NullEventer__WEBPACK_IMPORTED_MODULE_12__["default"];
 
 const app = new Vue({
     el: '#app',
@@ -1287,6 +1295,20 @@ const app = new Vue({
         window.addEventListener('resize', this.resizer);
         this.resizer();
         this.$watch('world', () => this.storage.write('world', this.world), { deep: true });
+
+        // move this to analytics.js
+        this.$watch('world.location', () => {
+            event.contextChange(this.world.location);
+        });
+        this.$watch(() => {
+            return [...this.world.inventory];
+        }, (after, before) => {
+            const added = after.filter(item => !before.includes(item));
+            const removed = before.filter(item => !after.includes(item));
+            added.forEach(item => event('inventory-item:' + item.name + '.take'));
+            removed.forEach(item => event('inventory-item:' + item.name + '.drop'));
+        });
+        this.onEvent(event);
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);
@@ -1308,7 +1330,8 @@ const app = new Vue({
                 height: 50
             },
             storage,
-            world
+            world,
+            eventBus: new Vue()
         };
     },
     computed: {
@@ -1340,6 +1363,12 @@ const app = new Vue({
             if (adjustedHeight < this.canvas.height) {
                 this.canvas.height = adjustedHeight;
             }
+        },
+        event(...args) {
+            this.$emit('event', ...args);
+        },
+        onEvent(callback) {
+            this.$on('event', callback);
         }
     }
 });
@@ -2299,6 +2328,75 @@ function sizeText(text, maxLength, maxLines = Infinity) {
 
 /***/ }),
 
+/***/ "./app/logs/GoogleAnalyticsEventer.js":
+/*!********************************************!*\
+  !*** ./app/logs/GoogleAnalyticsEventer.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return build; });
+
+function build(ga) {
+    const event = function event(eventName) {
+        const eventParts = eventName.split(/\./);
+        const event = eventParts.pop();
+        const label = eventParts.length > 0 ? eventParts.join('.') : event;
+        ga('send', 'event', label, event);
+    };
+
+    event.contextChange = function contextChange(newContext) {
+        ga('send', 'pageview', newContext);
+    };
+
+    return event;
+};
+
+/***/ }),
+
+/***/ "./app/logs/LogEventer.js":
+/*!********************************!*\
+  !*** ./app/logs/LogEventer.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return event; });
+
+function event(eventName) {
+    const eventParts = eventName.split(/\./);
+    const event = eventParts.pop();
+    const label = eventParts.length > 0 ? eventParts.join('.') : event;
+    console.log('[DEV]', 'send', 'event', label, event);
+};
+
+event.contextChange = function contextChange(newContext) {
+    console.log('[DEV]', 'send', 'pageview', newContext);
+};
+
+/***/ }),
+
+/***/ "./app/logs/NullEventer.js":
+/*!*********************************!*\
+  !*** ./app/logs/NullEventer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return event; });
+
+function event() {};
+
+event.contextChange = function contextChange() {};
+
+/***/ }),
+
 /***/ "./app/reviver.js":
 /*!************************!*\
   !*** ./app/reviver.js ***!
@@ -2935,7 +3033,13 @@ __webpack_require__.r(__webpack_exports__);
    * How long the auto-hover mechanism should linger on each item.
    * @type {Number} milliseconds
    */
-  autoHoverSpeed: 3000
+  autoHoverSpeed: 3000,
+
+  /**
+   * How to deal with events?
+   * @type {String} 'google-analytics', 'logs', or 'null'
+   */
+  events: 'logs'
 });
 
 /***/ }),
@@ -5549,18 +5653,25 @@ __webpack_require__.r(__webpack_exports__);
                 y: 64,
                 dimensionSets: [['rect', -18, -25, [24, 98]]],
                 name: "Shadowy Area",
-                click: () => this.showMessage("There's nothing in the shadowy area, yet.", 295, 64)
+                click: () => {
+                    this.showMessage("There's nothing in the shadowy area, yet.", 295, 64);
+                    this.app.event('shadowy-area.bounce');
+                }
             }, {
                 x: 0,
                 y: 168,
                 dimensionSets: [['ellipse', 23, 0, [108, 54]], ['rect', 0, 0, [70, 90]], ['rect', 0, 36, [127, 55]]],
                 name: "Shabby Desk",
-                click: () => this.showMessage("The desk is empty right now.", 0, 168)
+                click: () => {
+                    this.showMessage("The desk is empty right now.", 0, 168);
+                    this.app.event('shabby-desk.bounce');
+                }
             }];
         }
     },
     methods: {
         checkPlant(vuePlant) {
+            this.app.event('lobby.plant.shake');
             this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
         },
         takeBattery() {
