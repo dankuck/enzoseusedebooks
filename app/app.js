@@ -37,6 +37,7 @@ import World from '@world/World';
 import reviver from '@app/reviver';
 import axios from 'axios';
 import ColorReducer from '@libs/ColorReducer';
+import analytics from '@app/analytics.js';
 
 // Expose these variables for devtools
 window.Vue = require('vue');
@@ -86,6 +87,8 @@ const app = new Vue({
             () => this.storage.write('world', this.world),
             {deep: true}
         );
+
+        analytics(this);
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);
@@ -139,6 +142,12 @@ const app = new Vue({
             if (adjustedHeight < this.canvas.height) {
                 this.canvas.height = adjustedHeight;
             }
+        },
+        event(...args) {
+            this.$emit('event', ...args);
+        },
+        onEvent(callback) {
+            this.$on('event', callback);
         },
     },
 });

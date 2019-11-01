@@ -58,6 +58,7 @@ export default {
     props: ['book'],
     mounted() {
         this.bookImage; // cause a load
+        this.app.event('book', 'view');
     },
     data() {
         return {
@@ -113,6 +114,7 @@ export default {
     },
     methods: {
         goToAmazon() {
+            this.app.event('book', 'amazon-visit');
             window.open(this.book.url, '_blank');
         },
     },

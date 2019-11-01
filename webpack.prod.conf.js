@@ -17,11 +17,11 @@ module.exports = {
             'vue$': 'vue/dist/vue.js',
             '@': __dirname,
             '@app': path.resolve(__dirname, './app/'),
+            '@develop': path.resolve(__dirname, './app/develop/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
             '@textLayer': path.resolve(__dirname, './app/textLayer/'),
-            '@develop': path.resolve(__dirname, './app/develop/'),
-            '@world': path.resolve(__dirname, './app/world/')
-        }
+            '@world': path.resolve(__dirname, './app/world/'),
+        },
     },
     plugins: [
         new VueLoader.VueLoaderPlugin()
