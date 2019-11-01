@@ -11,9 +11,7 @@ export default function analytics(app) {
 
     const send = function (...args) {
         if (app.config.googleAnalytics && app.config.googleAnalytics.on) {
-            console.log('sending for real...');
             ga('send', ...args);
-            console.log('sent for real');
         }
         if (app.config.googleAnalytics && app.config.googleAnalytics.log) {
             console.log('[GA]', ...args);

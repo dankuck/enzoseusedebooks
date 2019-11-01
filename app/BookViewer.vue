@@ -114,6 +114,7 @@ export default {
     },
     methods: {
         goToAmazon() {
+            this.app.event('book', 'amazon-visit');
             window.open(this.book.url, '_blank');
         },
     },

@@ -1214,9 +1214,7 @@ function analytics(app) {
 
     const send = function (...args) {
         if (app.config.googleAnalytics && app.config.googleAnalytics.on) {
-            console.log('sending for real...');
             ga('send', ...args);
-            console.log('sent for real');
         }
         if (app.config.googleAnalytics && app.config.googleAnalytics.log) {
             console.log('[GA]', ...args);
@@ -3012,7 +3010,7 @@ __webpack_require__.r(__webpack_exports__);
      * Send events to Google Analytics
      * @type {Boolean}
      */
-    on: true,
+    on: false,
 
     /**
      * Show Google Analytics activity in console?
@@ -4811,6 +4809,7 @@ const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
     },
     methods: {
         goToAmazon() {
+            this.app.event('book', 'amazon-visit');
             window.open(this.book.url, '_blank');
         }
     }

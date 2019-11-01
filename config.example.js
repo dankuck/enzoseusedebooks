@@ -31,6 +31,11 @@ export default {
      */
     googleAnalytics: {
         /**
+         * The ID provided by Google Analytics website
+         */
+        id: null,
+
+        /**
          * Send events to Google Analytics
          * @type {Boolean}
          */
@@ -40,6 +45,6 @@ export default {
          * Show Google Analytics activity in console?
          * @type {Boolean}
          */
-        log: true,
+        log: false,
     },
 };
