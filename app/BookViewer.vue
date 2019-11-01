@@ -58,6 +58,7 @@ export default {
     props: ['book'],
     mounted() {
         this.bookImage; // cause a load
+        this.app.event('book', 'view');
     },
     data() {
         return {

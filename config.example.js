@@ -25,4 +25,21 @@ export default {
      * @type {Number} milliseconds
      */
     autoHoverSpeed: 3000,
+
+    /**
+     * What about Google Analytics?
+     */
+    googleAnalytics: {
+        /**
+         * Send events to Google Analytics
+         * @type {Boolean}
+         */
+        on: false,
+
+        /**
+         * Show Google Analytics activity in console?
+         * @type {Boolean}
+         */
+        log: true,
+    },
 };

@@ -37,9 +37,7 @@ import World from '@world/World';
 import reviver from '@app/reviver';
 import axios from 'axios';
 import ColorReducer from '@libs/ColorReducer';
-import GoogleAnalyticsEventer from '@logs/GoogleAnalyticsEventer';
-import LogEventer from '@logs/LogEventer';
-import NullEventer from '@logs/NullEventer';
+import analytics from '@app/analytics.js';
 
 // Expose these variables for devtools
 window.Vue = require('vue');
@@ -62,12 +60,6 @@ const storage = new JsonStorage(
 );
 
 const world = storage.read('world') || new World();
-
-const event = config.events === 'google-analytics'
-    ? GoogleAnalyticsEventer(ga)
-    : config.events === 'logs'
-    ? LogEventer
-    : NullEventer;
 
 const app = new Vue({
     el: '#app',
@@ -96,20 +88,7 @@ const app = new Vue({
             {deep: true}
         );
 
-        // move this to analytics.js
-        this.$watch('world.location', () => {
-            event.contextChange(this.world.location);
-        });
-        this.$watch(
-            () => { return [...this.world.inventory] },
-            (after, before) => {
-                const added = after.filter(item => ! before.includes(item));
-                const removed = before.filter(item => ! after.includes(item));
-                added.forEach(item => event('inventory-item:' + item.name + '.take'));
-                removed.forEach(item => event('inventory-item:' + item.name + '.drop'));
-            }
-        );
-        this.onEvent(event);
+        analytics(this, (...args) => window.ga && ga(...args));
     },
     destroyed() {
         window.removeEventListener('resize', this.resizer);

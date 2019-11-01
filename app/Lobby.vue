@@ -171,7 +171,7 @@ export default {
                     name: "Shadowy Area",
                     click: () => {
                         this.showMessage("There's nothing in the shadowy area, yet.", 295, 64);
-                        this.app.event('shadowy-area.bounce');
+                        this.app.event('shadowy-area', 'bounce');
                     },
                 },
                 {
@@ -185,7 +185,7 @@ export default {
                     name: "Shabby Desk",
                     click: () => {
                         this.showMessage("The desk is empty right now.", 0, 168);
-                        this.app.event('shabby-desk.bounce');
+                        this.app.event('shabby-desk', 'bounce');
                     },
                 },
             ];
@@ -193,7 +193,7 @@ export default {
     },
     methods: {
         checkPlant(vuePlant) {
-            this.app.event('lobby.plant.shake');
+            this.app.event('lobby-plant', 'shake');
             this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
         },
         takeBattery() {

@@ -19,7 +19,6 @@ module.exports = {
             '@app': path.resolve(__dirname, './app/'),
             '@develop': path.resolve(__dirname, './app/develop/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
-            '@logs': path.resolve(__dirname, './app/logs/'),
             '@textLayer': path.resolve(__dirname, './app/textLayer/'),
             '@world': path.resolve(__dirname, './app/world/'),
         },
