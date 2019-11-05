@@ -38,6 +38,8 @@ import reviver from '@app/reviver';
 import axios from 'axios';
 import ColorReducer from '@libs/ColorReducer';
 import analytics from '@app/analytics.js';
+import * as Sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 // Expose these variables for devtools
 window.Vue = require('vue');
@@ -45,6 +47,19 @@ window.VueEaseljs = require('vue-easeljs');
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios;
 window.reviver = reviver;
+
+if (config.sentry && config.sentry.on) {
+    Sentry.init({
+        dsn: config.sentry.url,
+        integrations: [
+            new Integrations.Vue({
+                Vue,
+                attachProps: true,
+                logErrors: true
+            })
+        ],
+    });
+}
 
 Vue.use(VueEaseljs);
 VueEaseljs.registerFilter('ColorReducer', ColorReducer);

@@ -47,4 +47,19 @@ export default {
          */
         log: false,
     },
+
+    /**
+     * How about the Sentry error logging system?
+     */
+    sentry: {
+        /**
+         * The URL to connect to
+         */
+        url: null,
+
+        /**
+         * Is this thing on?
+         */
+        on: false,
+    },
 };
