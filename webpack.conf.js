@@ -14,13 +14,14 @@ module.exports = {
     resolve: {
         extensions: ['.vue', '.js'],
         alias: {
-            'vue$': 'vue/dist/vue.js',
             '@': __dirname,
             '@app': path.resolve(__dirname, './app/'),
+            '@chat': path.resolve(__dirname, './app/chat/'),
             '@develop': path.resolve(__dirname, './app/develop/'),
             '@libs': path.resolve(__dirname, './app/libs/'),
             '@textLayer': path.resolve(__dirname, './app/textLayer/'),
             '@world': path.resolve(__dirname, './app/world/'),
+            'vue$': 'vue/dist/vue.js',
         },
     },
     plugins: [
