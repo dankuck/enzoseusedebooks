@@ -88,7 +88,12 @@ const upgrader = new VersionUpgrader()
     .version(11, world => {
         // Discard some unneeded data to save space in localStorage
         world.slimDownBooks();
-    });
+    })
+    .version(12, world => {
+        world.lobbyBot = {
+            askedCodes: [],
+        };
+    })
     ;
 
 export default class World

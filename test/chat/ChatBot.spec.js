@@ -68,7 +68,7 @@ describe('ChatBot', function () {
         const unasked = chatbot.choose();
         equal(1, unasked.length);
         equal('Q2', unasked[0].code);
-        equal('Dont you?', unasked[0].question);
+        equal('Dont you?', unasked[0].text);
     });
 
     it('should give questions conditionally', function () {
@@ -79,7 +79,7 @@ describe('ChatBot', function () {
         const unasked = chatbot.choose();
         equal(1, unasked.length);
         equal('Q2', unasked[0].code);
-        equal('Dont you?', unasked[0].question);
+        equal('Dont you?', unasked[0].text);
     });
 
     it('should give this unasked question only after this other question is asked', function () {
@@ -111,5 +111,15 @@ describe('ChatBot', function () {
             .add('Q2', [() => true], 'Dont you?');
         assert(chatbot.wasAsked('Q1'));
         assert(!chatbot.wasAsked('Q2'));
+    });
+
+    it('should update the codes array it is given', function () {
+        const askedCodes = [];
+        const chatbot = new ChatBot({askedCodes})
+            .add('Q1', [() => true], 'Do you?')
+            .add('Q2', [() => true], 'Dont you?');
+        chatbot.ask('Q1');
+        assert(askedCodes.length === 1);
+        assert(askedCodes[0] === 'Q1');
     });
 });

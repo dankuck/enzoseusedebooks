@@ -81,6 +81,9 @@
             v-else
         >
         </text-layer>
+
+        <lobby-bot>
+        </lobby-bot>
     </easel-container>
 </template>
 
@@ -89,6 +92,7 @@ import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
 import Battery from '@app/Battery';
+import LobbyBot from '@app/LobbyBot';
 
 export default {
     mixins: [HasTextLayer],
@@ -96,6 +100,7 @@ export default {
         BigPlant,
         BookViewer,
         Battery,
+        LobbyBot,
     },
     data() {
         this.app.world.collections.bargain.load();

@@ -188,6 +188,12 @@ describe('World', function () {
             extraKeys.delete('prices');
             assert(extraKeys.size === 0, `Some extra keys in some books: ${Array.from(extraKeys)}`);
         });
+
+        it('should have a lobbyBot', function () {
+            const world = builder();
+            assert(world.lobbyBot);
+            assert(world.lobbyBot.askedCodes instanceof Array);
+        });
     };
 
     describe('Fresh version', function () {

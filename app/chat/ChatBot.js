@@ -14,14 +14,14 @@ export default class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, conditions, question, onAsk) {
+    add(code, conditions, text, onAsk) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
         this.questions[code] = {
             onAsk,
             code,
-            question,
+            text,
             conditions,
         };
         return this;
@@ -49,8 +49,6 @@ export default class ChatBot {
     }
 
     getAskedCodes() {
-        return Object.values(this.questions)
-            .filter(question => this.wasAsked(question.code))
-            .map(question => question.code);
+        return this.askedCodes;
     }
 };

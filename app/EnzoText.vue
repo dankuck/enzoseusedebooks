@@ -13,16 +13,18 @@
         :text="fittedText"
         :x="shiftedX"
         :y="shiftedY"
-        :align="align"
-        color="yellow"
+        :align="align || autoAlign"
+        :color="color || 'yellow'"
         :font="`${fontWidth}px 'Press Start 2P'`"
         :filters="[['PixelStrokeFilter', [], strokeSize, {antiAlias: false}]]"
+        :cursor="cursor || null"
+        @click="$emit('click', $event)"
     >
     </easel-text>
 </template>
 
 <script>
-import sizeText from '@libs/sizeText.js'
+import sizeText from '@libs/sizeText.js';
 
 export default {
     inject: ['app'],
@@ -31,6 +33,9 @@ export default {
         'x',
         'y',
         'buffer',
+        'align',
+        'color',
+        'cursor',
     ],
     data() {
         return {
@@ -38,7 +43,7 @@ export default {
         };
     },
     computed: {
-        align() {
+        autoAlign() {
             const horizontal = this.x < this.app.viewport.width / 2
                 ? 'left'
                 : 'right';
@@ -48,10 +53,18 @@ export default {
             return [horizontal, vertical];
         },
         shiftedX() {
-            return parseInt(this.x) + (this.buffer || 0) * (this.align[0] === 'left' ? 1 : -1);
+            if (this.align) {
+                return this.x;
+            } else {
+                return parseInt(this.x) + (this.buffer || 0) * (this.autoAlign[0] === 'left' ? 1 : -1);
+            }
         },
         shiftedY() {
-            return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
+            if (this.align) {
+                return this.y;
+            } else {
+                return parseInt(this.y) + (this.buffer || 0) * (this.autoAlign[1] === 'top' ? 1 : -1);
+            }
         },
         fittedText() {
             const maxLength = (this.app.viewport.width / 2) / this.fontWidth;

@@ -914,6 +914,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/LobbyBot.vue":
+/*!**************************!*\
+  !*** ./app/LobbyBot.vue ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LobbyBot.vue?vue&type=template&id=70a8fd6d& */ "./app/LobbyBot.vue?vue&type=template&id=70a8fd6d&");
+/* harmony import */ var _LobbyBot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LobbyBot.vue?vue&type=script&lang=js& */ "./app/LobbyBot.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LobbyBot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/LobbyBot.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/LobbyBot.vue?vue&type=script&lang=js&":
+/*!***************************************************!*\
+  !*** ./app/LobbyBot.vue?vue&type=script&lang=js& ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyBot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./LobbyBot.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/LobbyBot.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyBot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/LobbyBot.vue?vue&type=template&id=70a8fd6d&":
+/*!*********************************************************!*\
+  !*** ./app/LobbyBot.vue?vue&type=template&id=70a8fd6d& ***!
+  \*********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./LobbyBot.vue?vue&type=template&id=70a8fd6d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/LobbyBot.vue?vue&type=template&id=70a8fd6d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyBot_vue_vue_type_template_id_70a8fd6d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/NonfictionStack.vue":
 /*!*********************************!*\
   !*** ./app/NonfictionStack.vue ***!
@@ -1417,6 +1486,71 @@ const app = new Vue({
         }
     }
 });
+
+/***/ }),
+
+/***/ "./app/chat/ChatBot.js":
+/*!*****************************!*\
+  !*** ./app/chat/ChatBot.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ChatBot; });
+/**
+ |----------------------------
+ | ChatBot
+ |----------------------------
+ | A class that holds questions that can be asked and helps to show only the
+ | ones that are ready to be asked.
+ */
+
+class ChatBot {
+
+    constructor(data = {}) {
+        this.questions = {};
+        this.askedCodes = [];
+        Object.assign(this, data);
+    }
+
+    add(code, conditions, text, onAsk) {
+        if (this.questions[code]) {
+            throw new Error(`${code} has already been added`);
+        }
+        this.questions[code] = {
+            onAsk,
+            code,
+            text,
+            conditions
+        };
+        return this;
+    }
+
+    ask(code) {
+        const question = this.questions[code];
+        if (!question) {
+            throw new Error(`Not found: ${code}`);
+        }
+        this.askedCodes.push(code);
+        question.onAsk && question.onAsk();
+    }
+
+    wasAsked(code) {
+        return this.askedCodes.includes(code);
+    }
+
+    choose() {
+        return Object.values(this.questions).filter(question => !this.wasAsked(question.code)).filter(question => {
+            return question.conditions.reduce((met, condition) => met && condition(), true);
+        });
+    }
+
+    getAskedCodes() {
+        return this.askedCodes;
+    }
+};
 
 /***/ }),
 
@@ -2863,8 +2997,11 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 }).version(11, world => {
     // Discard some unneeded data to save space in localStorage
     world.slimDownBooks();
+}).version(12, world => {
+    world.lobbyBot = {
+        askedCodes: []
+    };
 });
-;
 
 class World {
     constructor(data = {}) {
@@ -13038,28 +13175,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
-    props: ['text', 'x', 'y', 'buffer'],
+    props: ['text', 'x', 'y', 'buffer', 'align', 'color', 'cursor'],
     data() {
         return {
             fontWidth: 8
         };
     },
     computed: {
-        align() {
+        autoAlign() {
             const horizontal = this.x < this.app.viewport.width / 2 ? 'left' : 'right';
             const vertical = this.y < this.app.viewport.height / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
-            return parseInt(this.x) + (this.buffer || 0) * (this.align[0] === 'left' ? 1 : -1);
+            if (this.align) {
+                return this.x;
+            } else {
+                return parseInt(this.x) + (this.buffer || 0) * (this.autoAlign[0] === 'left' ? 1 : -1);
+            }
         },
         shiftedY() {
-            return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
+            if (this.align) {
+                return this.y;
+            } else {
+                return parseInt(this.y) + (this.buffer || 0) * (this.autoAlign[1] === 'top' ? 1 : -1);
+            }
         },
         fittedText() {
             const maxLength = this.app.viewport.width / 2 / this.fontWidth;
@@ -13409,6 +13556,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
 /* harmony import */ var _app_Battery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/Battery */ "./app/Battery.vue");
+/* harmony import */ var _app_LobbyBot__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @app/LobbyBot */ "./app/LobbyBot.vue");
 //
 //
 //
@@ -13495,6 +13643,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 
@@ -13506,7 +13658,8 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
         BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
-        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"]
+        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"],
+        LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_4__["default"]
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -13572,6 +13725,58 @@ __webpack_require__.r(__webpack_exports__);
         },
         takeBattery() {
             this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
+        }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/LobbyBot.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/LobbyBot.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @chat/ChatBot */ "./app/chat/ChatBot.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+const buildChatBot = function (savedData) {
+    return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"](savedData).add('Q1', [], "How do you play this game?", () => {
+        alert('not a game');
+    });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
+    data() {
+        return {
+            chatbot: buildChatBot(this.app.world.lobbyBot)
+        };
+    },
+    computed: {
+        questions() {
+            return this.chatbot.choose();
         }
     }
 });
@@ -19784,10 +19989,18 @@ var render = function() {
       text: _vm.fittedText,
       x: _vm.shiftedX,
       y: _vm.shiftedY,
-      align: _vm.align,
-      color: "yellow",
+      align: _vm.align || _vm.autoAlign,
+      color: _vm.color || "yellow",
       font: _vm.fontWidth + "px 'Press Start 2P'",
-      filters: [["PixelStrokeFilter", [], _vm.strokeSize, { antiAlias: false }]]
+      filters: [
+        ["PixelStrokeFilter", [], _vm.strokeSize, { antiAlias: false }]
+      ],
+      cursor: _vm.cursor || null
+    },
+    on: {
+      click: function($event) {
+        return _vm.$emit("click", $event)
+      }
     }
   })
 }
@@ -20181,9 +20394,56 @@ var render = function() {
               }
             }
           })
-        : _c("text-layer")
+        : _c("text-layer"),
+      _vm._v(" "),
+      _c("lobby-bot")
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/LobbyBot.vue?vue&type=template&id=70a8fd6d&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/LobbyBot.vue?vue&type=template&id=70a8fd6d& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    _vm._l(_vm.questions, function(question, i) {
+      return _c("enzo-text", {
+        key: question.code,
+        attrs: {
+          text: question.text,
+          x: 5,
+          y: 5 + i * 10,
+          align: "top-left",
+          color: "cyan",
+          cursor: "pointer"
+        },
+        on: {
+          click: function($event) {
+            return _vm.chatbot.ask(question.code)
+          }
+        }
+      })
+    }),
+    1
   )
 }
 var staticRenderFns = []
