@@ -3,7 +3,7 @@
  | ChatBot
  |----------------------------
  | A class that holds questions that can be asked and helps to show only the
- | ones thare are ready to be asked.
+ | ones that are ready to be asked.
  */
 
 export default class ChatBot {
@@ -40,7 +40,7 @@ export default class ChatBot {
         return this.askedCodes.includes(code);
     }
 
-    getUnasked() {
+    choose() {
         return Object.values(this.questions)
             .filter(question => ! this.wasAsked(question.code))
             .filter(question => {

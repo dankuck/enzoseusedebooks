@@ -4,8 +4,17 @@ const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
 } = assert;
+const assertException = function (cb) {
+    let caught;
+    try {
+        cb();
+    } catch (e) {
+        caught = e;
+    }
+    assert(caught, 'Expected an exception, but no exception was thrown');
+};
 
-describe.only('ChatBot', function () {
+describe('ChatBot', function () {
 
     it('instantiates', function () {
         new ChatBot();
@@ -20,14 +29,11 @@ describe.only('ChatBot', function () {
 
     it('should not double-add a question', function () {
         let caughtError;
-        try {
-            const chatbot = new ChatBot()
+        assertException(() => {
+            new ChatBot()
                 .add('Q1', [() => true], 'Do you?')
                 .add('Q1', [() => true], 'Dont you?');
-        } catch (e) {
-            caughtError = e;
-        }
-        assert(caughtError);
+        });
     });
 
     it('should ask a question', function () {
@@ -40,13 +46,9 @@ describe.only('ChatBot', function () {
 
     it('should fail to ask no-such-question', function () {
         const chatbot = new ChatBot();
-        let caughtError;
-        try {
+        assertException(() => {
             chatbot.ask('Q1');
-        } catch (e) {
-            caughtError = e;
-        }
-        assert(caughtError);
+        });
     });
 
     it('should tell if a question has been asked', function () {
@@ -63,7 +65,7 @@ describe.only('ChatBot', function () {
             .add('Q1', [() => true], 'Do you?')
             .add('Q2', [() => true], 'Dont you?');
         chatbot.ask('Q1');
-        const unasked = chatbot.getUnasked();
+        const unasked = chatbot.choose();
         equal(1, unasked.length);
         equal('Q2', unasked[0].code);
         equal('Dont you?', unasked[0].question);
@@ -74,7 +76,7 @@ describe.only('ChatBot', function () {
             .add('Q1', [() => false], 'Do you?')
             .add('Q2', [() => true], 'Dont you?')
             .add('Q3', [() => true, () => false], 'Did you?');
-        const unasked = chatbot.getUnasked();
+        const unasked = chatbot.choose();
         equal(1, unasked.length);
         equal('Q2', unasked[0].code);
         equal('Dont you?', unasked[0].question);
@@ -84,11 +86,11 @@ describe.only('ChatBot', function () {
         const chatbot = new ChatBot()
             .add('Q1', [], 'Do you?')
             .add('Q2', [() => chatbot.wasAsked('Q1')], 'Dont you?');
-        const unasked1 = chatbot.getUnasked();
+        const unasked1 = chatbot.choose();
         equal(1, unasked1.length);
         equal('Q1', unasked1[0].code);
         chatbot.ask('Q1');
-        const unasked2 = chatbot.getUnasked();
+        const unasked2 = chatbot.choose();
         equal(1, unasked2.length);
         equal('Q2', unasked2[0].code);
     });
