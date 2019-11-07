@@ -1409,7 +1409,8 @@ const app = new Vue({
     },
     provide() {
         return {
-            app: this
+            app: this,
+            viewporter: this
         };
     },
     mounted() {
@@ -1451,6 +1452,8 @@ const app = new Vue({
     computed: {
         viewport() {
             return {
+                x: 0,
+                y: 0,
                 width: this.roomSize.width,
                 height: this.roomSize.height + (this.world.inventory.length === 0 ? 0 : this.inventorySize.height)
             };
@@ -1515,7 +1518,7 @@ class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, conditions, text, onAsk) {
+    add(code, text, conditions = [], onAsk) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
@@ -1543,13 +1546,17 @@ class ChatBot {
 
     choose() {
         return Object.values(this.questions).filter(question => !this.wasAsked(question.code)).filter(question => {
-            return question.conditions.reduce((met, condition) => met && condition(), true);
+            return question.conditions.reduce((met, condition) => met && condition(this), true);
         });
     }
 
     getAskedCodes() {
         return this.askedCodes;
     }
+};
+
+ChatBot.after = function (code) {
+    return chatbot => chatbot.wasAsked(code);
 };
 
 /***/ }),
@@ -13175,41 +13182,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
-    props: ['text', 'x', 'y', 'buffer', 'align', 'color', 'cursor'],
+    props: ['text', 'x', 'y', 'buffer', 'align', 'color'],
     data() {
         return {
             fontWidth: 8
         };
     },
     computed: {
+        arrayAlign() {
+            if (this.align instanceof Array) {
+                return this.align;
+            } else if (this.align) {
+                return new String(this.align).split(/\-/);
+            } else {
+                return null;
+            }
+        },
         autoAlign() {
             const horizontal = this.x < this.app.viewport.width / 2 ? 'left' : 'right';
             const vertical = this.y < this.app.viewport.height / 2 ? 'top' : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
-            if (this.align) {
-                return this.x;
-            } else {
-                return parseInt(this.x) + (this.buffer || 0) * (this.autoAlign[0] === 'left' ? 1 : -1);
-            }
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.x) + (this.buffer || 0) * (align.includes('left') ? 1 : -1);
         },
         shiftedY() {
-            if (this.align) {
-                return this.y;
-            } else {
-                return parseInt(this.y) + (this.buffer || 0) * (this.autoAlign[1] === 'top' ? 1 : -1);
-            }
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.y) + (this.buffer || 0) * (align.includes('top') ? 1 : -1);
+        },
+        maxPixelWidth() {
+            const align = this.arrayAlign || this.autoAlign;
+            return align.includes('left') ? this.app.viewport.width - this.shiftedX : this.shiftedX;
         },
         fittedText() {
-            const maxLength = this.app.viewport.width / 2 / this.fontWidth;
+            const maxLength = this.maxPixelWidth / this.fontWidth;
             return Object(_libs_sizeText_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.text, maxLength);
         },
         strokeSize() {
@@ -13758,25 +13770,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
-
-const buildChatBot = function (savedData) {
-    return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"](savedData).add('Q1', [], "How do you play this game?", () => {
-        alert('not a game');
-    });
-};
+const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app'],
     data() {
         return {
-            chatbot: buildChatBot(this.app.world.lobbyBot)
+            chatbot: this.buildChatBot()
         };
     },
     computed: {
         questions() {
             return this.chatbot.choose();
+        }
+    },
+    methods: {
+        buildChatBot(savedData, world) {
+            const chatbot = new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => {
+                alert('This is not a game; this is a bookstore.');
+            }).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+                alert('Unfortunately, I am not allowed to eat it.');
+            }).add('Q3', "Then what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory'], () => {
+                alert('Please retain the delicious item until a staff member can attend to you.');
+            });
+            return chatbot;
         }
     }
 });
@@ -19989,18 +20020,10 @@ var render = function() {
       text: _vm.fittedText,
       x: _vm.shiftedX,
       y: _vm.shiftedY,
-      align: _vm.align || _vm.autoAlign,
+      align: _vm.arrayAlign || _vm.autoAlign,
       color: _vm.color || "yellow",
       font: _vm.fontWidth + "px 'Press Start 2P'",
-      filters: [
-        ["PixelStrokeFilter", [], _vm.strokeSize, { antiAlias: false }]
-      ],
-      cursor: _vm.cursor || null
-    },
-    on: {
-      click: function($event) {
-        return _vm.$emit("click", $event)
-      }
+      filters: [["PixelStrokeFilter", [], _vm.strokeSize, { antiAlias: false }]]
     }
   })
 }
@@ -20426,22 +20449,39 @@ var render = function() {
   return _c(
     "easel-container",
     _vm._l(_vm.questions, function(question, i) {
-      return _c("enzo-text", {
-        key: question.code,
-        attrs: {
-          text: question.text,
-          x: 5,
-          y: 5 + i * 10,
-          align: "top-left",
-          color: "cyan",
-          cursor: "pointer"
-        },
-        on: {
-          click: function($event) {
-            return _vm.chatbot.ask(question.code)
-          }
-        }
-      })
+      return _c(
+        "easel-container",
+        { key: question.code },
+        [
+          _c("easel-shape", {
+            attrs: {
+              x: 5 - 1,
+              y: 5 + i * 20 - 1,
+              form: "rect",
+              fill: "grey",
+              dimensions: [340, 10],
+              cursor: "pointer",
+              alpha: "0.5"
+            },
+            on: {
+              click: function($event) {
+                return _vm.chatbot.ask(question.code)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("enzo-text", {
+            attrs: {
+              text: question.text,
+              x: 5,
+              y: 5 + i * 20,
+              align: "top-left",
+              color: "cyan"
+            }
+          })
+        ],
+        1
+      )
     }),
     1
   )

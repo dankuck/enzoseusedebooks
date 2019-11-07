@@ -14,7 +14,7 @@ export default class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, conditions, text, onAsk) {
+    add(code, text, conditions = [], onAsk) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
@@ -44,11 +44,15 @@ export default class ChatBot {
         return Object.values(this.questions)
             .filter(question => ! this.wasAsked(question.code))
             .filter(question => {
-                return question.conditions.reduce((met, condition) => met && condition(), true);
+                return question.conditions.reduce((met, condition) => met && condition(this), true);
             });
     }
 
     getAskedCodes() {
         return this.askedCodes;
     }
+};
+
+ChatBot.after = function (code) {
+    return chatbot => chatbot.wasAsked(code);
 };

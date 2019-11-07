@@ -13,12 +13,10 @@
         :text="fittedText"
         :x="shiftedX"
         :y="shiftedY"
-        :align="align || autoAlign"
+        :align="arrayAlign || autoAlign"
         :color="color || 'yellow'"
         :font="`${fontWidth}px 'Press Start 2P'`"
         :filters="[['PixelStrokeFilter', [], strokeSize, {antiAlias: false}]]"
-        :cursor="cursor || null"
-        @click="$emit('click', $event)"
     >
     </easel-text>
 </template>
@@ -35,7 +33,6 @@ export default {
         'buffer',
         'align',
         'color',
-        'cursor',
     ],
     data() {
         return {
@@ -43,6 +40,15 @@ export default {
         };
     },
     computed: {
+        arrayAlign() {
+            if (this.align instanceof Array) {
+                return this.align;
+            } else if (this.align) {
+                return new String(this.align).split(/\-/);
+            } else {
+                return null;
+            }
+        },
         autoAlign() {
             const horizontal = this.x < this.app.viewport.width / 2
                 ? 'left'
@@ -53,21 +59,21 @@ export default {
             return [horizontal, vertical];
         },
         shiftedX() {
-            if (this.align) {
-                return this.x;
-            } else {
-                return parseInt(this.x) + (this.buffer || 0) * (this.autoAlign[0] === 'left' ? 1 : -1);
-            }
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.x) + (this.buffer || 0) * (align.includes('left') ? 1 : -1);
         },
         shiftedY() {
-            if (this.align) {
-                return this.y;
-            } else {
-                return parseInt(this.y) + (this.buffer || 0) * (this.autoAlign[1] === 'top' ? 1 : -1);
-            }
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.y) + (this.buffer || 0) * (align.includes('top') ? 1 : -1);
+        },
+        maxPixelWidth() {
+            const align = this.arrayAlign || this.autoAlign;
+            return align.includes('left')
+                ? this.app.viewport.width - this.shiftedX
+                : this.shiftedX;
         },
         fittedText() {
-            const maxLength = (this.app.viewport.width / 2) / this.fontWidth;
+            const maxLength = this.maxPixelWidth / this.fontWidth;
             return sizeText(this.text, maxLength);
         },
         strokeSize() {
