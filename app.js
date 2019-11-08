@@ -12658,7 +12658,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    inject: ['app'],
     props: ['x', 'y'],
     data() {
         return {
@@ -13514,6 +13513,11 @@ __webpack_require__.r(__webpack_exports__);
         TextLayer: _textLayer_TextLayer__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
     inject: ['app'],
+    provide() {
+        return {
+            window: this
+        };
+    },
     props: ['x', 'y', 'items'],
     data() {
         return {
@@ -13523,6 +13527,14 @@ __webpack_require__.r(__webpack_exports__);
     computed: {
         itemSize() {
             return this.app.inventorySize.height;
+        },
+        dimensions() {
+            return {
+                x: 0,
+                y: 0,
+                width: this.app.inventorySize.width,
+                height: this.app.inventorySize.height
+            };
         }
     }
 });

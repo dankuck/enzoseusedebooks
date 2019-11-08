@@ -37,6 +37,11 @@ export default {
         TextLayer,
     },
     inject: ['app'],
+    provide() {
+        return {
+            window: this,
+        };
+    },
     props: ['x', 'y', 'items'],
     data() {
         return {
@@ -46,6 +51,14 @@ export default {
     computed: {
         itemSize() {
             return this.app.inventorySize.height;
+        },
+        dimensions() {
+            return {
+                x: 0,
+                y: 0,
+                width: this.app.inventorySize.width,
+                height: this.app.inventorySize.height,
+            };
         },
     },
 };

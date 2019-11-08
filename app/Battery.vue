@@ -16,7 +16,6 @@ import UsesTextLayer from '@textLayer/UsesTextLayer';
 
 export default {
     mixins: [UsesTextLayer],
-    inject: ['app'],
     props: ['x', 'y'],
     data() {
         return {
