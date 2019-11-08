@@ -12813,7 +12813,7 @@ __webpack_require__.r(__webpack_exports__);
 const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
+    inject: ['app', 'window'],
     props: ['book'],
     mounted() {
         this.bookImage; // cause a load
@@ -14386,7 +14386,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
     data() {
         return {
             DevSettings: _develop_DevSettings_js__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -19763,7 +19762,10 @@ var render = function() {
           form: "rect",
           x: "0",
           y: "0",
-          dimensions: [_vm.app.viewport.width, _vm.app.viewport.height],
+          dimensions: [
+            _vm.window.dimensions.width,
+            _vm.window.dimensions.height
+          ],
           fill: "black",
           alpha: ".5"
         },
@@ -19778,8 +19780,8 @@ var render = function() {
         ? _c("easel-bitmap", {
             attrs: {
               image: _vm.bookImage,
-              x: _vm.app.viewport.width / 2 - 6,
-              y: _vm.app.viewport.height / 2,
+              x: _vm.window.dimensions.width / 2 - 6,
+              y: _vm.window.dimensions.height / 2,
               align: "center-right",
               filters: [["ColorReducer", 6]]
             }
@@ -19789,15 +19791,15 @@ var render = function() {
       _c("enzo-text", {
         attrs: {
           text: _vm.description,
-          x: _vm.app.viewport.width / 2 - 1,
-          y: _vm.app.viewport.height / 2 - _vm.book.image.height / 2
+          x: _vm.window.dimensions.width / 2 - 1,
+          y: _vm.window.dimensions.height / 2 - _vm.book.image.height / 2
         }
       }),
       _vm._v(" "),
       _c("easel-shape", {
         attrs: {
-          x: _vm.app.viewport.width / 2 - 2,
-          y: _vm.app.viewport.height / 2 + _vm.book.image.height / 2,
+          x: _vm.window.dimensions.width / 2 - 2,
+          y: _vm.window.dimensions.height / 2 + _vm.book.image.height / 2,
           form: "rect",
           fill: "grey",
           dimensions: [130, 10],
@@ -19810,8 +19812,8 @@ var render = function() {
       _c("enzo-text", {
         attrs: {
           text: "Buy It On Amazon",
-          x: _vm.app.viewport.width / 2 - 1,
-          y: _vm.app.viewport.height / 2 + _vm.book.image.height / 2
+          x: _vm.window.dimensions.width / 2 - 1,
+          y: _vm.window.dimensions.height / 2 + _vm.book.image.height / 2
         }
       })
     ],
@@ -20935,11 +20937,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("enzo-text", {
-    attrs: {
-      text: _vm.DevSettings.showText,
-      x: _vm.app.viewport.width / 2 - 1,
-      y: _vm.app.viewport.height / 2 - 1
-    }
+    attrs: { text: _vm.DevSettings.showText, x: 1, y: 1 }
   })
 }
 var staticRenderFns = []
@@ -21154,7 +21152,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", [
               _vm._v("\n            Show Text "),
-              _c("input", {
+              _c("textarea", {
                 directives: [
                   {
                     name: "model",
