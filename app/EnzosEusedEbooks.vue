@@ -26,7 +26,7 @@
             :viewport-height="app.viewport.height"
             :anti-alias="false"
         >
-            <component :is="app.world.location"></component>
+            <room></room>
 
             <inventory
                 :x="0"
@@ -49,23 +49,17 @@
 </template>
 
 <script>
-import Lobby from '@app/Lobby';
-import FictionStack from '@app/FictionStack';
-import NonfictionStack from '@app/NonfictionStack';
-import ChildrenStack from '@app/ChildrenStack';
 import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 import Inventory from '@app/Inventory';
+import Room from '@app/Room';
 
 export default {
     components: {
-        Lobby,
-        FictionStack,
-        NonfictionStack,
-        ChildrenStack,
         DevTools,
         DevElements,
         Inventory,
+        Room,
     },
     inject: ['app'],
     provide() {
