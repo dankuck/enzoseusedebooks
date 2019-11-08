@@ -14,7 +14,7 @@
     <easel-container :visible="loaded">
         <sliding-window
             width="400"
-            :start-x="(400 - app.viewport.width) - 10"
+            :start-x="(400 - window.dimensions.width) - 10"
         >
             <easel-bitmap
                 image="images/bookcase3-back.gif"
@@ -91,7 +91,7 @@ export default {
         BookViewer,
         SlidingWindow,
     },
-    inject: ['app'],
+    inject: ['app', 'window'],
     data() {
         return {
             viewBook: null,

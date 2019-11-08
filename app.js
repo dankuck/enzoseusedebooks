@@ -12980,7 +12980,7 @@ __webpack_require__.r(__webpack_exports__);
         BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
         SlidingWindow: _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
-    inject: ['app'],
+    inject: ['app', 'window'],
     data() {
         return {
             viewBook: null,
@@ -14345,7 +14345,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
+    inject: ['window'],
     data() {
         return {
             points: []
@@ -19847,7 +19847,10 @@ var render = function() {
       _c(
         "sliding-window",
         {
-          attrs: { width: "400", "start-x": 400 - _vm.app.viewport.width - 10 }
+          attrs: {
+            width: "400",
+            "start-x": 400 - _vm.window.dimensions.width - 10
+          }
         },
         [
           _c("easel-bitmap", { attrs: { image: "images/bookcase3-back.gif" } }),
@@ -20862,7 +20865,10 @@ var render = function() {
       _c("easel-shape", {
         attrs: {
           form: "rect",
-          dimensions: [_vm.app.viewport.width, _vm.app.viewport.height],
+          dimensions: [
+            _vm.window.dimensions.width,
+            _vm.window.dimensions.height
+          ],
           fill: "black",
           alpha: ".2"
         },
@@ -20894,7 +20900,7 @@ var render = function() {
                 shadow: ["black", 0, 0, 3],
                 align: [
                   "top",
-                  point.x > _vm.app.viewport.width / 2 ? "right" : "left"
+                  point.x > _vm.window.dimensions.width / 2 ? "right" : "left"
                 ]
               }
             })

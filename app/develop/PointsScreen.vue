@@ -2,7 +2,7 @@
     <easel-container>
         <easel-shape
             form="rect"
-            :dimensions="[app.viewport.width, app.viewport.height]"
+            :dimensions="[window.dimensions.width, window.dimensions.height]"
             fill="black"
             alpha=".2"
             @click="addPoint"
@@ -27,7 +27,7 @@
                 color="red"
                 font="4px Arial"
                 :shadow="['black', 0, 0, 3]"
-                :align="['top', point.x > app.viewport.width / 2 ? 'right' : 'left']"
+                :align="['top', point.x > window.dimensions.width / 2 ? 'right' : 'left']"
             >
             </easel-text>
         </div>
@@ -36,7 +36,7 @@
 
 <script>
 export default {
-    inject: ['app'],
+    inject: ['window'],
     data() {
         return {
             points: [],
