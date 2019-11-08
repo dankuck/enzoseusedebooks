@@ -1409,8 +1409,7 @@ const app = new Vue({
     },
     provide() {
         return {
-            app: this,
-            viewporter: this
+            app: this
         };
     },
     mounted() {
@@ -1452,8 +1451,6 @@ const app = new Vue({
     computed: {
         viewport() {
             return {
-                x: 0,
-                y: 0,
                 width: this.roomSize.width,
                 height: this.roomSize.height + (this.world.inventory.length === 0 ? 0 : this.inventorySize.height)
             };
@@ -13186,7 +13183,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
+    inject: ['window'],
     props: ['text', 'x', 'y', 'buffer', 'align', 'color'],
     data() {
         return {
@@ -13194,6 +13191,12 @@ __webpack_require__.r(__webpack_exports__);
         };
     },
     computed: {
+        midpoint() {
+            return {
+                x: this.window.dimensions.x + this.window.dimensions.width / 2,
+                y: this.window.dimensions.y + this.window.dimensions.height / 2
+            };
+        },
         arrayAlign() {
             if (this.align instanceof Array) {
                 return this.align;
@@ -13204,8 +13207,8 @@ __webpack_require__.r(__webpack_exports__);
             }
         },
         autoAlign() {
-            const horizontal = this.x < this.app.viewport.width / 2 ? 'left' : 'right';
-            const vertical = this.y < this.app.viewport.height / 2 ? 'top' : 'bottom';
+            const horizontal = this.x < this.midpoint.x ? 'left' : 'right';
+            const vertical = this.y < this.midpoint.y ? 'top' : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
@@ -13218,7 +13221,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         maxPixelWidth() {
             const align = this.arrayAlign || this.autoAlign;
-            return align.includes('left') ? this.app.viewport.width - this.shiftedX : this.shiftedX;
+            return align.includes('left') ? this.window.dimensions.x + this.window.dimensions.width - this.shiftedX : this.shiftedX - this.window.dimensions.x;
         },
         fittedText() {
             const maxLength = this.maxPixelWidth / this.fontWidth;
@@ -13317,7 +13320,22 @@ __webpack_require__.r(__webpack_exports__);
         DevElements: _develop_Elements__WEBPACK_IMPORTED_MODULE_5__["default"],
         Inventory: _app_Inventory__WEBPACK_IMPORTED_MODULE_6__["default"]
     },
-    inject: ['app']
+    inject: ['app'],
+    provide() {
+        return {
+            window: this
+        };
+    },
+    computed: {
+        dimensions() {
+            return {
+                x: 0,
+                y: 0,
+                width: this.app.viewport.width,
+                height: this.app.viewport.height
+            };
+        }
+    }
 });
 
 /***/ }),
@@ -13666,6 +13684,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -13990,7 +14009,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
+    inject: {
+        parentWindow: { from: 'window' }
+    },
+    provide() {
+        return {
+            window: this
+        };
+    },
     props: ['width', 'startX'],
     data() {
         return {
@@ -13999,10 +14025,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     computed: {
         handleWidth() {
-            return 0.15 * this.app.viewport.width;
+            return 0.15 * this.dimensions.width;
         },
         maxX() {
-            return this.width - this.app.viewport.width;
+            return this.width - this.dimensions.width;
+        },
+        dimensions() {
+            return {
+                x: this.x,
+                y: this.parentWindow.dimensions.y,
+                width: this.parentWindow.dimensions.width,
+                height: this.parentWindow.dimensions.height
+            };
         }
     },
     methods: {
@@ -20632,7 +20666,7 @@ var render = function() {
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [_vm.handleWidth, _vm.app.viewport.height],
+                  dimensions: [_vm.handleWidth, _vm.dimensions.height],
                   fill: "black"
                 }
               })
@@ -20647,7 +20681,7 @@ var render = function() {
             {
               attrs: {
                 speed: 8,
-                x: _vm.app.viewport.width - _vm.handleWidth,
+                x: _vm.dimensions.width - _vm.handleWidth,
                 y: 0
               },
               on: {
@@ -20661,7 +20695,7 @@ var render = function() {
               _c("easel-shape", {
                 attrs: {
                   form: "rect",
-                  dimensions: [_vm.handleWidth, _vm.app.viewport.height],
+                  dimensions: [_vm.handleWidth, _vm.dimensions.height],
                   fill: "black"
                 }
               })

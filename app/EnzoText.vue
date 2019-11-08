@@ -25,7 +25,7 @@
 import sizeText from '@libs/sizeText.js';
 
 export default {
-    inject: ['app'],
+    inject: ['window'],
     props: [
         'text',
         'x',
@@ -40,6 +40,12 @@ export default {
         };
     },
     computed: {
+        midpoint() {
+            return {
+                x: this.window.dimensions.x + this.window.dimensions.width / 2,
+                y: this.window.dimensions.y + this.window.dimensions.height / 2,
+            };
+        },
         arrayAlign() {
             if (this.align instanceof Array) {
                 return this.align;
@@ -50,10 +56,10 @@ export default {
             }
         },
         autoAlign() {
-            const horizontal = this.x < this.app.viewport.width / 2
+            const horizontal = this.x < this.midpoint.x
                 ? 'left'
                 : 'right';
-            const vertical = this.y < this.app.viewport.height / 2
+            const vertical = this.y < this.midpoint.y
                 ? 'top'
                 : 'bottom';
             return [horizontal, vertical];
@@ -69,8 +75,8 @@ export default {
         maxPixelWidth() {
             const align = this.arrayAlign || this.autoAlign;
             return align.includes('left')
-                ? this.app.viewport.width - this.shiftedX
-                : this.shiftedX;
+                ? (this.window.dimensions.x + this.window.dimensions.width) - this.shiftedX
+                : this.shiftedX - this.window.dimensions.x;
         },
         fittedText() {
             const maxLength = this.maxPixelWidth / this.fontWidth;

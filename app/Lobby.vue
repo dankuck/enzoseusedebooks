@@ -95,6 +95,7 @@ import Battery from '@app/Battery';
 import LobbyBot from '@app/LobbyBot';
 
 export default {
+    inject: ['app'],
     mixins: [HasTextLayer],
     components: {
         BigPlant,

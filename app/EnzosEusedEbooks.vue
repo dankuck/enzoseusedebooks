@@ -68,5 +68,20 @@ export default {
         Inventory,
     },
     inject: ['app'],
+    provide() {
+        return {
+            window: this,
+        };
+    },
+    computed: {
+        dimensions() {
+            return {
+                x: 0,
+                y: 0,
+                width: this.app.viewport.width,
+                height: this.app.viewport.height,
+            };
+        },
+    },
 };
 </script>
