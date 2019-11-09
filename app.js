@@ -983,6 +983,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/LobbyDesk.vue":
+/*!***************************!*\
+  !*** ./app/LobbyDesk.vue ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LobbyDesk.vue?vue&type=template&id=64c0c5e3& */ "./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3&");
+/* harmony import */ var _LobbyDesk_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LobbyDesk.vue?vue&type=script&lang=js& */ "./app/LobbyDesk.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LobbyDesk_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/LobbyDesk.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/LobbyDesk.vue?vue&type=script&lang=js&":
+/*!****************************************************!*\
+  !*** ./app/LobbyDesk.vue?vue&type=script&lang=js& ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyDesk_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./LobbyDesk.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/LobbyDesk.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyDesk_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3&":
+/*!**********************************************************!*\
+  !*** ./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3& ***!
+  \**********************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./LobbyDesk.vue?vue&type=template&id=64c0c5e3& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LobbyDesk_vue_vue_type_template_id_64c0c5e3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/NonfictionStack.vue":
 /*!*********************************!*\
   !*** ./app/NonfictionStack.vue ***!
@@ -1056,15 +1125,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************!*\
   !*** ./app/Room.vue ***!
   \**********************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Room_vue_vue_type_template_id_2cca8d92___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Room.vue?vue&type=template&id=2cca8d92& */ "./app/Room.vue?vue&type=template&id=2cca8d92&");
 /* harmony import */ var _Room_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Room.vue?vue&type=script&lang=js& */ "./app/Room.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Room_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Room_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -1094,7 +1162,7 @@ component.options.__file = "app/Room.vue"
 /*!***********************************************!*\
   !*** ./app/Room.vue?vue&type=script&lang=js& ***!
   \***********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2268,14 +2336,16 @@ class Messager {
     }
 
     /**
-     * Add a message to the queue and ensure the queue is running
+     * Add a message to the queue and ensure the queue is running. Return a
+     * Promise that resolves when the message has finished showing.
      * @param  {any} message
-     * @return {this}
+     * @return {Promise}
      */
     queue(message) {
-        this.messages.push(message);
-        this.start();
-        return this;
+        return new Promise(resolve => {
+            this.messages.push({ message, resolve });
+            this.start();
+        });
     }
 
     /**
@@ -2301,8 +2371,10 @@ class Messager {
             this.message = null;
             return;
         }
-        this.message = this.messages.shift();
+        const { message, resolve } = this.messages.shift();
+        this.message = message;
         this.timeout = setTimeout(() => {
+            resolve();
             this.timeout = null;
             this.start();
         }, this.time);
@@ -2781,11 +2853,11 @@ __webpack_require__.r(__webpack_exports__);
         removeFromHoverRing() {
             this.textLayer.mobileHoverRing.remove(this.hoverCallback);
         },
-        queueMessage(text, x, y) {
-            this.textLayer.messager.queue({ text, x, y });
+        queueMessage(text, x, y, color = null) {
+            return this.textLayer.messager.queue({ text, x, y, color });
         },
-        showMessage(text, x, y) {
-            this.textLayer.messager.clear().queue({ text, x, y });
+        showMessage(text, x, y, color = null) {
+            return this.textLayer.messager.clear().queue({ text, x, y, color });
         },
         hover() {
             this.textLayer.hoverer.hover(this, this);
@@ -13659,7 +13731,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
 /* harmony import */ var _app_Battery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/Battery */ "./app/Battery.vue");
-/* harmony import */ var _app_LobbyBot__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @app/LobbyBot */ "./app/LobbyBot.vue");
 //
 //
 //
@@ -13747,9 +13818,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-
 
 
 
@@ -13762,8 +13830,7 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
         BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
-        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"],
-        LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_4__["default"]
+        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"]
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -13815,10 +13882,7 @@ __webpack_require__.r(__webpack_exports__);
                 y: 168,
                 dimensionSets: [['ellipse', 23, 0, [108, 54]], ['rect', 0, 0, [70, 90]], ['rect', 0, 36, [127, 55]]],
                 name: "Shabby Desk",
-                click: () => {
-                    this.showMessage("The desk is empty right now.", 0, 168);
-                    this.app.event('shabby-desk', 'bounce');
-                }
+                click: () => this.app.world.goTo('lobby-desk')
             }];
         }
     },
@@ -13844,7 +13908,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @chat/ChatBot */ "./app/chat/ChatBot.js");
+/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
+/* harmony import */ var _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @chat/ChatBot */ "./app/chat/ChatBot.js");
+//
 //
 //
 //
@@ -13876,31 +13942,102 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
-const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"];
+
+const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['app'],
+    inject: ['app', 'window'],
+    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    mounted() {
+        this.say("Welcome to Enzo's Eused Ebooks!");
+    },
     data() {
         return {
-            chatbot: this.buildChatBot()
+            chatbot: this.buildChatBot(),
+            showQuestions: false
         };
     },
     computed: {
         questions() {
-            return this.chatbot.choose();
+            return this.chatbot.choose().slice(0, 4);
+        },
+        questionSlots() {
+            return [this.slotDimensions(0), this.slotDimensions(1), this.slotDimensions(2), this.slotDimensions(3)];
         }
     },
     methods: {
         buildChatBot(savedData, world) {
-            const chatbot = new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_0__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => {
-                alert('This is not a game; this is a bookstore.');
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => {
+                this.say('This is not a game; this is a bookstore.');
             }).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
-                alert('Unfortunately, I am not allowed to eat it.');
-            }).add('Q3', "Then what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory'], () => {
-                alert('Please retain the delicious item until a staff member can attend to you.');
+                this.say('Unfortunately, I am not allowed to eat it.');
+            }).add('Q3', "So... what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory'], () => {
+                this.say('Please retain the delicious item until a staff member can attend to you.');
             });
-            return chatbot;
+        },
+        slotDimensions(i) {
+            const d = this.window.dimensions;
+            return {
+                x: 4,
+                y: d.height - 95 + i * 20,
+                width: d.width - 8,
+                height: 12
+            };
+        },
+        ask(question) {
+            this.showQuestions = false;
+            this.queueMessage(question.text, 5, 200, 'cyan').then(() => {
+                this.showQuestions = true;
+                this.chatbot.ask(question.code);
+            });
+        },
+        say(text) {
+            this.showQuestions = false;
+            this.queueMessage(text, 100, 100).then(() => {
+                this.showQuestions = true;
+            });
         }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/LobbyDesk.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/LobbyDesk.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/LobbyBot */ "./app/LobbyBot.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    components: {
+        LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__["default"]
     }
 });
 
@@ -14042,10 +14179,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/FictionStack */ "./app/FictionStack.vue");
 /* harmony import */ var _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/NonfictionStack */ "./app/NonfictionStack.vue");
 /* harmony import */ var _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/ChildrenStack */ "./app/ChildrenStack.vue");
+/* harmony import */ var _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @app/LobbyDesk */ "./app/LobbyDesk.vue");
 //
 //
 //
 //
+
 
 
 
@@ -14057,7 +14196,8 @@ __webpack_require__.r(__webpack_exports__);
         Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"],
         FictionStack: _app_FictionStack__WEBPACK_IMPORTED_MODULE_1__["default"],
         NonfictionStack: _app_NonfictionStack__WEBPACK_IMPORTED_MODULE_2__["default"],
-        ChildrenStack: _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_3__["default"]
+        ChildrenStack: _app_ChildrenStack__WEBPACK_IMPORTED_MODULE_3__["default"],
+        LobbyDesk: _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_4__["default"]
     },
     inject: ['app'],
     provide() {
@@ -14642,6 +14782,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -20579,9 +20720,7 @@ var render = function() {
               }
             }
           })
-        : _c("text-layer"),
-      _vm._v(" "),
-      _c("lobby-bot")
+        : _c("text-layer")
     ],
     2
   )
@@ -20611,40 +20750,79 @@ var render = function() {
   return _c(
     "easel-container",
     _vm._l(_vm.questions, function(question, i) {
-      return _c(
-        "easel-container",
-        { key: question.code },
-        [
-          _c("easel-shape", {
-            attrs: {
-              x: 5 - 1,
-              y: 5 + i * 20 - 1,
-              form: "rect",
-              fill: "grey",
-              dimensions: [340, 10],
-              cursor: "pointer",
-              alpha: "0.5"
-            },
-            on: {
-              click: function($event) {
-                return _vm.chatbot.ask(question.code)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("enzo-text", {
-            attrs: {
-              text: question.text,
-              x: 5,
-              y: 5 + i * 20,
-              align: "top-left",
-              color: "cyan"
-            }
-          })
-        ],
-        1
-      )
+      return _vm.showQuestions
+        ? _c(
+            "easel-container",
+            { key: question.code },
+            [
+              _c("easel-shape", {
+                attrs: {
+                  x: _vm.questionSlots[i].x,
+                  y: _vm.questionSlots[i].y,
+                  form: "rect",
+                  fill: "grey",
+                  dimensions: [
+                    _vm.questionSlots[i].width,
+                    _vm.questionSlots[i].height
+                  ],
+                  cursor: "pointer",
+                  alpha: "0.5"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.ask(question)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("enzo-text", {
+                attrs: {
+                  text: question.text,
+                  x: _vm.questionSlots[i].x + 2,
+                  y: _vm.questionSlots[i].y + 2,
+                  align: "top-left",
+                  color: "cyan"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
     }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/LobbyDesk.vue?vue&type=template&id=64c0c5e3& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    [
+      _c("easel-bitmap", { attrs: { image: "images/desk.gif" } }),
+      _vm._v(" "),
+      _c("lobby-bot"),
+      _vm._v(" "),
+      _c("text-layer")
+    ],
     1
   )
 }
@@ -21365,7 +21543,8 @@ var render = function() {
               text: _vm.message.text,
               x: _vm.message.x,
               y: _vm.message.y,
-              buffer: _vm.app.isMobile ? 3 : 0
+              buffer: _vm.app.isMobile ? 3 : 0,
+              color: _vm.message.color
             }
           }),
           _vm._v(" "),

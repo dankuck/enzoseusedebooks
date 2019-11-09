@@ -82,8 +82,6 @@
         >
         </text-layer>
 
-        <lobby-bot>
-        </lobby-bot>
     </easel-container>
 </template>
 
@@ -92,7 +90,6 @@ import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
 import Battery from '@app/Battery';
-import LobbyBot from '@app/LobbyBot';
 
 export default {
     inject: ['app'],
@@ -101,7 +98,6 @@ export default {
         BigPlant,
         BookViewer,
         Battery,
-        LobbyBot,
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -189,10 +185,7 @@ export default {
                         ['rect', 0, 36, [127, 55]],
                     ],
                     name: "Shabby Desk",
-                    click: () => {
-                        this.showMessage("The desk is empty right now.", 0, 168);
-                        this.app.event('shabby-desk', 'bounce');
-                    },
+                    click: () => this.app.world.goTo('lobby-desk'),
                 },
             ];
         },

@@ -49,4 +49,10 @@ describe('Messager', function () {
         messager.clear();
         equal(messager.message, null);
     });
+
+    it('should set a message and return a Promise that resolves when done', function (done) {
+        const messager = new Messager(10);
+        messager.queue(message1)
+            .then(done, done);
+    });
 });

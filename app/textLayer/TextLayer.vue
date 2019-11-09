@@ -23,6 +23,7 @@
             :x="message.x"
             :y="message.y"
             :buffer="app.isMobile ? 3 : 0"
+            :color="message.color"
         >
         </enzo-text>
         <easel-container

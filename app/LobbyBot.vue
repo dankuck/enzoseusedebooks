@@ -1,24 +1,25 @@
 <template>
     <easel-container>
         <easel-container
+            v-if="showQuestions"
             v-for="(question, i) in questions"
             :key="question.code"
         >
             <easel-shape
-                :x="5 - 1"
-                :y="5 + i * 20 - 1"
+                :x="questionSlots[i].x"
+                :y="questionSlots[i].y"
                 form="rect"
                 fill="grey"
-                :dimensions="[340, 10]"
+                :dimensions="[questionSlots[i].width, questionSlots[i].height]"
                 cursor="pointer"
                 alpha="0.5"
-                @click="chatbot.ask(question.code)"
+                @click="ask(question)"
             >
             </easel-shape>
             <enzo-text
                 :text="question.text"
-                :x="5"
-                :y="5 + i * 20"
+                :x="questionSlots[i].x + 2"
+                :y="questionSlots[i].y + 2"
                 align="top-left"
                 color="cyan"
             >
@@ -28,46 +29,83 @@
 </template>
 
 <script>
+import UsesTextLayer from '@textLayer/UsesTextLayer';
 import ChatBot from '@chat/ChatBot';
 const {after} = ChatBot;
 
 export default {
-    inject: ['app'],
+    inject: ['app', 'window'],
+    mixins: [UsesTextLayer],
+    mounted() {
+        this.say("Welcome to Enzo's Eused Ebooks!");
+    },
     data() {
         return {
             chatbot: this.buildChatBot(),
+            showQuestions: false,
         };
     },
     computed: {
         questions() {
-            return this.chatbot.choose();
+            return this.chatbot.choose().slice(0, 4);
+        },
+        questionSlots() {
+            return [
+                this.slotDimensions(0),
+                this.slotDimensions(1),
+                this.slotDimensions(2),
+                this.slotDimensions(3),
+            ];
         },
     },
     methods: {
         buildChatBot(savedData, world) {
-            const chatbot = new ChatBot(this.app.world.lobbyBot)
+            return new ChatBot(this.app.world.lobbyBot)
                 .add('Q1', "How do you play this game?", [], () => {
-                    alert('This is not a game; this is a bookstore.');
+                    this.say('This is not a game; this is a bookstore.');
                 })
                 .add('Q2', "I found this battery...",
                     [
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        alert('Unfortunately, I am not allowed to eat it.');
+                        this.say('Unfortunately, I am not allowed to eat it.');
                     }
                 )
-                .add('Q3', "Then what should I do with this battery?",
+                .add('Q3', "So... what should I do with this battery?",
                     [
                         after('Q2'),
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        alert('Please retain the delicious item until a staff member can attend to you.');
+                        this.say('Please retain the delicious item until a staff member can attend to you.');
                     }
                 )
                 ;
-            return chatbot;
+        },
+        slotDimensions(i) {
+            const d = this.window.dimensions;
+            return {
+                x: 4,
+                y: d.height - 95 + i * 20,
+                width: d.width - 8,
+                height: 12,
+            };
+        },
+        ask(question) {
+            this.showQuestions = false;
+            this.queueMessage(question.text, 5, 200, 'cyan')
+                .then(() => {
+                    this.showQuestions = true;
+                    this.chatbot.ask(question.code);
+                });
+        },
+        say(text) {
+            this.showQuestions = false;
+            this.queueMessage(text, 100, 100)
+                .then(() => {
+                    this.showQuestions = true;
+                });
         },
     },
 };

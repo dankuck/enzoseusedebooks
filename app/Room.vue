@@ -7,6 +7,7 @@ import Lobby from '@app/Lobby';
 import FictionStack from '@app/FictionStack';
 import NonfictionStack from '@app/NonfictionStack';
 import ChildrenStack from '@app/ChildrenStack';
+import LobbyDesk from '@app/LobbyDesk';
 
 export default {
     components: {
@@ -14,6 +15,7 @@ export default {
         FictionStack,
         NonfictionStack,
         ChildrenStack,
+        LobbyDesk,
     },
     inject: ['app'],
     provide() {
