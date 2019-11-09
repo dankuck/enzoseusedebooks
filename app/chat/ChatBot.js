@@ -14,9 +14,13 @@ export default class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, text, conditions = [], onAsk) {
+    add(code, text, conditions = [], onAsk = null, options = {}) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
+        }
+        if (!options.keep) {
+            // only show this question until it has been asked
+            conditions.push(ChatBot.until(code));
         }
         this.questions[code] = {
             onAsk,
@@ -42,7 +46,6 @@ export default class ChatBot {
 
     choose() {
         return Object.values(this.questions)
-            .filter(question => ! this.wasAsked(question.code))
             .filter(question => {
                 return question.conditions.reduce((met, condition) => met && condition(this), true);
             });
@@ -53,6 +56,10 @@ export default class ChatBot {
     }
 };
 
-ChatBot.after = function (code) {
+ChatBot.after = function after(code) {
     return chatbot => chatbot.wasAsked(code);
+};
+
+ChatBot.until = function until(code) {
+    return chatbot => ! chatbot.wasAsked(code);
 };

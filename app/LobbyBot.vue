@@ -37,7 +37,16 @@ export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
     mounted() {
-        this.say("Welcome to Enzo's Eused Ebooks!");
+        this.say(
+            this.chatbot.wasAsked('Q1')
+            ? [
+                "Welcome back!",
+            ]
+            : [
+                "Welcome to Enzo's Eused Ebooks!",
+                "How can I help you today?",
+            ]
+        );
     },
     data() {
         return {
@@ -61,9 +70,26 @@ export default {
     methods: {
         buildChatBot(savedData, world) {
             return new ChatBot(this.app.world.lobbyBot)
-                .add('Q1', "How do you play this game?", [], () => {
-                    this.say('This is not a game; this is a bookstore.');
-                })
+                .add('Q1', "How do you play this game?",
+                    [],
+                    () => this.say('This is not a game; this is a bookstore.')
+                )
+                .add('Q4', "Where am I?",
+                    [
+                        after('Q1'),
+                    ],
+                    () => this.say("You are in Enzo's Eused Ebooks.")
+                )
+                .add('Q5', "But what is this game?",
+                    [
+                        after('Q4'),
+                    ],
+                    () => this.say([
+                        "This is not a game. Enzo's is a bookstore completely unpersonalized to you!",
+                        "Nothing in this store was chosen to suit your interests.",
+                        "How refreshing!",
+                    ])
+                )
                 .add('Q2', "I found this battery...",
                     [
                         () => this.app.world.battery.location === 'inventory',
@@ -81,6 +107,11 @@ export default {
                         this.say('Please retain the delicious item until a staff member can attend to you.');
                     }
                 )
+                .add('X1', "Ok, bye.",
+                    [],
+                    () => this.app.world.goTo('Lobby'),
+                    {keep: true}
+                )
                 ;
         },
         slotDimensions(i) {
@@ -93,6 +124,7 @@ export default {
             };
         },
         ask(question) {
+            this.app.event('ask', ['lobby-bot', question.code].join(':'));
             this.showQuestions = false;
             this.queueMessage(question.text, 5, 200, 'cyan')
                 .then(() => {
@@ -100,9 +132,12 @@ export default {
                     this.chatbot.ask(question.code);
                 });
         },
-        say(text) {
+        say(texts) {
             this.showQuestions = false;
-            this.queueMessage(text, 100, 100)
+            if (!(texts instanceof Array)) {
+                texts = [texts];
+            }
+            texts.reduce((n, text) => this.queueMessage(text, 100, 100), null)
                 .then(() => {
                     this.showQuestions = true;
                 });

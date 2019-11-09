@@ -149,4 +149,20 @@ describe('ChatBot', function () {
         assert(questions[0].code === 'Q2');
     });
 
+    it('should build an "until" callback', function () {
+        const chatbot = new ChatBot()
+            .add('Q1', 'Do you?');
+        chatbot.ask('Q1');
+        const until = ChatBot.until('Q1');
+        assert(!until(chatbot));
+    });
+
+    it('should keep a question after asking it', function () {
+        const chatbot = new ChatBot()
+            .add('Q1', 'Do you?', [], null, {keep: true});
+        chatbot.ask('Q1');
+        const questions = chatbot.choose();
+        assert(questions.length === 1);
+        assert(questions[0].code === 'Q1');
+    });
 });

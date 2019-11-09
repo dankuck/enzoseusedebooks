@@ -1653,9 +1653,13 @@ class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, text, conditions = [], onAsk) {
+    add(code, text, conditions = [], onAsk = null, options = {}) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
+        }
+        if (!options.keep) {
+            // only show this question until it has been asked
+            conditions.push(ChatBot.until(code));
         }
         this.questions[code] = {
             onAsk,
@@ -1680,7 +1684,7 @@ class ChatBot {
     }
 
     choose() {
-        return Object.values(this.questions).filter(question => !this.wasAsked(question.code)).filter(question => {
+        return Object.values(this.questions).filter(question => {
             return question.conditions.reduce((met, condition) => met && condition(this), true);
         });
     }
@@ -1690,8 +1694,12 @@ class ChatBot {
     }
 };
 
-ChatBot.after = function (code) {
+ChatBot.after = function after(code) {
     return chatbot => chatbot.wasAsked(code);
+};
+
+ChatBot.until = function until(code) {
+    return chatbot => !chatbot.wasAsked(code);
 };
 
 /***/ }),
@@ -13949,7 +13957,7 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
     inject: ['app', 'window'],
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     mounted() {
-        this.say("Welcome to Enzo's Eused Ebooks!");
+        this.say(this.chatbot.wasAsked('Q1') ? ["Welcome back!"] : ["Welcome to Enzo's Eused Ebooks!", "How can I help you today?"]);
     },
     data() {
         return {
@@ -13967,13 +13975,11 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
     },
     methods: {
         buildChatBot(savedData, world) {
-            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => {
-                this.say('This is not a game; this is a bookstore.');
-            }).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q4', "Where am I?", [after('Q1')], () => this.say("You are in Enzo's Eused Ebooks.")).add('Q5', "But what is this game?", [after('Q4')], () => this.say(["This is not a game. Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!"])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            });
+            }).add('X1', "Ok, bye.", [], () => this.app.world.goTo('Lobby'), { keep: true });
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -13985,15 +13991,19 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
             };
         },
         ask(question) {
+            this.app.event('ask', ['lobby-bot', question.code].join(':'));
             this.showQuestions = false;
             this.queueMessage(question.text, 5, 200, 'cyan').then(() => {
                 this.showQuestions = true;
                 this.chatbot.ask(question.code);
             });
         },
-        say(text) {
+        say(texts) {
             this.showQuestions = false;
-            this.queueMessage(text, 100, 100).then(() => {
+            if (!(texts instanceof Array)) {
+                texts = [texts];
+            }
+            texts.reduce((n, text) => this.queueMessage(text, 100, 100), null).then(() => {
                 this.showQuestions = true;
             });
         }
@@ -14735,10 +14745,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         resetWorld() {
-            if (confirm('Really reset world to default?')) {
-                this.app.world = new _world_World__WEBPACK_IMPORTED_MODULE_1__["default"]();
-                this.messager.queue(`Reset world`);
-            }
+            this.app.world = new _world_World__WEBPACK_IMPORTED_MODULE_1__["default"]();
+            this.messager.queue(`Reset world`);
         },
         saveWorld() {
             const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, this.saveName, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
@@ -14754,11 +14762,9 @@ __webpack_require__.r(__webpack_exports__);
             this.saveNames = this.saveNames.filter(saved => saved !== name);
         },
         loadWorld(name) {
-            if (confirm(`Really reset world to save ${name}?`)) {
-                const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, name, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
-                this.app.world = storage.read('world');
-                this.messager.queue(`Loaded ${name}`);
-            }
+            const storage = new _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_4__["default"](window.localStorage, name, _app_reviver__WEBPACK_IMPORTED_MODULE_3__["default"]);
+            this.app.world = storage.read('world');
+            this.messager.queue(`Loaded ${name}`);
         },
         deleteWorld(name) {
             if (confirm(`Delete save ${name}?`)) {
