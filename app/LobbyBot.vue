@@ -68,7 +68,7 @@ export default {
         },
     },
     methods: {
-        buildChatBot(savedData, world) {
+        buildChatBot() {
             return new ChatBot(this.app.world.lobbyBot)
                 .add('Q1', "How do you play this game?",
                     [],
