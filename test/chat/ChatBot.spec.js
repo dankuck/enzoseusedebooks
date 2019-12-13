@@ -60,6 +60,16 @@ describe('ChatBot', function () {
         assert(!chatbot.wasAsked('Q2'));
     });
 
+    it('should tell if a question has been asked this session', function () {
+        const chatbot = new ChatBot({askedCodes: ['Q2']})
+            .add('Q1', 'Do you?')
+            .add('Q2', 'Dont you?');
+        chatbot.ask('Q1');
+        assert(chatbot.wasAskedThisSession('Q1'));
+        assert(chatbot.wasAsked('Q2'));
+        assert(!chatbot.wasAskedThisSession('Q2'));
+    });
+
     it('should give unasked questions', function () {
         const chatbot = new ChatBot()
             .add('Q1', 'Do you?')
@@ -159,10 +169,27 @@ describe('ChatBot', function () {
 
     it('should keep a question after asking it', function () {
         const chatbot = new ChatBot()
-            .add('Q1', 'Do you?', [], null, {keep: true});
+            .add('Q1', 'Do you?', [ChatBot.keep()], null);
         chatbot.ask('Q1');
         const questions = chatbot.choose();
         assert(questions.length === 1);
         assert(questions[0].code === 'Q1');
+    });
+
+    it('should re-show a question on every session', function () {
+        const askedCodes = [];
+        const make = () => new ChatBot({askedCodes})
+            .add('Q1', 'Do you?', [ChatBot.everySession()], null);
+
+        const chatbot1 = make();
+        chatbot1.ask('Q1');
+        const questions1 = chatbot1.choose();
+        assert(questions1.length === 0);
+
+        const chatbot2 = make()
+        const questions2 = chatbot2.choose();
+        assert(questions2.length === 1);
+        assert(questions2[0].code === 'Q1');
+
     });
 });
