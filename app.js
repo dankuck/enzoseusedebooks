@@ -1650,6 +1650,7 @@ class ChatBot {
     constructor(data = {}) {
         this.questions = {};
         this.askedCodes = [];
+        this.askedCodesThisSession = [];
         Object.assign(this, data);
     }
 
@@ -1657,8 +1658,11 @@ class ChatBot {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
-        if (!options.keep) {
-            // only show this question until it has been asked
+        const noAutoConditions = conditions.reduce((acc, condition) => acc || condition.noAutoConditions, false);
+        // The until-self-is-asked condition is implied, so we auto-add it for
+        // ease-of-use. That is except under certain conditions such as the
+        // `always`  and `everySession` conditions.
+        if (!noAutoConditions) {
             conditions.push(ChatBot.until(code));
         }
         this.questions[code] = {
@@ -1676,6 +1680,7 @@ class ChatBot {
             throw new Error(`Not found: ${code}`);
         }
         this.askedCodes.push(code);
+        this.askedCodesThisSession.push(code);
         question.onAsk && question.onAsk();
     }
 
@@ -1683,9 +1688,13 @@ class ChatBot {
         return this.askedCodes.includes(code);
     }
 
+    wasAskedThisSession(code) {
+        return this.askedCodesThisSession.includes(code);
+    }
+
     choose() {
         return Object.values(this.questions).filter(question => {
-            return question.conditions.reduce((met, condition) => met && condition(this), true);
+            return question.conditions.reduce((met, condition) => met && condition(this, question.code), true);
         });
     }
 
@@ -1694,12 +1703,46 @@ class ChatBot {
     }
 };
 
+/**
+ * Builds a condition that only returns true after another given question has
+ * been asked.
+ * @param  {string} code The code of the question that must be asked first
+ * @return {Function}
+ */
 ChatBot.after = function after(code) {
     return chatbot => chatbot.wasAsked(code);
 };
 
+/**
+ * Builds a condition that returns true only until another given question has
+ * been asked.
+ * @param  {string} code The code of the question
+ * @return {Function}
+ */
 ChatBot.until = function until(code) {
     return chatbot => !chatbot.wasAsked(code);
+};
+
+/**
+ * Builds a special-case condition that ensures this question doesn't
+ * disappear after it is asked.
+ * @return {Function}
+ */
+ChatBot.always = function always() {
+    const always = () => true;
+    always.noAutoConditions = true;
+    return always;
+};
+
+/**
+ * Builds a special-case condition that ensures this question will appear again
+ * after being asked as long as a new session has been started.
+ * @return {Function}
+ */
+ChatBot.everySession = function everySession() {
+    const everySession = (chatbot, code) => !chatbot.wasAskedThisSession(code);
+    everySession.noAutoConditions = true;
+    return everySession;
 };
 
 /***/ }),
@@ -14001,7 +14044,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
+const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app', 'window'],
@@ -14017,9 +14060,6 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
             showQuestions: false,
             mouthAnimation: 'off',
             talkInterval: null,
-            askedRecently: {
-                Q3: false
-            },
             moveEyesTo: {
                 x: 0,
                 y: 0
@@ -14042,10 +14082,9 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
         buildChatBot() {
             return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q4', "Where am I?", [after('Q1')], () => this.say("You are in Enzo's Eused Ebooks.")).add('Q5', "But what is this game?", [after('Q4')], () => this.say(["This is not a game. Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!"])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
-            }).add('Q3', "So... what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory', () => !this.askedRecently.Q3], () => {
-                this.askedRecently.Q3 = true;
+            }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }, { keep: true }).add('X1', "Ok, bye.", [], () => this.app.world.goTo('Lobby'), { keep: true });
+            }).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;

@@ -113,16 +113,6 @@ describe('ChatBot', function () {
         equal('Q2', unasked2[0].code);
     });
 
-    it('should get list of asked codes', function () {
-        const chatbot = new ChatBot()
-            .add('Q1', 'Do you?')
-            .add('Q2', 'Dont you?');
-        chatbot.ask('Q1');
-        const asked = chatbot.getAskedCodes();
-        equal(1, asked.length);
-        equal('Q1', asked[0]);
-    });
-
     it('should instantiate with list of asked codes', function () {
         const chatbot = new ChatBot({askedCodes: ['Q1']})
             .add('Q1', 'Do you?')
@@ -169,7 +159,7 @@ describe('ChatBot', function () {
 
     it('should keep a question after asking it', function () {
         const chatbot = new ChatBot()
-            .add('Q1', 'Do you?', [ChatBot.keep()], null);
+            .add('Q1', 'Do you?', [ChatBot.always()], null);
         chatbot.ask('Q1');
         const questions = chatbot.choose();
         assert(questions.length === 1);

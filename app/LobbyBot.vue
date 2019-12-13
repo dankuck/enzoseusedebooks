@@ -81,7 +81,7 @@
 <script>
 import UsesTextLayer from '@textLayer/UsesTextLayer';
 import ChatBot from '@chat/ChatBot';
-const {after} = ChatBot;
+const {after, always, everySession} = ChatBot;
 
 export default {
     inject: ['app', 'window'],
@@ -106,9 +106,6 @@ export default {
             showQuestions: false,
             mouthAnimation: 'off',
             talkInterval: null,
-            askedRecently: {
-                Q3: false,
-            },
             moveEyesTo: {
                 x: 0,
                 y: 0,
@@ -166,19 +163,18 @@ export default {
                 .add('Q3', "So... what should I do with this battery?",
                     [
                         after('Q2'),
+                        everySession(),
                         () => this.app.world.battery.location === 'inventory',
-                        () => !this.askedRecently.Q3,
                     ],
                     () => {
-                        this.askedRecently.Q3 = true;
                         this.say('Please retain the delicious item until a staff member can attend to you.');
                     },
-                    {keep: true},
                 )
                 .add('X1', "Ok, bye.",
-                    [],
+                    [
+                        always(),
+                    ],
                     () => this.app.world.goTo('Lobby'),
-                    {keep: true},
                 )
                 ;
         },

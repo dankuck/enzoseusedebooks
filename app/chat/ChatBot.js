@@ -15,24 +15,17 @@ export default class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, text, conditions = [], onAsk = null, options = {}) {
+    add(code, text, conditions = [], onAsk = null) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
-        conditions = conditions.map(condition => {
-            if (typeof condition === 'function') {
-                return {handler: condition};
-            } else {
-                return condition;
-            }
-        });
         const noAutoConditions = conditions
             .reduce((acc, condition) => acc || condition.noAutoConditions, false);
         // The until-self-is-asked condition is implied, so we auto-add it for
         // ease-of-use. That is except under certain conditions such as the
         // `always`  and `everySession` conditions.
         if (!noAutoConditions) {
-            conditions.push({handler: ChatBot.until(code)});
+            conditions.push(ChatBot.until(code));
         }
         this.questions[code] = {
             onAsk,
@@ -64,12 +57,8 @@ export default class ChatBot {
     choose() {
         return Object.values(this.questions)
             .filter(question => {
-                return question.conditions.reduce((met, condition) => met && condition.handler(this, question.code), true);
+                return question.conditions.reduce((met, condition) => met && condition(this, question.code), true);
             });
-    }
-
-    getAskedCodes() {
-        return this.askedCodes;
     }
 };
 
@@ -98,11 +87,10 @@ ChatBot.until = function until(code) {
  * disappear after it is asked.
  * @return {Function}
  */
-ChatBot.keep = function keep() {
-    return {
-        noAutoConditions: true,
-        handler: () => true,
-    };
+ChatBot.always = function always() {
+    const always = () => true;
+    always.noAutoConditions = true;
+    return always;
 };
 
 /**
@@ -111,8 +99,7 @@ ChatBot.keep = function keep() {
  * @return {Function}
  */
 ChatBot.everySession = function everySession() {
-    return {
-        noAutoConditions: true,
-        handler: (chatbot, code) => ! chatbot.wasAskedThisSession(code),
-    };
+    const everySession = (chatbot, code) => ! chatbot.wasAskedThisSession(code);
+    everySession.noAutoConditions = true;
+    return everySession;
 };
