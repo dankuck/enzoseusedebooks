@@ -136,20 +136,16 @@ export default {
                     [],
                     () => this.say('This is not a game; this is a bookstore.')
                 )
-                .add('Q4', "Where am I?",
+                .add('Q5', "How do you play this bookstore?",
                     [
                         after('Q1'),
                     ],
-                    () => this.say("You are in Enzo's Eused Ebooks.")
-                )
-                .add('Q5', "But what is this game?",
-                    [
-                        after('Q4'),
-                    ],
                     () => this.say([
-                        "This is not a game. Enzo's is a bookstore completely unpersonalized to you!",
+                        "Enzo's is a bookstore completely unpersonalized to you!",
                         "Nothing in this store was chosen to suit your interests.",
                         "How refreshing!",
+                        "...",
+                        "On the other hand there are some mysteries.",
                     ])
                 )
                 .add('Q2', "I found this battery...",
@@ -169,6 +165,27 @@ export default {
                     () => {
                         this.say('Please retain the delicious item until a staff member can attend to you.');
                     },
+                )
+                .add('Q6', "Is there anything else to do?",
+                    [
+                        after('Q3'),
+                        () => this.app.world.completedAllSteps(),
+                    ],
+                    () => this.say([
+                        "You could follow Enzo's on Facebook and Twitter!",
+                        "Every time something new happens in the bookstore, it will be announced there.",
+                    ]),
+                )
+                .add('Q7', "Is there anything else to do?",
+                    [
+                        after('Q6'),
+                        everySession(),
+                        () => this.app.world.completedAllSteps(),
+                    ],
+                    () => this.say([
+                        "So far, just that thing I said about following Enzo's on Facebook and Twitter.",
+                        "Every time something new happens in the bookstore, it will be announced there.",
+                    ]),
                 )
                 .add('X1', "Ok, bye.",
                     [
@@ -199,9 +216,7 @@ export default {
         say(texts) {
             this.showQuestions = false;
             this.startTalking();
-            if (!(texts instanceof Array)) {
-                texts = [texts];
-            }
+            texts = [].concat(texts);
             texts.reduce((n, text) => this.queueMessage(text, 100, 100), null)
                 .then(() => {
                     this.stopTalking();

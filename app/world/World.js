@@ -189,6 +189,24 @@ export default class World
                 });
             });
     }
+
+    completedAllSteps() {
+        if (this.battery.location === 'plant') {
+            return false; // gotta shake the plant
+        }
+        if (this.battery.location === 'lobby-floor') {
+            return false; // gotta pick up the battery
+        }
+        const beenEverywhereMan = this.hasGoneTo('lobby-desk')
+            && this.hasGoneTo('lobby')
+            && this.hasGoneTo('fiction-stack')
+            && this.hasGoneTo('nonfiction-stack')
+            && this.hasGoneTo('children-stack');
+        if (!beenEverywhereMan) {
+            return false;
+        }
+        return true;
+    }
 };
 
 World.registerReviver = function (reviver) {

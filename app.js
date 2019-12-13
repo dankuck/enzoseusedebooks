@@ -1654,7 +1654,7 @@ class ChatBot {
         Object.assign(this, data);
     }
 
-    add(code, text, conditions = [], onAsk = null, options = {}) {
+    add(code, text, conditions = [], onAsk = null) {
         if (this.questions[code]) {
             throw new Error(`${code} has already been added`);
         }
@@ -1696,10 +1696,6 @@ class ChatBot {
         return Object.values(this.questions).filter(question => {
             return question.conditions.reduce((met, condition) => met && condition(this, question.code), true);
         });
-    }
-
-    getAskedCodes() {
-        return this.askedCodes;
     }
 };
 
@@ -3285,6 +3281,20 @@ class World {
                 delete book.format;
             });
         });
+    }
+
+    completedAllSteps() {
+        if (this.battery.location === 'plant') {
+            return false; // gotta shake the plant
+        }
+        if (this.battery.location === 'lobby-floor') {
+            return false; // gotta pick up the battery
+        }
+        const beenEverywhereMan = this.hasGoneTo('lobby-desk') && this.hasGoneTo('lobby') && this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack');
+        if (!beenEverywhereMan) {
+            return false;
+        }
+        return true;
     }
 };
 
@@ -14080,11 +14090,11 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
     },
     methods: {
         buildChatBot() {
-            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q4', "Where am I?", [after('Q1')], () => this.say("You are in Enzo's Eused Ebooks.")).add('Q5', "But what is this game?", [after('Q4')], () => this.say(["This is not a game. Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!"])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!", "...", "On the other hand there are some mysteries."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said about following Enzo's on Facebook and Twitter.", "Every time something new happens in the bookstore, it will be announced there."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -14106,9 +14116,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
         say(texts) {
             this.showQuestions = false;
             this.startTalking();
-            if (!(texts instanceof Array)) {
-                texts = [texts];
-            }
+            texts = [].concat(texts);
             texts.reduce((n, text) => this.queueMessage(text, 100, 100), null).then(() => {
                 this.stopTalking();
                 this.showQuestions = true;
