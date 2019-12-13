@@ -1,6 +1,56 @@
 <template>
     <easel-container>
         <easel-container
+            x="160"
+            y="55"
+        >
+            <easel-bitmap
+                image="images/Jeff-body.gif"
+            >
+            </easel-bitmap>
+            <easel-bitmap
+                image="images/Jeff-eye.gif"
+                :x="34"
+                :y="6"
+            >
+            </easel-bitmap>
+            <easel-bitmap
+                image="images/Jeff-eye.gif"
+                :x="51"
+                :y="6"
+            >
+            </easel-bitmap>
+            <easel-bitmap
+                image="images/Jeff-pupil.gif"
+                :x="38 + eyes.x"
+                :y="15 + eyes.y"
+            >
+            </easel-bitmap>
+            <easel-bitmap
+                image="images/Jeff-pupil.gif"
+                :x="55 + eyes.x"
+                :y="15 + eyes.y"
+            >
+            </easel-bitmap>
+            <easel-sprite-sheet
+                :images="['images/Jeff-mouth.gif']"
+                :framerate="4"
+                :frames="{width: 16, height: 6}"
+                :animations="{
+                    off: 1,
+                    on: 0,
+                }"
+            >
+                <easel-sprite
+                    :x="40"
+                    :y="29"
+                    :animation="mouthAnimation"
+                >
+                </easel-sprite>
+            </easel-sprite-sheet>
+        </easel-container>
+
+        <easel-container
             v-if="showQuestions"
             v-for="(question, i) in questions"
             :key="question.code"
@@ -47,11 +97,26 @@ export default {
                 "How can I help you today?",
             ]
         );
+        setInterval(() => this.wanderEyes(), 1000);
+        setInterval(() => this.moveEyes(), 100);
     },
     data() {
         return {
             chatbot: this.buildChatBot(),
             showQuestions: false,
+            mouthAnimation: 'off',
+            talkInterval: null,
+            askedRecently: {
+                Q3: false,
+            },
+            moveEyesTo: {
+                x: 0,
+                y: 0,
+            },
+            eyes: {
+                x: 0,
+                y: 0,
+            },
         };
     },
     computed: {
@@ -102,15 +167,18 @@ export default {
                     [
                         after('Q2'),
                         () => this.app.world.battery.location === 'inventory',
+                        () => !this.askedRecently.Q3,
                     ],
                     () => {
+                        this.askedRecently.Q3 = true;
                         this.say('Please retain the delicious item until a staff member can attend to you.');
-                    }
+                    },
+                    {keep: true},
                 )
                 .add('X1', "Ok, bye.",
                     [],
                     () => this.app.world.goTo('Lobby'),
-                    {keep: true}
+                    {keep: true},
                 )
                 ;
         },
@@ -134,13 +202,51 @@ export default {
         },
         say(texts) {
             this.showQuestions = false;
+            this.startTalking();
             if (!(texts instanceof Array)) {
                 texts = [texts];
             }
             texts.reduce((n, text) => this.queueMessage(text, 100, 100), null)
                 .then(() => {
+                    this.stopTalking();
                     this.showQuestions = true;
                 });
+        },
+        startTalking() {
+            this.stopTalking();
+            this.mouthAnimation = 'on';
+            this.talkInterval = setInterval(() => {
+                this.mouthAnimation = Math.random() < .5 ? 'on' : 'off';
+            }, 100);
+        },
+        stopTalking() {
+            if (this.talkInterval) {
+                clearInterval(this.talkInterval);
+                this.talkInterval = null;
+                this.mouthAnimation = 'off';
+            }
+        },
+        wanderEyes() {
+            if (!this.showQuestions) {
+                this.moveEyesTo.x = 0;
+                this.moveEyesTo.y = 0;
+                return;
+            }
+            if (Math.random() < .5) {
+                return;
+            }
+            this.moveEyesTo.x = Math.floor(Math.random() * 5) - 2;
+            this.moveEyesTo.y = Math.floor(Math.random() * 5) - 2;
+        },
+        moveEyes() {
+            const dX = this.moveEyesTo.x - this.eyes.x;
+            const dY = this.moveEyesTo.y - this.eyes.y;
+            if (dX !== 0) {
+                this.eyes.x += dX < 0 ? -1 : 1;
+            }
+            if (dY !== 0) {
+                this.eyes.y += dY < 0 ? -1 : 1;
+            }
         },
     },
 };

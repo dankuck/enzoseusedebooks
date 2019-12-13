@@ -13948,6 +13948,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13958,11 +14008,26 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     mounted() {
         this.say(this.chatbot.wasAsked('Q1') ? ["Welcome back!"] : ["Welcome to Enzo's Eused Ebooks!", "How can I help you today?"]);
+        setInterval(() => this.wanderEyes(), 1000);
+        setInterval(() => this.moveEyes(), 100);
     },
     data() {
         return {
             chatbot: this.buildChatBot(),
-            showQuestions: false
+            showQuestions: false,
+            mouthAnimation: 'off',
+            talkInterval: null,
+            askedRecently: {
+                Q3: false
+            },
+            moveEyesTo: {
+                x: 0,
+                y: 0
+            },
+            eyes: {
+                x: 0,
+                y: 0
+            }
         };
     },
     computed: {
@@ -13974,12 +14039,13 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
         }
     },
     methods: {
-        buildChatBot(savedData, world) {
+        buildChatBot() {
             return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q4', "Where am I?", [after('Q1')], () => this.say("You are in Enzo's Eused Ebooks.")).add('Q5', "But what is this game?", [after('Q4')], () => this.say(["This is not a game. Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!"])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
-            }).add('Q3', "So... what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory'], () => {
+            }).add('Q3', "So... what should I do with this battery?", [after('Q2'), () => this.app.world.battery.location === 'inventory', () => !this.askedRecently.Q3], () => {
+                this.askedRecently.Q3 = true;
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('X1', "Ok, bye.", [], () => this.app.world.goTo('Lobby'), { keep: true });
+            }, { keep: true }).add('X1', "Ok, bye.", [], () => this.app.world.goTo('Lobby'), { keep: true });
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -14000,12 +14066,50 @@ const { after } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"];
         },
         say(texts) {
             this.showQuestions = false;
+            this.startTalking();
             if (!(texts instanceof Array)) {
                 texts = [texts];
             }
             texts.reduce((n, text) => this.queueMessage(text, 100, 100), null).then(() => {
+                this.stopTalking();
                 this.showQuestions = true;
             });
+        },
+        startTalking() {
+            this.stopTalking();
+            this.mouthAnimation = 'on';
+            this.talkInterval = setInterval(() => {
+                this.mouthAnimation = Math.random() < .5 ? 'on' : 'off';
+            }, 100);
+        },
+        stopTalking() {
+            if (this.talkInterval) {
+                clearInterval(this.talkInterval);
+                this.talkInterval = null;
+                this.mouthAnimation = 'off';
+            }
+        },
+        wanderEyes() {
+            if (!this.showQuestions) {
+                this.moveEyesTo.x = 0;
+                this.moveEyesTo.y = 0;
+                return;
+            }
+            if (Math.random() < .5) {
+                return;
+            }
+            this.moveEyesTo.x = Math.floor(Math.random() * 5) - 2;
+            this.moveEyesTo.y = Math.floor(Math.random() * 5) - 2;
+        },
+        moveEyes() {
+            const dX = this.moveEyesTo.x - this.eyes.x;
+            const dY = this.moveEyesTo.y - this.eyes.y;
+            if (dX !== 0) {
+                this.eyes.x += dX < 0 ? -1 : 1;
+            }
+            if (dY !== 0) {
+                this.eyes.y += dY < 0 ? -1 : 1;
+            }
         }
     }
 });
@@ -20755,47 +20859,103 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
-    _vm._l(_vm.questions, function(question, i) {
-      return _vm.showQuestions
-        ? _c(
-            "easel-container",
-            { key: question.code },
+    [
+      _c(
+        "easel-container",
+        { attrs: { x: "160", y: "55" } },
+        [
+          _c("easel-bitmap", { attrs: { image: "images/Jeff-body.gif" } }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: { image: "images/Jeff-eye.gif", x: 34, y: 6 }
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: { image: "images/Jeff-eye.gif", x: 51, y: 6 }
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: {
+              image: "images/Jeff-pupil.gif",
+              x: 38 + _vm.eyes.x,
+              y: 15 + _vm.eyes.y
+            }
+          }),
+          _vm._v(" "),
+          _c("easel-bitmap", {
+            attrs: {
+              image: "images/Jeff-pupil.gif",
+              x: 55 + _vm.eyes.x,
+              y: 15 + _vm.eyes.y
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "easel-sprite-sheet",
+            {
+              attrs: {
+                images: ["images/Jeff-mouth.gif"],
+                framerate: 4,
+                frames: { width: 16, height: 6 },
+                animations: {
+                  off: 1,
+                  on: 0
+                }
+              }
+            },
             [
-              _c("easel-shape", {
-                attrs: {
-                  x: _vm.questionSlots[i].x,
-                  y: _vm.questionSlots[i].y,
-                  form: "rect",
-                  fill: "grey",
-                  dimensions: [
-                    _vm.questionSlots[i].width,
-                    _vm.questionSlots[i].height
-                  ],
-                  cursor: "pointer",
-                  alpha: "0.5"
-                },
-                on: {
-                  click: function($event) {
-                    return _vm.ask(question)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("enzo-text", {
-                attrs: {
-                  text: question.text,
-                  x: _vm.questionSlots[i].x + 2,
-                  y: _vm.questionSlots[i].y + 2,
-                  align: "top-left",
-                  color: "cyan"
-                }
+              _c("easel-sprite", {
+                attrs: { x: 40, y: 29, animation: _vm.mouthAnimation }
               })
             ],
             1
           )
-        : _vm._e()
-    }),
-    1
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.questions, function(question, i) {
+        return _vm.showQuestions
+          ? _c(
+              "easel-container",
+              { key: question.code },
+              [
+                _c("easel-shape", {
+                  attrs: {
+                    x: _vm.questionSlots[i].x,
+                    y: _vm.questionSlots[i].y,
+                    form: "rect",
+                    fill: "grey",
+                    dimensions: [
+                      _vm.questionSlots[i].width,
+                      _vm.questionSlots[i].height
+                    ],
+                    cursor: "pointer",
+                    alpha: "0.5"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.ask(question)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("enzo-text", {
+                  attrs: {
+                    text: question.text,
+                    x: _vm.questionSlots[i].x + 2,
+                    y: _vm.questionSlots[i].y + 2,
+                    align: "top-left",
+                    color: "cyan"
+                  }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      })
+    ],
+    2
   )
 }
 var staticRenderFns = []
