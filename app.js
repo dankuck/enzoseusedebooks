@@ -13500,6 +13500,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -20556,12 +20561,36 @@ var render = function() {
           })
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm._m(0)
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "footer" } }, [
+      _vm._v("\n        © 2019\n        "),
+      _c(
+        "a",
+        {
+          attrs: { href: "https://facebook.com/enzoseused", target: "_blank" }
+        },
+        [_vm._v("FB")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        { attrs: { href: "https://twitter.com/enzoseused", target: "_blank" } },
+        [_vm._v("TW")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

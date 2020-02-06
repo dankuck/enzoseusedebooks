@@ -45,6 +45,11 @@
             >
             </easel-text>
         </easel-canvas>
+        <div id="footer">
+            &copy; 2019
+            <a href="https://facebook.com/enzoseused" target="_blank">FB</a>
+            <a href="https://twitter.com/enzoseused" target="_blank">TW</a>
+        </div>
     </div>
 </template>
 
