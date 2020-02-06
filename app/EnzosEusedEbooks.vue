@@ -18,6 +18,7 @@
     <div id="canvas-div">
         <dev-tools v-if="app.config.developmentMode"></dev-tools>
         <easel-canvas
+            v-if="showGame"
             ref="canvas"
             id="canvas"
             :width="app.canvas.width"
@@ -26,7 +27,7 @@
             :viewport-height="app.viewport.height"
             :anti-alias="false"
         >
-            <component :is="app.world.location"></component>
+            <room></room>
 
             <inventory
                 :x="0"
@@ -40,33 +41,66 @@
         <easel-canvas>
             <easel-text
                 color="#CCC"
-                text="A hack to induce the font to preload."
+                text="A hack to induce the font to load."
                 font="7px 'Press Start 2P'"
             >
             </easel-text>
         </easel-canvas>
+        <div id="footer">
+            &copy; 2019
+            <a href="https://facebook.com/enzoseused">FB</a>
+            <a href="https://twitter.com/enzoseused">TW</a>
+        </div>
     </div>
 </template>
 
 <script>
-import Lobby from '@app/Lobby';
-import FictionStack from '@app/FictionStack';
-import NonfictionStack from '@app/NonfictionStack';
-import ChildrenStack from '@app/ChildrenStack';
 import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 import Inventory from '@app/Inventory';
+import Room from '@app/Room';
 
 export default {
     components: {
-        Lobby,
-        FictionStack,
-        NonfictionStack,
-        ChildrenStack,
         DevTools,
         DevElements,
         Inventory,
+        Room,
     },
     inject: ['app'],
+    provide() {
+        return {
+            window: this,
+        };
+    },
+    data() {
+        return {
+            showGame: false,
+        };
+    },
+    mounted() {
+        if (document.fonts) {
+            const start = new Date();
+            let loady = setInterval(() => {
+                if (document.fonts.check('bold 16px "Press Start 2P"') || new Date() - start > 500 /*ms*/) {
+                    this.showGame = true;
+                    clearInterval(loady);
+                }
+            }, 100);
+        } else {
+            // no easy way to check if the font loaded.
+            this.showGame = true;
+        }
+    },
+    computed: {
+        dimensions() {
+            return {
+                x: 0,
+                y: 0,
+                width: this.app.viewport.width,
+                height: this.app.viewport.height,
+            };
+        },
+    },
 };
 </script>

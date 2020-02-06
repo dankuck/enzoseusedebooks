@@ -16,7 +16,7 @@
         >
             <easel-shape
                 form="rect"
-                :dimensions="[handleWidth, app.viewport.height]"
+                :dimensions="[handleWidth, dimensions.height]"
                 fill="black"
             >
             </easel-shape>
@@ -25,14 +25,14 @@
         <enzo-hover-spot
             v-if="x < maxX"
             :speed="8"
-            :x="app.viewport.width - handleWidth"
+            :x="dimensions.width - handleWidth"
             :y="0"
             @hovering="scrollRight"
             @click="scrollRight(handleWidth)"
         >
             <easel-shape
                 form="rect"
-                :dimensions="[handleWidth, app.viewport.height]"
+                :dimensions="[handleWidth, dimensions.height]"
                 fill="black"
             >
             </easel-shape>
@@ -42,7 +42,14 @@
 
 <script>
 export default {
-    inject: ['app'],
+    inject: {
+        parentWindow: {from: 'window'},
+    },
+    provide() {
+        return {
+            window: this,
+        };
+    },
     props: ['width', 'startX'],
     data() {
         return {
@@ -51,10 +58,18 @@ export default {
     },
     computed: {
         handleWidth() {
-            return 0.15 * this.app.viewport.width;
+            return 0.15 * this.dimensions.width;
         },
         maxX() {
-            return this.width - this.app.viewport.width;
+            return this.width - this.dimensions.width;
+        },
+        dimensions() {
+            return {
+                x: this.x,
+                y: this.parentWindow.dimensions.y,
+                width: this.parentWindow.dimensions.width,
+                height: this.parentWindow.dimensions.height,
+            };
         },
     },
     methods: {

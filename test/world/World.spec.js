@@ -12,6 +12,15 @@ const {
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+const shuffle = function (arr) {
+    const copy = [].concat(arr);
+    const shuffled = [];
+    while (copy.length > 0) {
+        shuffled.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
+    }
+    return shuffled;
+};
+
 const reviver = new Reviver();
 reviver.register(World);
 
@@ -188,6 +197,12 @@ describe('World', function () {
             extraKeys.delete('prices');
             assert(extraKeys.size === 0, `Some extra keys in some books: ${Array.from(extraKeys)}`);
         });
+
+        it('should have a lobbyBot', function () {
+            const world = builder();
+            assert(world.lobbyBot);
+            assert(world.lobbyBot.askedCodes instanceof Array);
+        });
     };
 
     describe('Fresh version', function () {
@@ -204,5 +219,39 @@ describe('World', function () {
 
     describe('Version 8 - minimized, ruffled plant, loaded books', function () {
         all_version_tests(build_version_8_minimized_world);
+    });
+
+    describe('knows when all steps are completed', function () {
+
+        const actions = [
+            world => world.ruffleLobbyPlant(() => {}),
+            world => world.takeBattery(() => {}),
+            world => world.goTo('lobby-desk'),
+            world => world.goTo('fiction-stack'),
+            world => world.goTo('nonfiction-stack'),
+            world => world.goTo('children-stack'),
+        ];
+
+        it('in order', function () {
+            const world = new World();
+
+            actions.forEach(action => {
+                assert(!world.completedAllSteps());
+                action(world);
+            });
+
+            assert(world.completedAllSteps());
+        });
+
+        it('shuffled', function () {
+            const world = new World();
+
+            shuffle(actions).forEach(action => {
+                assert(!world.completedAllSteps());
+                action(world);
+            });
+
+            assert(world.completedAllSteps());
+        });
     });
 });

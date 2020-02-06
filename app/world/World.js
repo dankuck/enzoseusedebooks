@@ -88,7 +88,12 @@ const upgrader = new VersionUpgrader()
     .version(11, world => {
         // Discard some unneeded data to save space in localStorage
         world.slimDownBooks();
-    });
+    })
+    .version(12, world => {
+        world.lobbyBot = {
+            askedCodes: [],
+        };
+    })
     ;
 
 export default class World
@@ -183,6 +188,24 @@ export default class World
                     delete book.format;
                 });
             });
+    }
+
+    completedAllSteps() {
+        if (this.battery.location === 'plant') {
+            return false; // gotta shake the plant
+        }
+        if (this.battery.location === 'lobby-floor') {
+            return false; // gotta pick up the battery
+        }
+        const beenEverywhereMan = this.hasGoneTo('lobby-desk')
+            && this.hasGoneTo('lobby')
+            && this.hasGoneTo('fiction-stack')
+            && this.hasGoneTo('nonfiction-stack')
+            && this.hasGoneTo('children-stack');
+        if (!beenEverywhereMan) {
+            return false;
+        }
+        return true;
     }
 };
 

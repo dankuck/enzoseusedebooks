@@ -17,11 +17,11 @@ export default {
         removeFromHoverRing() {
             this.textLayer.mobileHoverRing.remove(this.hoverCallback);
         },
-        queueMessage(text, x, y) {
-            this.textLayer.messager.queue({text, x, y});
+        queueMessage(text, x, y, color = null) {
+            return this.textLayer.messager.queue({text, x, y, color});
         },
-        showMessage(text, x, y) {
-            this.textLayer.messager.clear().queue({text, x, y});
+        showMessage(text, x, y, color = null) {
+            return this.textLayer.messager.clear().queue({text, x, y, color});
         },
         hover() {
             this.textLayer.hoverer.hover(this, this);

@@ -13,8 +13,8 @@
         :text="fittedText"
         :x="shiftedX"
         :y="shiftedY"
-        :align="align"
-        color="yellow"
+        :align="arrayAlign || autoAlign"
+        :color="color || 'yellow'"
         :font="`${fontWidth}px 'Press Start 2P'`"
         :filters="[['PixelStrokeFilter', [], strokeSize, {antiAlias: false}]]"
     >
@@ -22,15 +22,17 @@
 </template>
 
 <script>
-import sizeText from '@libs/sizeText.js'
+import sizeText from '@libs/sizeText.js';
 
 export default {
-    inject: ['app'],
+    inject: ['window'],
     props: [
         'text',
         'x',
         'y',
         'buffer',
+        'align',
+        'color',
     ],
     data() {
         return {
@@ -38,23 +40,46 @@ export default {
         };
     },
     computed: {
-        align() {
-            const horizontal = this.x < this.app.viewport.width / 2
+        midpoint() {
+            return {
+                x: this.window.dimensions.x + this.window.dimensions.width / 2,
+                y: this.window.dimensions.y + this.window.dimensions.height / 2,
+            };
+        },
+        arrayAlign() {
+            if (this.align instanceof Array) {
+                return this.align;
+            } else if (this.align) {
+                return new String(this.align).split(/\-/);
+            } else {
+                return null;
+            }
+        },
+        autoAlign() {
+            const horizontal = this.x < this.midpoint.x
                 ? 'left'
                 : 'right';
-            const vertical = this.y < this.app.viewport.height / 2
+            const vertical = this.y < this.midpoint.y
                 ? 'top'
                 : 'bottom';
             return [horizontal, vertical];
         },
         shiftedX() {
-            return parseInt(this.x) + (this.buffer || 0) * (this.align[0] === 'left' ? 1 : -1);
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.x) + (this.buffer || 0) * (align.includes('left') ? 1 : -1);
         },
         shiftedY() {
-            return parseInt(this.y) + (this.buffer || 0) * (this.align[1] === 'top' ? 1 : -1);
+            const align = this.arrayAlign || this.autoAlign;
+            return parseInt(this.y) + (this.buffer || 0) * (align.includes('top') ? 1 : -1);
+        },
+        maxPixelWidth() {
+            const align = this.arrayAlign || this.autoAlign;
+            return align.includes('left')
+                ? (this.window.dimensions.x + this.window.dimensions.width) - this.shiftedX
+                : this.shiftedX - this.window.dimensions.x;
         },
         fittedText() {
-            const maxLength = (this.app.viewport.width / 2) / this.fontWidth;
+            const maxLength = this.maxPixelWidth / this.fontWidth;
             return sizeText(this.text, maxLength);
         },
         strokeSize() {

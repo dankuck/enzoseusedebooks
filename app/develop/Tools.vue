@@ -25,7 +25,7 @@
                 </ol>
             </div>
             <div>
-                Show Text <input v-model="DevSettings.showText" />
+                Show Text <textarea v-model="DevSettings.showText"></textarea>
             </div>
             <div v-if="messager.message" style="color: blue">
                 » {{ messager.message || '' }}
@@ -64,10 +64,8 @@ export default {
     },
     methods: {
         resetWorld() {
-            if (confirm('Really reset world to default?')) {
-                this.app.world = new World();
-                this.messager.queue(`Reset world`);
-            }
+            this.app.world = new World();
+            this.messager.queue(`Reset world`);
         },
         saveWorld() {
             const storage = new JsonStorage(
@@ -87,15 +85,13 @@ export default {
             this.saveNames = this.saveNames.filter(saved => saved !== name);
         },
         loadWorld(name) {
-            if (confirm(`Really reset world to save ${name}?`)) {
-                const storage = new JsonStorage(
-                    window.localStorage,
-                    name,
-                    reviver
-                );
-                this.app.world = storage.read('world');
-                this.messager.queue(`Loaded ${name}`);
-            }
+            const storage = new JsonStorage(
+                window.localStorage,
+                name,
+                reviver
+            );
+            this.app.world = storage.read('world');
+            this.messager.queue(`Loaded ${name}`);
         },
         deleteWorld(name) {
             if (confirm(`Delete save ${name}?`)) {

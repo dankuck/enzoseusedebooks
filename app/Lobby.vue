@@ -81,6 +81,7 @@
             v-else
         >
         </text-layer>
+
     </easel-container>
 </template>
 
@@ -91,6 +92,7 @@ import BookViewer from '@app/BookViewer';
 import Battery from '@app/Battery';
 
 export default {
+    inject: ['app'],
     mixins: [HasTextLayer],
     components: {
         BigPlant,
@@ -183,10 +185,7 @@ export default {
                         ['rect', 0, 36, [127, 55]],
                     ],
                     name: "Shabby Desk",
-                    click: () => {
-                        this.showMessage("The desk is empty right now.", 0, 168);
-                        this.app.event('shabby-desk', 'bounce');
-                    },
+                    click: () => this.app.world.goTo('lobby-desk'),
                 },
             ];
         },

@@ -23,14 +23,16 @@ export default class Messager
     }
 
     /**
-     * Add a message to the queue and ensure the queue is running
+     * Add a message to the queue and ensure the queue is running. Return a
+     * Promise that resolves when the message has finished showing.
      * @param  {any} message
-     * @return {this}
+     * @return {Promise}
      */
     queue(message) {
-        this.messages.push(message);
-        this.start();
-        return this;
+        return new Promise(resolve => {
+            this.messages.push({message, resolve});
+            this.start();
+        });
     }
 
     /**
@@ -56,8 +58,10 @@ export default class Messager
             this.message = null;
             return;
         }
-        this.message = this.messages.shift();
+        const {message, resolve} = this.messages.shift();
+        this.message = message;
         this.timeout = setTimeout(() => {
+            resolve();
             this.timeout = null;
             this.start();
         }, this.time);
