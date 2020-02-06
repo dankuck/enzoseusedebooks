@@ -134,18 +134,19 @@ export default {
             return new ChatBot(this.app.world.lobbyBot)
                 .add('Q1', "How do you play this game?",
                     [],
-                    () => this.say('This is not a game; this is a bookstore.')
+                    () => this.say([
+                        "This is not a game; this is a bookstore.",
+                        "It is completely unpersonalized to you!",
+                        "Nothing at Enzo's was chosen to suit your interests.",
+                        "How refreshing!",
+                    ])
                 )
                 .add('Q5', "How do you play this bookstore?",
                     [
                         after('Q1'),
                     ],
                     () => this.say([
-                        "Enzo's is a bookstore completely unpersonalized to you!",
-                        "Nothing in this store was chosen to suit your interests.",
-                        "How refreshing!",
-                        "...",
-                        "On the other hand there are some mysteries.",
+                        "Well, there are some mysteries around here.",
                     ])
                 )
                 .add('Q2', "I found this battery...",
@@ -183,8 +184,9 @@ export default {
                         () => this.app.world.completedAllSteps(),
                     ],
                     () => this.say([
-                        "So far, just that thing I said about following Enzo's on Facebook and Twitter.",
-                        "Every time something new happens in the bookstore, it will be announced there.",
+                        "So far, just that thing I said...",
+                        "follow Enzo's on Facebook and Twitter.",
+                        "New developments will be announced there.",
                     ]),
                 )
                 .add('X1', "Ok, bye.",
@@ -217,7 +219,7 @@ export default {
             this.showQuestions = false;
             this.startTalking();
             texts = [].concat(texts);
-            texts.reduce((n, text) => this.queueMessage(text, 100, 100), null)
+            return texts.reduce((n, text) => this.queueMessage(text, 100, 100), null)
                 .then(() => {
                     this.stopTalking();
                     this.showQuestions = true;

@@ -14090,11 +14090,11 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
     },
     methods: {
         buildChatBot() {
-            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say('This is not a game; this is a bookstore.')).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Enzo's is a bookstore completely unpersonalized to you!", "Nothing in this store was chosen to suit your interests.", "How refreshing!", "...", "On the other hand there are some mysteries."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say(["This is not a game; this is a bookstore.", "It is completely unpersonalized to you!", "Nothing at Enzo's was chosen to suit your interests.", "How refreshing!"])).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Well, there are some mysteries around here."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said about following Enzo's on Facebook and Twitter.", "Every time something new happens in the bookstore, it will be announced there."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -14117,7 +14117,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
             this.showQuestions = false;
             this.startTalking();
             texts = [].concat(texts);
-            texts.reduce((n, text) => this.queueMessage(text, 100, 100), null).then(() => {
+            return texts.reduce((n, text) => this.queueMessage(text, 100, 100), null).then(() => {
                 this.stopTalking();
                 this.showQuestions = true;
             });
