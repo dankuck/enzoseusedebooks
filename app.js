@@ -3339,7 +3339,7 @@ __webpack_require__.r(__webpack_exports__);
    * the next message
    * @type {Number} milliseconds
    */
-  messagerSpeed: 2500,
+  messagerSpeed: 3000,
 
   /**
    * How long hover names should be shown after the mouse leaves the hovered
@@ -13505,6 +13505,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -13523,6 +13524,25 @@ __webpack_require__.r(__webpack_exports__);
         return {
             window: this
         };
+    },
+    data() {
+        return {
+            showGame: false
+        };
+    },
+    mounted() {
+        if (document.fonts) {
+            const start = new Date();
+            let loady = setInterval(() => {
+                if (document.fonts.check('bold 16px "Press Start 2P"') || new Date() - start > 500 /*ms*/) {
+                        this.showGame = true;
+                        clearInterval(loady);
+                    }
+            }, 100);
+        } else {
+            // no easy way to check if the font loaded.
+            this.showGame = true;
+        }
     },
     computed: {
         dimensions() {
@@ -14099,7 +14119,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -20520,34 +20540,36 @@ var render = function() {
     [
       _vm.app.config.developmentMode ? _c("dev-tools") : _vm._e(),
       _vm._v(" "),
-      _c(
-        "easel-canvas",
-        {
-          ref: "canvas",
-          attrs: {
-            id: "canvas",
-            width: _vm.app.canvas.width,
-            height: _vm.app.canvas.height,
-            "viewport-width": _vm.app.viewport.width,
-            "viewport-height": _vm.app.viewport.height,
-            "anti-alias": false
-          }
-        },
-        [
-          _c("room"),
-          _vm._v(" "),
-          _c("inventory", {
-            attrs: {
-              x: 0,
-              y: _vm.app.roomSize.height,
-              items: _vm.app.world.inventory
-            }
-          }),
-          _vm._v(" "),
-          _vm.app.config.developmentMode ? _c("dev-elements") : _vm._e()
-        ],
-        1
-      ),
+      _vm.showGame
+        ? _c(
+            "easel-canvas",
+            {
+              ref: "canvas",
+              attrs: {
+                id: "canvas",
+                width: _vm.app.canvas.width,
+                height: _vm.app.canvas.height,
+                "viewport-width": _vm.app.viewport.width,
+                "viewport-height": _vm.app.viewport.height,
+                "anti-alias": false
+              }
+            },
+            [
+              _c("room"),
+              _vm._v(" "),
+              _c("inventory", {
+                attrs: {
+                  x: 0,
+                  y: _vm.app.roomSize.height,
+                  items: _vm.app.world.inventory
+                }
+              }),
+              _vm._v(" "),
+              _vm.app.config.developmentMode ? _c("dev-elements") : _vm._e()
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "easel-canvas",
@@ -20555,7 +20577,7 @@ var render = function() {
           _c("easel-text", {
             attrs: {
               color: "#CCC",
-              text: "A hack to induce the font to preload.",
+              text: "A hack to induce the font to load.",
               font: "7px 'Press Start 2P'"
             }
           })
@@ -20575,19 +20597,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { attrs: { id: "footer" } }, [
       _vm._v("\n        © 2019\n        "),
-      _c(
-        "a",
-        {
-          attrs: { href: "https://facebook.com/enzoseused", target: "_blank" }
-        },
-        [_vm._v("FB")]
-      ),
+      _c("a", { attrs: { href: "https://facebook.com/enzoseused" } }, [
+        _vm._v("FB")
+      ]),
       _vm._v(" "),
-      _c(
-        "a",
-        { attrs: { href: "https://twitter.com/enzoseused", target: "_blank" } },
-        [_vm._v("TW")]
-      )
+      _c("a", { attrs: { href: "https://twitter.com/enzoseused" } }, [
+        _vm._v("TW")
+      ])
     ])
   }
 ]

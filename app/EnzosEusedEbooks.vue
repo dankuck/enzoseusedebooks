@@ -18,6 +18,7 @@
     <div id="canvas-div">
         <dev-tools v-if="app.config.developmentMode"></dev-tools>
         <easel-canvas
+            v-if="showGame"
             ref="canvas"
             id="canvas"
             :width="app.canvas.width"
@@ -40,15 +41,15 @@
         <easel-canvas>
             <easel-text
                 color="#CCC"
-                text="A hack to induce the font to preload."
+                text="A hack to induce the font to load."
                 font="7px 'Press Start 2P'"
             >
             </easel-text>
         </easel-canvas>
         <div id="footer">
             &copy; 2019
-            <a href="https://facebook.com/enzoseused" target="_blank">FB</a>
-            <a href="https://twitter.com/enzoseused" target="_blank">TW</a>
+            <a href="https://facebook.com/enzoseused">FB</a>
+            <a href="https://twitter.com/enzoseused">TW</a>
         </div>
     </div>
 </template>
@@ -71,6 +72,25 @@ export default {
         return {
             window: this,
         };
+    },
+    data() {
+        return {
+            showGame: false,
+        };
+    },
+    mounted() {
+        if (document.fonts) {
+            const start = new Date();
+            let loady = setInterval(() => {
+                if (document.fonts.check('bold 16px "Press Start 2P"') || new Date() - start > 500 /*ms*/) {
+                    this.showGame = true;
+                    clearInterval(loady);
+                }
+            }, 100);
+        } else {
+            // no easy way to check if the font loaded.
+            this.showGame = true;
+        }
     },
     computed: {
         dimensions() {

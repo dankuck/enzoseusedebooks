@@ -185,7 +185,7 @@ export default {
                     ],
                     () => this.say([
                         "So far, just that thing I said...",
-                        "follow Enzo's on Facebook and Twitter.",
+                        "Follow Enzo's on Facebook and Twitter.",
                         "New developments will be announced there.",
                     ]),
                 )
