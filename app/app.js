@@ -30,6 +30,7 @@
 import EnzoText from '@app/EnzoText.vue';
 import EnzoClickSpot from '@app/EnzoClickSpot.vue';
 import EnzoHoverSpot from '@app/EnzoHoverSpot.vue';
+import EnzoNamedContainer from '@app/EnzoNamedContainer.vue';
 import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
 import config from '@/config';
 import JsonStorage from '@libs/JsonStorage';
@@ -67,6 +68,7 @@ VueEaseljs.registerFilter('ColorReducer', ColorReducer);
 Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
 Vue.component('enzo-hover-spot', EnzoHoverSpot);
+Vue.component('enzo-named-container', EnzoNamedContainer);
 
 const storage = new JsonStorage(
     window.localStorage,

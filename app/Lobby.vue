@@ -70,6 +70,18 @@
         >
         </enzo-click-spot>
 
+        <enzo-named-container
+            name="I Am The Cheese"
+            x="90"
+            y="185"
+        >
+            <easel-bitmap
+                image="images/i-am-the-cheese-lobby.gif"
+                @click="clickIAmTheCheese()"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
+
         <book-viewer
             v-if="viewBook"
             :book="viewBook"
@@ -197,6 +209,9 @@ export default {
         },
         takeBattery() {
             this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
+        },
+        clickIAmTheCheese() {
+            this.app.world.takeIAmTheCheese();
         },
     },
 };

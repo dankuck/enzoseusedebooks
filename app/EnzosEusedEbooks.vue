@@ -38,7 +38,9 @@
 
             <dev-elements v-if="app.config.developmentMode"></dev-elements>
         </easel-canvas>
-        <easel-canvas>
+        <easel-canvas
+            v-else
+        >
             <easel-text
                 color="#CCC"
                 text="A hack to induce the font to load."

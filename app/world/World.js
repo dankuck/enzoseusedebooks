@@ -94,6 +94,10 @@ const upgrader = new VersionUpgrader()
             askedCodes: [],
         };
     })
+    .version(13, world => {
+        world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+        world.lobbyBot.someoneTriedToGrabTheCheeseOneTime = false;
+    })
     ;
 
 export default class World
@@ -135,7 +139,7 @@ export default class World
     takeBattery(print) {
         this.battery.location = 'inventory';
         this.inventory.push(new InventoryBattery({name: 'AA Battery'}));
-        print("You've taken the AA Battery");
+        print("You've got the AA Battery, now.");
     }
 
     /**
@@ -206,6 +210,12 @@ export default class World
             return false;
         }
         return true;
+    }
+
+    takeIAmTheCheese() {
+        this.goTo('lobby-desk');
+        this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
+        this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
     }
 };
 

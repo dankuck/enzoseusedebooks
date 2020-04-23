@@ -50,6 +50,18 @@
             </easel-sprite-sheet>
         </easel-container>
 
+        <enzo-named-container
+            name="I Am The Cheese"
+            x="17"
+            y="150"
+        >
+            <easel-bitmap
+                image="images/i-am-the-cheese-desk.gif"
+                @click="clickIAmTheCheese()"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
+
         <easel-container
             v-if="showQuestions"
             v-for="(question, i) in questions"
@@ -87,16 +99,7 @@ export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
     mounted() {
-        this.say(
-            this.chatbot.wasAsked('Q1')
-            ? [
-                "Welcome back!",
-            ]
-            : [
-                "Welcome to Enzo's Eused Ebooks!",
-                "How can I help you today?",
-            ]
-        );
+        this.say(this.intro);
         setInterval(() => this.wanderEyes(), 1000);
         setInterval(() => this.moveEyes(), 100);
     },
@@ -117,6 +120,22 @@ export default {
         };
     },
     computed: {
+        intro() {
+            const cheeseRebuff = this.pullCheeseRebuff();
+            if (this.chatbot.wasAsked('Q1')) {
+                return cheeseRebuff.length === 0
+                    ? [
+                        "Welcome back!",
+                    ]
+                    : cheeseRebuff;
+            } else {
+                return [
+                    ...cheeseRebuff,
+                    "Welcome to Enzo's Eused Ebooks!",
+                    "How can I help you today?",
+                ];
+            }
+        },
         questions() {
             return this.chatbot.choose().slice(0, 4);
         },
@@ -189,6 +208,15 @@ export default {
                         "New developments will be announced there.",
                     ]),
                 )
+                .add('Q8', "Why can't I touch the cheese book?",
+                    [
+                        everySession(),
+                        () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime,
+                    ],
+                    () => this.say([
+                        "I have been ordered by Mr. Enzo to protect the cheese book.",
+                    ])
+                )
                 .add('X1', "Ok, bye.",
                     [
                         always(),
@@ -260,6 +288,26 @@ export default {
             if (dY !== 0) {
                 this.eyes.y += dY < 0 ? -1 : 1;
             }
+        },
+        /**
+         * If someone tried to grab the cheese book, then the bot needs to
+         * rebuff them and reset the bit.
+         * @return array
+         */
+        pullCheeseRebuff() {
+            if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow) {
+                this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+                return [
+                    "I'm sorry, no one is allowed to touch the cheese book.",
+                ];
+            } else {
+                return [];
+            }
+        },
+        clickIAmTheCheese() {
+            this.app.world.takeIAmTheCheese();
+            const rebuff = this.pullCheeseRebuff();
+            this.say(rebuff);
         },
     },
 };
