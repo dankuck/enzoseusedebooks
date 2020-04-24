@@ -31,6 +31,7 @@
                     [0 + 25, 350 - 10 + 25, 69, 66],
                 ]"
                 align="right"
+                :hide-books="[viewBook]"
                 @clickBook="selectBook"
                 @loaded="loaded = true"
             >

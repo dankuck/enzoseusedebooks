@@ -62,11 +62,27 @@ export default {
                 return books.concat(this.buildBookList(...shelf, bookCodes))
             }, []);
         },
+        /**
+         * The randomization will not make the books show in random places,
+         * but it will cause them to be added randomly, and that will cause
+         * the auto-hover to jump around.
+         * @return {array}
+         */
         booksRandomized() {
             return shuffle(this.books);
         },
     },
     methods: {
+        /**
+         * Given pixel dimensions of a shelf, get as many books to fit on it
+         * as possible. Give each book an arbitrary color and other features.
+         * @param  {int} minX
+         * @param  {int} maxX
+         * @param  {int} minY
+         * @param  {int} maxY
+         * @param  {array} bookCodes
+         * @return {array}
+         */
         buildBookList(minX, maxX, minY, maxY, bookCodes) {
             const colors = [
                 '#dd971f',
