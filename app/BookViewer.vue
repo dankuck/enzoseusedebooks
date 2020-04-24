@@ -59,6 +59,7 @@ export default {
     mounted() {
         this.bookImage; // cause a load
         this.app.event('book', 'view');
+        this.app.world.markBookViewed(this.book.title);
     },
     data() {
         return {

@@ -3269,6 +3269,8 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 }).version(13, world => {
     world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
     world.lobbyBot.someoneTriedToGrabTheCheeseOneTime = false;
+}).version(14, world => {
+    world.lastBooksViewed = [];
 });
 
 class World {
@@ -3376,6 +3378,10 @@ class World {
         this.goTo('lobby-desk');
         this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
         this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
+    }
+
+    markBookViewed(title) {
+        this.lastBooksViewed = Array.from(new Set([...this.lastBooksViewed, title].slice(-3)));
     }
 };
 
@@ -13101,6 +13107,7 @@ const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
     mounted() {
         this.bookImage; // cause a load
         this.app.event('book', 'view');
+        this.app.world.markBookViewed(this.book.title);
     },
     data() {
         return {
@@ -13170,6 +13177,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
 /* harmony import */ var _app_SlidingWindow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/SlidingWindow */ "./app/SlidingWindow.vue");
+//
 //
 //
 //
@@ -14777,11 +14785,27 @@ __webpack_require__.r(__webpack_exports__);
                 return books.concat(this.buildBookList(...shelf, bookCodes));
             }, []);
         },
+        /**
+         * The randomization will not make the books show in random places,
+         * but it will cause them to be added randomly, and that will cause
+         * the auto-hover to jump around.
+         * @return {array}
+         */
         booksRandomized() {
             return lodash_shuffle__WEBPACK_IMPORTED_MODULE_1___default()(this.books);
         }
     },
     methods: {
+        /**
+         * Given pixel dimensions of a shelf, get as many books to fit on it
+         * as possible. Give each book an arbitrary color and other features.
+         * @param  {int} minX
+         * @param  {int} maxX
+         * @param  {int} minY
+         * @param  {int} maxY
+         * @param  {array} bookCodes
+         * @return {array}
+         */
         buildBookList(minX, maxX, minY, maxY, bookCodes) {
             const colors = ['#dd971f', '#d5ae57', '#dfc290', '#151580', '#b93109'];
             const codes = this.takeBookCodes(maxX - minX, bookCodes);
@@ -20508,7 +20532,8 @@ var render = function() {
                 [0 + 25, 350 - 11 + 25, 118, 118],
                 [0 + 25, 350 - 10 + 25, 69, 66]
               ],
-              align: "right"
+              align: "right",
+              "hide-books": [_vm.viewBook]
             },
             on: {
               clickBook: _vm.selectBook,

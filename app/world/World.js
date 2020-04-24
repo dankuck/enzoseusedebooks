@@ -98,6 +98,9 @@ const upgrader = new VersionUpgrader()
         world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
         world.lobbyBot.someoneTriedToGrabTheCheeseOneTime = false;
     })
+    .version(14, world => {
+        world.lastBooksViewed = [];
+    })
     ;
 
 export default class World
@@ -216,6 +219,13 @@ export default class World
         this.goTo('lobby-desk');
         this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
         this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
+    }
+
+    markBookViewed(title) {
+        this.lastBooksViewed = Array.from(new Set([
+            ...this.lastBooksViewed,
+            title,
+        ].slice(-3)));
     }
 };
 

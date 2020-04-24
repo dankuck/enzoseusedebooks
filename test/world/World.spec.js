@@ -203,6 +203,25 @@ describe('World', function () {
             assert(world.lobbyBot);
             assert(world.lobbyBot.askedCodes instanceof Array);
         });
+
+        it('should remember the last three books', function () {
+            const world = builder();
+
+            world.markBookViewed('lmnop');
+            equal(['lmnop'], world.lastBooksViewed);
+
+            world.markBookViewed('abcdef');
+            equal(['lmnop', 'abcdef'], world.lastBooksViewed);
+
+            world.markBookViewed('abcdef');
+            equal(['lmnop', 'abcdef'], world.lastBooksViewed);
+
+            world.markBookViewed('12345');
+            equal(['lmnop', 'abcdef', '12345'], world.lastBooksViewed);
+
+            world.markBookViewed('XXXXX');
+            equal(['abcdef', '12345', 'XXXXX'], world.lastBooksViewed);
+        });
     };
 
     describe('Fresh version', function () {
