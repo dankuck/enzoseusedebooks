@@ -243,7 +243,6 @@ describe('World', function () {
     describe('knows when all steps are completed', function () {
 
         const actions = [
-            world => world.ruffleLobbyPlant(() => {}),
             world => world.takeBattery(() => {}),
             world => world.goTo('lobby-desk'),
             world => world.goTo('fiction-stack'),
@@ -266,7 +265,7 @@ describe('World', function () {
             const world = new World();
 
             shuffle(actions).forEach(action => {
-                assert(!world.completedAllSteps());
+                assert(!world.completedAllSteps(), `did not need step ${action}`);
                 action(world);
             });
 
