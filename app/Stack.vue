@@ -28,7 +28,6 @@
 <script>
 import StackBook from '@app/StackBook';
 import shuffle from 'lodash.shuffle';
-import find from 'lodash.find';
 
 export default {
     props: [
@@ -51,8 +50,8 @@ export default {
     computed: {
         books() {
             const bookCodes = [...this.collection.codes];
-            return this.shelves.reduce((books, shelf, i) => {
-                return books.concat(this.buildBookList(...shelf, i, bookCodes))
+            return this.shelves.reduce((books, shelf) => {
+                return books.concat(this.buildBookList(...shelf, bookCodes))
             }, []);
         },
         /**
@@ -76,7 +75,7 @@ export default {
          * @param  {array} bookCodes
          * @return {array}
          */
-        buildBookList(minX, maxX, minY, maxY, shelfIndex, bookCodes) {
+        buildBookList(minX, maxX, minY, maxY, bookCodes) {
             const colors = [
                 '#dd971f',
                 '#d5ae57',
@@ -86,14 +85,13 @@ export default {
             ];
             const codes = this.takeBookCodes(maxX - minX, bookCodes);
             const books = codes
-                .map((bookCode, index) => {
+                .map((bookCode) => {
                     const book = this.collection[bookCode];
                     if (!book.title) {
                         return null;
                     }
                     const {width, height} = this.getDimensions(book);
                     return {
-                        location: `${shelfIndex}/${index}`,
                         bookCode,
                         book,
                         width,

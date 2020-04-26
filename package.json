@@ -39,7 +39,5 @@
     "@sentry/browser": "^5.7.1",
     "@sentry/integrations": "^5.7.1"
   },
-  "dependencies": {
-    "lodash.find": "^4.6.0"
-  }
+  "dependencies": {}
 }
