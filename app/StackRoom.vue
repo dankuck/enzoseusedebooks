@@ -25,29 +25,24 @@
                 :shelves="shelves"
                 :align="align"
                 :hide-books="[viewBook]"
-                :slot-location="app.world.doorbell.stackLocation"
                 @clickBook="selectBook"
                 @loaded="loaded = true"
-                @slot-location-not-found="resetDoorbell"
             >
-                <template
-                    v-if="doorbellIsHere"
-                    v-slot="{x, y}"
-                >
-                    <enzo-named-container
-                        name="Wireless Doorbell"
-                        :x="x"
-                        :y="y"
-                    >
-                        <easel-bitmap
-                            image="images/doorbell.gif"
-                            align="left-bottom"
-                            x="1"
-                        >
-                        </easel-bitmap>
-                    </enzo-named-container>
-                </template>
             </stack>
+
+            <enzo-named-container
+                v-if="doorbellIsHere"
+                name="Wireless Doorbell"
+                :x="app.world.doorbell.stackLocation.x"
+                :y="app.world.doorbell.stackLocation.y"
+            >
+                <easel-bitmap
+                    image="images/doorbell.gif"
+                    align="left-bottom"
+                    x="1"
+                >
+                </easel-bitmap>
+            </enzo-named-container>
 
             <easel-bitmap
                 :image="bookcaseImage"
@@ -133,13 +128,13 @@ export default {
         },
     },
     methods: {
-        selectBook(book, {x, y, location}) {
+        selectBook(book, {x, y}) {
             if (this.app.world.doorbellIsReady()) {
                 this.showMessage("Hey, there was something behind this book.", x, y);
                 this.app.world.doorbell = {
                     location: 'shelf',
                     stack: this.name,
-                    stackLocation: location,
+                    stackLocation: {x, y},
                 };
             } else {
                 this.viewBook = book;
@@ -147,11 +142,6 @@ export default {
         },
         returnBook() {
             this.viewBook = null
-        },
-        resetDoorbell() {
-            if (this.doorbellIsHere) {
-                this.app.world.resetDoorbell();
-            }
         },
     },
 };

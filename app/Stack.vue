@@ -22,12 +22,6 @@
         >
         </stack-book>
 
-        <slot
-            v-if="bookForSlot"
-            :x="bookForSlot.x"
-            :y="bookForSlot.y"
-        >
-        </slot>
     </easel-container>
 </template>
 
@@ -42,7 +36,6 @@ export default {
         'shelves',
         'align',
         'hideBooks',
-        'slotLocation',
     ],
     components: {
         StackBook,
@@ -70,17 +63,6 @@ export default {
          */
         booksRandomized() {
             return shuffle(this.books);
-        },
-        bookForSlot() {
-            if (!this.slotLocation) {
-                return null;
-            }
-            const book = find(this.books, {location: this.slotLocation})
-            if (!book) {
-                this.$emit('slot-location-not-found');
-                return null;
-            }
-            return book;
         },
     },
     methods: {

@@ -102,7 +102,9 @@ const upgrader = new VersionUpgrader()
         world.lastBooksViewed = [];
     })
     .version(15, world => {
-        world.resetDoorbell();
+        world.doorbell = {
+            location: null,
+        };
     })
     ;
 
@@ -229,12 +231,6 @@ export default class World
             ...this.lastBooksViewed,
             title,
         ].slice(-3)));
-    }
-
-    resetDoorbell() {
-        this.doorbell = {
-            location: null,
-        };
     }
 
     doorbellIsReady() {
