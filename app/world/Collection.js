@@ -50,6 +50,15 @@ export default class Collection
         return this.loading;
     }
 
+    reload() {
+        const after = this.loading || Promise.resolve();
+        return after.then(() => {
+            this.pendingCodes = [...this.codes];
+            this.codes.forEach(code => delete this[code]);
+            return this.load();
+        })
+    }
+
     get(codes) {
         return codes.map(code => this[code]);
     }

@@ -3160,6 +3160,15 @@ class Collection {
         return this.loading;
     }
 
+    reload() {
+        const after = this.loading || Promise.resolve();
+        return after.then(() => {
+            this.pendingCodes = [...this.codes];
+            this.codes.forEach(code => delete this[code]);
+            return this.load();
+        });
+    }
+
     get(codes) {
         return codes.map(code => this[code]);
     }
@@ -3341,7 +3350,9 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 }).version(14, world => {
     world.lastBooksViewed = [];
 }).version(15, world => {
-    world.resetDoorbell();
+    world.doorbell = {
+        location: null
+    };
 });
 
 class World {
@@ -3453,12 +3464,6 @@ class World {
 
     markBookViewed(title) {
         this.lastBooksViewed = Array.from(new Set([...this.lastBooksViewed, title].slice(-3)));
-    }
-
-    resetDoorbell() {
-        this.doorbell = {
-            location: null
-        };
     }
 
     doorbellIsReady() {
@@ -14635,19 +14640,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['collection', 'shelves', 'align', 'hideBooks', 'slotLocation'],
+    props: ['collection', 'shelves', 'align', 'hideBooks'],
     components: {
         StackBook: _app_StackBook__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
@@ -14672,17 +14671,6 @@ __webpack_require__.r(__webpack_exports__);
          */
         booksRandomized() {
             return lodash_shuffle__WEBPACK_IMPORTED_MODULE_1___default()(this.books);
-        },
-        bookForSlot() {
-            if (!this.slotLocation) {
-                return null;
-            }
-            const book = lodash_find__WEBPACK_IMPORTED_MODULE_2___default()(this.books, { location: this.slotLocation });
-            if (!book) {
-                this.$emit('slot-location-not-found');
-                return null;
-            }
-            return book;
         }
     },
     methods: {
@@ -14914,11 +14902,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -14950,13 +14933,13 @@ __webpack_require__.r(__webpack_exports__);
         }
     },
     methods: {
-        selectBook(book, { x, y, location }) {
+        selectBook(book, { x, y }) {
             if (this.app.world.doorbellIsReady()) {
                 this.showMessage("Hey, there was something behind this book.", x, y);
                 this.app.world.doorbell = {
                     location: 'shelf',
                     stack: this.name,
-                    stackLocation: location
+                    stackLocation: { x, y }
                 };
             } else {
                 this.viewBook = book;
@@ -14964,11 +14947,6 @@ __webpack_require__.r(__webpack_exports__);
         },
         returnBook() {
             this.viewBook = null;
-        },
-        resetDoorbell() {
-            if (this.doorbellIsHere) {
-                this.app.world.resetDoorbell();
-            }
         }
     }
 });
@@ -23886,36 +23864,27 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
-    [
-      _vm._l(_vm.booksRandomized, function(book) {
-        return !_vm.hideBooks.includes(book.book)
-          ? _c(
-              "stack-book",
-              _vm._b(
-                {
-                  key: "book:" + book.bookCode,
-                  on: {
-                    click: function($event) {
-                      return _vm.$emit("clickBook", book.book, book)
-                    }
+    _vm._l(_vm.booksRandomized, function(book) {
+      return !_vm.hideBooks.includes(book.book)
+        ? _c(
+            "stack-book",
+            _vm._b(
+              {
+                key: "book:" + book.bookCode,
+                on: {
+                  click: function($event) {
+                    return _vm.$emit("clickBook", book.book, book)
                   }
-                },
-                "stack-book",
-                book,
-                false
-              )
+                }
+              },
+              "stack-book",
+              book,
+              false
             )
-          : _vm._e()
-      }),
-      _vm._v(" "),
-      _vm.bookForSlot
-        ? _vm._t("default", null, {
-            x: _vm.bookForSlot.x,
-            y: _vm.bookForSlot.y
-          })
+          )
         : _vm._e()
-    ],
-    2
+    }),
+    1
   )
 }
 var staticRenderFns = []
@@ -24003,50 +23972,38 @@ var render = function() {
               collection: _vm.collection,
               shelves: _vm.shelves,
               align: _vm.align,
-              "hide-books": [_vm.viewBook],
-              "slot-location": _vm.app.world.doorbell.stackLocation
+              "hide-books": [_vm.viewBook]
             },
             on: {
               clickBook: _vm.selectBook,
               loaded: function($event) {
                 _vm.loaded = true
-              },
-              "slot-location-not-found": _vm.resetDoorbell
-            },
-            scopedSlots: _vm._u(
-              [
-                _vm.doorbellIsHere
-                  ? {
-                      key: "default",
-                      fn: function(ref) {
-                        var x = ref.x
-                        var y = ref.y
-                        return [
-                          _c(
-                            "enzo-named-container",
-                            {
-                              attrs: { name: "Wireless Doorbell", x: x, y: y }
-                            },
-                            [
-                              _c("easel-bitmap", {
-                                attrs: {
-                                  image: "images/doorbell.gif",
-                                  align: "left-bottom",
-                                  x: "1"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      }
-                    }
-                  : null
-              ],
-              null,
-              true
-            )
+              }
+            }
           }),
+          _vm._v(" "),
+          _vm.doorbellIsHere
+            ? _c(
+                "enzo-named-container",
+                {
+                  attrs: {
+                    name: "Wireless Doorbell",
+                    x: _vm.app.world.doorbell.stackLocation.x,
+                    y: _vm.app.world.doorbell.stackLocation.y
+                  }
+                },
+                [
+                  _c("easel-bitmap", {
+                    attrs: {
+                      image: "images/doorbell.gif",
+                      align: "left-bottom",
+                      x: "1"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c("easel-bitmap", { attrs: { image: _vm.bookcaseImage } }),
           _vm._v(" "),

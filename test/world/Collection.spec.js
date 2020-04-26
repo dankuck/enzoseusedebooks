@@ -267,6 +267,50 @@ describe('Collection', function () {
             .then(done, done);
     });
 
+    it('should reload', function (done) {
+        let caughtUrl;
+        const data1 = [
+            {title: 'name 1'},
+        ];
+        const data2 = [
+            {title: 'name 2'},
+        ];
+        const axios1 = {
+            get(url) {
+                caughtUrl = url;
+                return Promise.resolve({data: [...data1]})
+            },
+        };
+        const axios2 = {
+            get(url) {
+                caughtUrl = url;
+                return Promise.resolve({data: [...data2]})
+            },
+        };
+        const collection = new Collection({
+            url: 'url.com',
+            axios: axios1,
+            codes: ['code1'],
+        });
+        assert(collection.loadedAt === null);
+        collection.load()
+            .then(() => {
+                equal(data1[0], collection.code1);
+                equal('url.com', caughtUrl);
+                assert(collection.loadedAt);
+            })
+            .then(() => {
+                collection.axios = axios2;
+                return collection.reload();
+            })
+            .then(() => {
+                equal(data2[0], collection.code1);
+                equal('url.com', caughtUrl);
+                assert(collection.loadedAt);
+            })
+            .then(done, done);
+    });
+
     describe('revive and replace', function () {
 
         // Capture the revival callbacks
