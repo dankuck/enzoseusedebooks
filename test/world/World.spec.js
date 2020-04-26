@@ -273,4 +273,38 @@ describe('World', function () {
             assert(world.completedAllSteps());
         });
     });
+
+    describe('doorbell', function () {
+
+        it('is ready if all the stacks have been visited', function () {
+            const actions = [
+                world => world.goTo('fiction-stack'),
+                world => world.goTo('nonfiction-stack'),
+                world => world.goTo('children-stack'),
+            ];
+
+            const world = new World();
+
+            shuffle(actions).forEach(action => {
+                assert(!world.doorbellIsReady());
+                action(world)
+            });
+
+            assert(world.doorbellIsReady());
+        })
+
+        it('is ready if at least one book has been read', function () {
+            const world = new World();
+
+            assert(!world.doorbellIsReady());
+
+            world.markBookViewed('Desert Monkey 2');
+
+            assert(world.doorbellIsReady());
+
+            world.markBookViewed('Desert Monkey 3: The Forgotten');
+
+            assert(world.doorbellIsReady());
+        });
+    });
 });

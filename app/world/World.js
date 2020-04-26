@@ -227,6 +227,15 @@ export default class World
             title,
         ].slice(-3)));
     }
+
+    doorbellIsReady() {
+        return this.lastBooksViewed.length > 0
+            || (
+                    this.hasGoneTo('fiction-stack')
+                && this.hasGoneTo('nonfiction-stack')
+                && this.hasGoneTo('children-stack')
+            );
+    }
 };
 
 World.registerReviver = function (reviver) {
