@@ -13,6 +13,7 @@
 <template>
 
     <stack-room
+        name="children"
         width="400"
         :start-x="(400 - window.dimensions.width) - 10"
         background-image="images/bookcase3-back.gif"

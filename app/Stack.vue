@@ -18,32 +18,32 @@
             v-if="!hideBooks.includes(book.book)"
             :key="'book:' + book.bookCode"
             v-bind="book"
-            @click="$emit('clickBook', book.book)"
+            @click="$emit('clickBook', book.book, book)"
         >
         </stack-book>
 
+        <slot
+            v-if="bookForSlot"
+            :x="bookForSlot.x"
+            :y="bookForSlot.y"
+        >
+        </slot>
     </easel-container>
 </template>
 
 <script>
 import StackBook from '@app/StackBook';
 import shuffle from 'lodash.shuffle';
+import find from 'lodash.find';
 
 export default {
-    props: {
-        collection: {
-            required: true,
-        },
-        shelves: {
-            required: true,
-        },
-        align: {
-            default: 'left',
-        },
-        hideBooks: {
-            default: () => { return [] },
-        },
-    },
+    props: [
+        'collection',
+        'shelves',
+        'align',
+        'hideBooks',
+        'slotLocation',
+    ],
     components: {
         StackBook,
     },
@@ -58,8 +58,8 @@ export default {
     computed: {
         books() {
             const bookCodes = [...this.collection.codes];
-            return this.shelves.reduce((books, shelf) => {
-                return books.concat(this.buildBookList(...shelf, bookCodes))
+            return this.shelves.reduce((books, shelf, i) => {
+                return books.concat(this.buildBookList(...shelf, i, bookCodes))
             }, []);
         },
         /**
@@ -70,6 +70,17 @@ export default {
          */
         booksRandomized() {
             return shuffle(this.books);
+        },
+        bookForSlot() {
+            if (!this.slotLocation) {
+                return null;
+            }
+            const book = find(this.books, {location: this.slotLocation})
+            if (!book) {
+                this.$emit('slot-location-not-found');
+                return null;
+            }
+            return book;
         },
     },
     methods: {
@@ -83,7 +94,7 @@ export default {
          * @param  {array} bookCodes
          * @return {array}
          */
-        buildBookList(minX, maxX, minY, maxY, bookCodes) {
+        buildBookList(minX, maxX, minY, maxY, shelfIndex, bookCodes) {
             const colors = [
                 '#dd971f',
                 '#d5ae57',
@@ -93,13 +104,14 @@ export default {
             ];
             const codes = this.takeBookCodes(maxX - minX, bookCodes);
             const books = codes
-                .map(bookCode => {
+                .map((bookCode, index) => {
                     const book = this.collection[bookCode];
                     if (!book.title) {
                         return null;
                     }
                     const {width, height} = this.getDimensions(book);
                     return {
+                        location: `${shelfIndex}/${index}`,
                         bookCode,
                         book,
                         width,

@@ -13,6 +13,7 @@
 <template>
 
     <stack-room
+        name="nonfiction"
         width="400"
         :start-x="10"
         background-image="images/bookcase1-back.gif"

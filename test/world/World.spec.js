@@ -305,5 +305,19 @@ describe('World', function () {
 
             assert(world.doorbellIsReady());
         });
+
+        it('is only ready if its location is null', function () {
+            const world = new World();
+
+            assert(!world.doorbellIsReady());
+
+            world.markBookViewed('Desert Monkey 2');
+
+            assert(world.doorbellIsReady());
+
+            world.doorbell.location = 'shelf';
+
+            assert(!world.doorbellIsReady());
+        });
     });
 });

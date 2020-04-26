@@ -101,6 +101,9 @@ const upgrader = new VersionUpgrader()
     .version(14, world => {
         world.lastBooksViewed = [];
     })
+    .version(15, world => {
+        world.resetDoorbell();
+    })
     ;
 
 export default class World
@@ -228,12 +231,21 @@ export default class World
         ].slice(-3)));
     }
 
+    resetDoorbell() {
+        this.doorbell = {
+            location: null,
+        };
+    }
+
     doorbellIsReady() {
-        return this.lastBooksViewed.length > 0
-            || (
+        return this.doorbell.location === null
+            && (
+                this.lastBooksViewed.length > 0
+                || (
                     this.hasGoneTo('fiction-stack')
-                && this.hasGoneTo('nonfiction-stack')
-                && this.hasGoneTo('children-stack')
+                    && this.hasGoneTo('nonfiction-stack')
+                    && this.hasGoneTo('children-stack')
+                )
             );
     }
 };
