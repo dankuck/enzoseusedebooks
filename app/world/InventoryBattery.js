@@ -5,6 +5,17 @@ export default class InventoryBattery {
         this.image = 'images/battery.gif';
         Object.assign(this, data);
     }
+
+    click(print, request, remove) {
+        request(item => {
+            if (item.useBattery) {
+                item.useBattery(print);
+                remove();
+            } else {
+                print("I don't know how to use the battery with that.");
+            }
+        });
+    }
 };
 
 InventoryBattery.registerReviver = function (reviver) {

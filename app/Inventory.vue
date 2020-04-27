@@ -2,6 +2,7 @@
     <easel-container
         :x="x"
         :y="y"
+        @rollout="clearUseWith"
     >
         <easel-shape
             form="rect"
@@ -16,7 +17,9 @@
             :x="index * itemSize"
             :y="0"
             v-bind="item"
+            :hover-name="labelFor(item)"
             :size="itemSize"
+            @click="click(item, index * itemSize, 0)"
         >
         </inventory-item>
 
@@ -46,6 +49,7 @@ export default {
     data() {
         return {
             noMobileHoverRing: true,
+            useWith: null,
         };
     },
     computed: {
@@ -59,6 +63,42 @@ export default {
                 width: this.app.inventorySize.width,
                 height: this.app.inventorySize.height,
             };
+        },
+    },
+    methods: {
+        click(item, x, y) {
+            if (this.useWith) {
+                this.useWith.callback(item);
+                this.useWith = null;
+            } else {
+                item.click(
+                    msg => this.showMessage(msg, x, y),
+                    (callback) => {
+                        this.useWith = {
+                            item,
+                            callback,
+                        };
+                        this.showMessage(this.labelFor(item), x, y);
+                    },
+                    () => {
+                        const index = this.app.world.inventory.indexOf(item);
+                        if (index < 0) {
+                            return;
+                        }
+                        this.app.world.inventory.splice(index, 1);
+                    }
+                );
+            }
+        },
+        labelFor(item) {
+            if (this.useWith) {
+                return `Use ${this.useWith.item.name} with ${this.useWith.item === item ? '...' : item.name}`;
+            } else {
+                return item.name;
+            }
+        },
+        clearUseWith() {
+            this.useWith = null;
         },
     },
 };

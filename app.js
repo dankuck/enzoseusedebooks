@@ -3249,6 +3249,17 @@ class InventoryBattery {
         this.image = 'images/battery.gif';
         Object.assign(this, data);
     }
+
+    click(print, request, remove) {
+        request(item => {
+            if (item.useBattery) {
+                item.useBattery(print);
+                remove();
+            } else {
+                print("I don't know how to use the battery with that.");
+            }
+        });
+    }
 };
 
 InventoryBattery.registerReviver = function (reviver) {
@@ -3275,7 +3286,21 @@ class InventoryDoorbell {
 
     constructor(data) {
         this.image = 'images/doorbell.gif';
+        this.hasBattery = false;
         Object.assign(this, data);
+    }
+
+    click(print) {
+        if (this.hasBattery) {
+            print("DING DONG!");
+        } else {
+            print("Nothing happened. It looks like it needs a battery.");
+        }
+    }
+
+    useBattery(print) {
+        print("The battery fits in the doorbell!");
+        this.hasBattery = true;
     }
 };
 
@@ -3399,15 +3424,23 @@ class World {
      * @return {void}
      */
     ruffleLobbyPlant(print) {
-        print(this.lobbyPlant.ruffled ? "Hasn't this plant been through enough?" : "You ruffled the plant. It's messy now.");
-
-        this.lobbyPlant.name = 'Ruffled Plant';
-        this.lobbyPlant.ruffled = true;
+        let somethingFellOut = false;
 
         if (this.battery.location === 'plant') {
             this.battery.location = 'lobby-floor';
-            print(`Something fell out of the ${this.lobbyPlant.name}.`);
+            somethingFellOut = true;
         }
+
+        if (this.lobbyPlant.ruffled) {
+            print("Hasn't this plant been through enough?");
+        } else if (somethingFellOut) {
+            print("You ruffled the plant. Something fell out.");
+        } else {
+            print("You ruffled the plant. You feel superior.");
+        };
+
+        this.lobbyPlant.name = 'Ruffled Plant';
+        this.lobbyPlant.ruffled = true;
     }
 
     /**
@@ -3529,6 +3562,7 @@ World.registerReviver = function (reviver) {
     });
     reviver.register(_world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]);
     reviver.register(_world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    reviver.register(_world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__["default"]);
 };
 
 /***/ }),
@@ -13867,6 +13901,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -13887,7 +13924,8 @@ __webpack_require__.r(__webpack_exports__);
     props: ['x', 'y', 'items'],
     data() {
         return {
-            noMobileHoverRing: true
+            noMobileHoverRing: true,
+            useWith: null
         };
     },
     computed: {
@@ -13901,6 +13939,38 @@ __webpack_require__.r(__webpack_exports__);
                 width: this.app.inventorySize.width,
                 height: this.app.inventorySize.height
             };
+        }
+    },
+    methods: {
+        click(item, x, y) {
+            if (this.useWith) {
+                this.useWith.callback(item);
+                this.useWith = null;
+            } else {
+                item.click(msg => this.showMessage(msg, x, y), callback => {
+                    this.useWith = {
+                        item,
+                        callback
+                    };
+                    this.showMessage(this.labelFor(item), x, y);
+                }, () => {
+                    const index = this.app.world.inventory.indexOf(item);
+                    if (index < 0) {
+                        return;
+                    }
+                    this.app.world.inventory.splice(index, 1);
+                });
+            }
+        },
+        labelFor(item) {
+            if (this.useWith) {
+                return `Use ${this.useWith.item.name} with ${this.useWith.item === item ? '...' : item.name}`;
+            } else {
+                return item.name;
+            }
+        },
+        clearUseWith() {
+            this.useWith = null;
         }
     }
 });
@@ -13941,12 +14011,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['x', 'y', 'size', 'name', 'image']
+    props: ['x', 'y', 'size', 'name', 'image', 'hoverName']
 });
 
 /***/ }),
@@ -20943,7 +21014,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "easel-container",
-    { attrs: { x: _vm.x, y: _vm.y } },
+    { attrs: { x: _vm.x, y: _vm.y }, on: { rollout: _vm.clearUseWith } },
     [
       _c("easel-shape", {
         attrs: {
@@ -20962,7 +21033,17 @@ var render = function() {
           _vm._b(
             {
               key: item.name,
-              attrs: { x: index * _vm.itemSize, y: 0, size: _vm.itemSize }
+              attrs: {
+                x: index * _vm.itemSize,
+                y: 0,
+                "hover-name": _vm.labelFor(item),
+                size: _vm.itemSize
+              },
+              on: {
+                click: function($event) {
+                  return _vm.click(item, index * _vm.itemSize, 0)
+                }
+              }
             },
             "inventory-item",
             item,
@@ -21006,7 +21087,13 @@ var render = function() {
         y: _vm.y + _vm.size / 2,
         cursor: "pointer"
       },
-      on: { mouseover: _vm.hover, mouseout: _vm.unhover }
+      on: {
+        mouseover: _vm.hover,
+        mouseout: _vm.unhover,
+        click: function($event) {
+          return _vm.$emit("click")
+        }
+      }
     },
     [
       _c("easel-shape", {

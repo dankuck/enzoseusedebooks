@@ -124,19 +124,23 @@ export default class World
      * @return {void}
      */
     ruffleLobbyPlant(print) {
-        print(
-            this.lobbyPlant.ruffled
-                ? "Hasn't this plant been through enough?"
-                : "You ruffled the plant. It's messy now."
-        );
-
-        this.lobbyPlant.name = 'Ruffled Plant';
-        this.lobbyPlant.ruffled = true;
+        let somethingFellOut = false;
 
         if (this.battery.location === 'plant') {
             this.battery.location = 'lobby-floor';
-            print(`Something fell out of the ${this.lobbyPlant.name}.`);
+            somethingFellOut = true;
         }
+
+        if (this.lobbyPlant.ruffled) {
+            print("Hasn't this plant been through enough?");
+        } else if (somethingFellOut) {
+            print("You ruffled the plant. Something fell out.");
+        } else {
+            print("You ruffled the plant. You feel superior.");
+        };
+
+        this.lobbyPlant.name = 'Ruffled Plant';
+        this.lobbyPlant.ruffled = true;
     }
 
     /**
@@ -277,4 +281,5 @@ World.registerReviver = function (reviver) {
     );
     reviver.register(Collection);
     reviver.register(InventoryBattery);
+    reviver.register(InventoryDoorbell);
 };
