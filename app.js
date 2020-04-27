@@ -3456,7 +3456,7 @@ class World {
         return true;
     }
 
-    takeIAmTheCheese() {
+    touchIAmTheCheese() {
         this.goTo('lobby-desk');
         this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
         this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
@@ -3466,7 +3466,7 @@ class World {
         this.lastBooksViewed = Array.from(new Set([...this.lastBooksViewed, title].slice(-3)));
     }
 
-    doorbellIsReady() {
+    canFindDoorbell() {
         return this.doorbell.location === null && (this.lastBooksViewed.length > 0 || this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack'));
     }
 };
@@ -14098,7 +14098,7 @@ __webpack_require__.r(__webpack_exports__);
             this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
         },
         clickIAmTheCheese() {
-            this.app.world.takeIAmTheCheese();
+            this.app.world.touchIAmTheCheese();
         }
     }
 });
@@ -14337,7 +14337,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
             }
         },
         clickIAmTheCheese() {
-            this.app.world.takeIAmTheCheese();
+            this.app.world.touchIAmTheCheese();
             const rebuff = this.pullCheeseRebuff();
             this.say(rebuff);
         }
@@ -14930,7 +14930,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     methods: {
         selectBook(book, { x, y }) {
-            if (this.app.world.doorbellIsReady()) {
+            if (this.app.world.canFindDoorbell()) {
                 this.showMessage("Hey, there was something behind this book.", x, y);
                 this.app.world.doorbell = {
                     location: 'shelf',

@@ -220,7 +220,7 @@ export default class World
         return true;
     }
 
-    takeIAmTheCheese() {
+    touchIAmTheCheese() {
         this.goTo('lobby-desk');
         this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
         this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
@@ -233,7 +233,7 @@ export default class World
         ].slice(-3)));
     }
 
-    doorbellIsReady() {
+    canFindDoorbell() {
         return this.doorbell.location === null
             && (
                 this.lastBooksViewed.length > 0

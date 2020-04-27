@@ -129,7 +129,7 @@ export default {
     },
     methods: {
         selectBook(book, {x, y}) {
-            if (this.app.world.doorbellIsReady()) {
+            if (this.app.world.canFindDoorbell()) {
                 this.showMessage("Hey, there was something behind this book.", x, y);
                 this.app.world.doorbell = {
                     location: 'shelf',

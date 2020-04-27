@@ -305,7 +305,7 @@ export default {
             }
         },
         clickIAmTheCheese() {
-            this.app.world.takeIAmTheCheese();
+            this.app.world.touchIAmTheCheese();
             const rebuff = this.pullCheeseRebuff();
             this.say(rebuff);
         },

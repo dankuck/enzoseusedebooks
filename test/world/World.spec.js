@@ -285,39 +285,39 @@ describe('World', function () {
             const world = new World();
 
             shuffle(actions).forEach(action => {
-                assert(!world.doorbellIsReady());
+                assert(!world.canFindDoorbell());
                 action(world)
             });
 
-            assert(world.doorbellIsReady());
+            assert(world.canFindDoorbell());
         })
 
         it('is ready if at least one book has been read', function () {
             const world = new World();
 
-            assert(!world.doorbellIsReady());
+            assert(!world.canFindDoorbell());
 
             world.markBookViewed('Desert Monkey 2');
 
-            assert(world.doorbellIsReady());
+            assert(world.canFindDoorbell());
 
             world.markBookViewed('Desert Monkey 3: The Forgotten');
 
-            assert(world.doorbellIsReady());
+            assert(world.canFindDoorbell());
         });
 
         it('is only ready if its location is null', function () {
             const world = new World();
 
-            assert(!world.doorbellIsReady());
+            assert(!world.canFindDoorbell());
 
             world.markBookViewed('Desert Monkey 2');
 
-            assert(world.doorbellIsReady());
+            assert(world.canFindDoorbell());
 
             world.doorbell.location = 'shelf';
 
-            assert(!world.doorbellIsReady());
+            assert(!world.canFindDoorbell());
         });
     });
 });

@@ -211,7 +211,7 @@ export default {
             this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
         },
         clickIAmTheCheese() {
-            this.app.world.takeIAmTheCheese();
+            this.app.world.touchIAmTheCheese();
         },
     },
 };
