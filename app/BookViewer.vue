@@ -37,11 +37,12 @@
             align="bottom-left"
             @click="goToAmazon"
             cursor="pointer"
+            alpha="0.01"
         >
         </easel-shape>
 
         <enzo-text
-            text="Buy It On Amazon"
+            text="> Buy It On Amazon"
             :x="window.dimensions.width / 2 - 1"
             :y="window.dimensions.height / 2 + book.image.height / 2"
         >
