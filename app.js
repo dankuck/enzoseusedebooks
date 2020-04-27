@@ -3259,6 +3259,34 @@ InventoryBattery.registerReviver = function (reviver) {
 
 /***/ }),
 
+/***/ "./app/world/InventoryDoorbell.js":
+/*!****************************************!*\
+  !*** ./app/world/InventoryDoorbell.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InventoryDoorbell; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+class InventoryDoorbell {
+
+    constructor(data) {
+        this.image = 'images/doorbell.gif';
+        Object.assign(this, data);
+    }
+};
+
+InventoryDoorbell.registerReviver = function (reviver) {
+    reviver.add('InventoryDoorbell', InventoryDoorbell, (key, value) => new InventoryDoorbell(value), (key, value) => {
+        return _extends({}, value);
+    });
+};
+
+/***/ }),
+
 /***/ "./app/world/World.js":
 /*!****************************!*\
   !*** ./app/world/World.js ***!
@@ -3272,7 +3300,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @libs/VersionUpgrader */ "./app/libs/VersionUpgrader.js");
 /* harmony import */ var _world_Collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/Collection */ "./app/world/Collection.js");
 /* harmony import */ var _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @world/InventoryBattery */ "./app/world/InventoryBattery.js");
+/* harmony import */ var _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @world/InventoryDoorbell */ "./app/world/InventoryDoorbell.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -3390,6 +3420,18 @@ class World {
         this.battery.location = 'inventory';
         this.inventory.push(new _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]({ name: 'AA Battery' }));
         print("You've got the AA Battery, now.");
+    }
+
+    /**
+     * Move the doorbell into the inventory.
+     *
+     * @param {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    takeDoorbell(print) {
+        this.doorbell.location = 'inventory';
+        this.inventory.push(new _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__["default"]({ name: 'Wireless Doorbell' }));
+        print("You've got the doorbell, now.");
     }
 
     /**
@@ -14898,6 +14940,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -14943,6 +14986,10 @@ __webpack_require__.r(__webpack_exports__);
         },
         returnBook() {
             this.viewBook = null;
+        },
+        takeDoorbell() {
+            const { x, y } = this.app.world.doorbell.stackLocation;
+            this.app.world.takeDoorbell(msg => this.queueMessage(msg, x, y));
         }
     }
 });
@@ -21588,7 +21635,8 @@ var render = function() {
                       image: "images/doorbell.gif",
                       align: "left-bottom",
                       x: "1"
-                    }
+                    },
+                    on: { click: _vm.takeDoorbell }
                   })
                 ],
                 1

@@ -40,6 +40,7 @@
                     image="images/doorbell.gif"
                     align="left-bottom"
                     x="1"
+                    @click="takeDoorbell"
                 >
                 </easel-bitmap>
             </enzo-named-container>
@@ -142,6 +143,10 @@ export default {
         },
         returnBook() {
             this.viewBook = null
+        },
+        takeDoorbell() {
+            const {x, y} = this.app.world.doorbell.stackLocation;
+            this.app.world.takeDoorbell(msg => this.queueMessage(msg, x, y));
         },
     },
 };

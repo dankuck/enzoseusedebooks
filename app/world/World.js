@@ -1,6 +1,7 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
 import InventoryBattery from '@world/InventoryBattery';
+import InventoryDoorbell from '@world/InventoryDoorbell';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -148,6 +149,18 @@ export default class World
         this.battery.location = 'inventory';
         this.inventory.push(new InventoryBattery({name: 'AA Battery'}));
         print("You've got the AA Battery, now.");
+    }
+
+    /**
+     * Move the doorbell into the inventory.
+     *
+     * @param {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    takeDoorbell(print) {
+        this.doorbell.location = 'inventory';
+        this.inventory.push(new InventoryDoorbell({name: 'Wireless Doorbell'}));
+        print("You've got the doorbell, now.");
     }
 
     /**
