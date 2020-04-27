@@ -14219,10 +14219,10 @@ __webpack_require__.r(__webpack_exports__);
     methods: {
         checkPlant(vuePlant) {
             this.app.event('lobby-plant', 'shake');
-            this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
+            this.app.world.ruffleLobbyPlant(this.queueMessageAt(vuePlant.x, vuePlant.y));
         },
         takeBattery() {
-            this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
+            this.app.world.takeBattery(this.queueMessageAt(this.battery.x, this.battery.y));
         },
         clickIAmTheCheese() {
             this.app.world.touchIAmTheCheese();
@@ -15074,7 +15074,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         takeDoorbell() {
             const { x, y } = this.app.world.doorbell.stackLocation;
-            this.app.world.takeDoorbell(msg => this.queueMessage(msg, x, y));
+            this.app.world.takeDoorbell(this.queueMessageAt(x, y));
         }
     }
 });

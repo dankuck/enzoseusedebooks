@@ -146,7 +146,7 @@ export default {
         },
         takeDoorbell() {
             const {x, y} = this.app.world.doorbell.stackLocation;
-            this.app.world.takeDoorbell(msg => this.queueMessage(msg, x, y));
+            this.app.world.takeDoorbell(this.queueMessageAt(x, y));
         },
     },
 };

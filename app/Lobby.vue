@@ -205,10 +205,10 @@ export default {
     methods: {
         checkPlant(vuePlant) {
             this.app.event('lobby-plant', 'shake');
-            this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
+            this.app.world.ruffleLobbyPlant(this.queueMessageAt(vuePlant.x, vuePlant.y));
         },
         takeBattery() {
-            this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
+            this.app.world.takeBattery(this.queueMessageAt(this.battery.x, this.battery.y));
         },
         clickIAmTheCheese() {
             this.app.world.touchIAmTheCheese();
