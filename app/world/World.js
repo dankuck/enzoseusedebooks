@@ -167,6 +167,14 @@ export default class World
         print("You've got the doorbell, now.");
     }
 
+    removeInventory(item) {
+        const index = this.inventory.indexOf(item);
+        if (index < 0) {
+            return;
+        }
+        this.inventory.splice(index, 1);
+    }
+
     /**
      * Attempt to move the user to this place
      * @param  {String} location

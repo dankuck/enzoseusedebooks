@@ -20,8 +20,14 @@ export default {
         queueMessage(text, x, y, color = null) {
             return this.textLayer.messager.queue({text, x, y, color});
         },
+        queueMessageAt(x, y, color = null) {
+            return msg => this.queueMessage(msg, x, y, color = null);
+        },
         showMessage(text, x, y, color = null) {
             return this.textLayer.messager.clear().queue({text, x, y, color});
+        },
+        showMessageAt(x, y, color = null) {
+            return msg => this.showMessage(msg, x, y, color = null);
         },
         hover() {
             this.textLayer.hoverer.hover(this, this);

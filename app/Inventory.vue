@@ -71,23 +71,17 @@ export default {
                 this.useWith.callback(item);
                 this.useWith = null;
             } else {
-                item.click(
-                    msg => this.showMessage(msg, x, y),
-                    (callback) => {
+                item.click({
+                    world: this.app.world,
+                    print: this.showMessageAt(x, y),
+                    useWith: callback => {
                         this.useWith = {
                             item,
                             callback,
                         };
                         this.showMessage(this.labelFor(item), x, y);
-                    },
-                    () => {
-                        const index = this.app.world.inventory.indexOf(item);
-                        if (index < 0) {
-                            return;
-                        }
-                        this.app.world.inventory.splice(index, 1);
                     }
-                );
+                });
             }
         },
         labelFor(item) {

@@ -3044,8 +3044,14 @@ __webpack_require__.r(__webpack_exports__);
         queueMessage(text, x, y, color = null) {
             return this.textLayer.messager.queue({ text, x, y, color });
         },
+        queueMessageAt(x, y, color = null) {
+            return msg => this.queueMessage(msg, x, y, color = null);
+        },
         showMessage(text, x, y, color = null) {
             return this.textLayer.messager.clear().queue({ text, x, y, color });
+        },
+        showMessageAt(x, y, color = null) {
+            return msg => this.showMessage(msg, x, y, color = null);
         },
         hover() {
             this.textLayer.hoverer.hover(this, this);
@@ -3250,11 +3256,12 @@ class InventoryBattery {
         Object.assign(this, data);
     }
 
-    click(print, request, remove) {
-        request(item => {
+    click({ print, useWith, world }) {
+        useWith(item => {
             if (item.useBattery) {
                 item.useBattery(print);
-                remove();
+                world.removeInventory(this);
+                world.battery.location = 'used';
             } else {
                 print("I don't know how to use the battery with that.");
             }
@@ -3290,7 +3297,7 @@ class InventoryDoorbell {
         Object.assign(this, data);
     }
 
-    click(print) {
+    click({ print }) {
         if (this.hasBattery) {
             print("DING DONG!");
         } else {
@@ -3465,6 +3472,14 @@ class World {
         this.doorbell.location = 'inventory';
         this.inventory.push(new _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__["default"]({ name: 'Wireless Doorbell' }));
         print("You've got the doorbell, now.");
+    }
+
+    removeInventory(item) {
+        const index = this.inventory.indexOf(item);
+        if (index < 0) {
+            return;
+        }
+        this.inventory.splice(index, 1);
     }
 
     /**
@@ -13260,6 +13275,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 const priceValue = price => parseFloat(price.replace(/[^\d\.]/, ''));
 
@@ -13947,18 +13963,16 @@ __webpack_require__.r(__webpack_exports__);
                 this.useWith.callback(item);
                 this.useWith = null;
             } else {
-                item.click(msg => this.showMessage(msg, x, y), callback => {
-                    this.useWith = {
-                        item,
-                        callback
-                    };
-                    this.showMessage(this.labelFor(item), x, y);
-                }, () => {
-                    const index = this.app.world.inventory.indexOf(item);
-                    if (index < 0) {
-                        return;
+                item.click({
+                    world: this.app.world,
+                    print: this.showMessageAt(x, y),
+                    useWith: callback => {
+                        this.useWith = {
+                            item,
+                            callback
+                        };
+                        this.showMessage(this.labelFor(item), x, y);
                     }
-                    this.app.world.inventory.splice(index, 1);
                 });
             }
         },
@@ -20614,14 +20628,15 @@ var render = function() {
           fill: "grey",
           dimensions: [130, 10],
           align: "bottom-left",
-          cursor: "pointer"
+          cursor: "pointer",
+          alpha: "0.01"
         },
         on: { click: _vm.goToAmazon }
       }),
       _vm._v(" "),
       _c("enzo-text", {
         attrs: {
-          text: "Buy It On Amazon",
+          text: "> Buy It On Amazon",
           x: _vm.window.dimensions.width / 2 - 1,
           y: _vm.window.dimensions.height / 2 + _vm.book.image.height / 2
         }
