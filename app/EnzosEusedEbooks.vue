@@ -27,7 +27,14 @@
             :viewport-height="app.viewport.height"
             :anti-alias="false"
         >
+
             <room></room>
+
+            <cutscene
+                v-if="app.world.cutscene"
+                @done="app.world.cutscene = null"
+            >
+            </cutscene>
 
             <inventory
                 :x="0"
@@ -61,6 +68,7 @@ import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 import Inventory from '@app/Inventory';
 import Room from '@app/Room';
+import Cutscene from '@app/Cutscene';
 
 export default {
     components: {
@@ -68,6 +76,7 @@ export default {
         DevElements,
         Inventory,
         Room,
+        Cutscene,
     },
     inject: ['app'],
     provide() {

@@ -107,6 +107,9 @@ const upgrader = new VersionUpgrader()
             location: null,
         };
     })
+    .version(16, world => {
+        world.cutscene = null;
+    })
     ;
 
 export default class World
