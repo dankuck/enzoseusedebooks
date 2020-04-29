@@ -98,9 +98,9 @@ const {after, always, everySession} = ChatBot;
 export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
-    props: ['cutscene'],
+    props: ['noDialog'],
     mounted() {
-        if (this.cutscene) {
+        if (this.noDialog) {
             return;
         }
         this.say(this.intro);

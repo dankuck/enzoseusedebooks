@@ -6,7 +6,7 @@
         </easel-bitmap>
 
         <lobby-bot
-            :cutscene="cutscene"
+            :no-dialog="noDialog"
         >
         </lobby-bot>
 
@@ -26,6 +26,6 @@ export default {
     components: {
         LobbyBot,
     },
-    props: ['cutscene'],
+    props: ['noDialog'],
 }
 </script>

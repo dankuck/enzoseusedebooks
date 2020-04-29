@@ -14654,9 +14654,9 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app', 'window'],
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['cutscene'],
+    props: ['noDialog'],
     mounted() {
-        if (this.cutscene) {
+        if (this.noDialog) {
             return;
         }
         this.say(this.intro);
@@ -14827,7 +14827,7 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__["default"]
     },
-    props: ['cutscene']
+    props: ['noDialog']
 });
 
 /***/ }),
@@ -21090,7 +21090,7 @@ var render = function() {
   return _c(
     "easel-container",
     [
-      _c("lobby-desk", { attrs: { cutscene: true } }),
+      _c("lobby-desk", { attrs: { "no-dialog": true } }),
       _vm._v(" "),
       _c("text-layer")
     ],
@@ -21842,7 +21842,7 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "images/desk.gif" } }),
       _vm._v(" "),
-      _c("lobby-bot", { attrs: { cutscene: _vm.cutscene } }),
+      _c("lobby-bot", { attrs: { "no-dialog": _vm.noDialog } }),
       _vm._v(" "),
       _c("text-layer")
     ],

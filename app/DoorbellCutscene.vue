@@ -1,7 +1,7 @@
 <template>
     <easel-container>
 
-        <lobby-desk :cutscene="true"></lobby-desk>
+        <lobby-desk :no-dialog="true"></lobby-desk>
 
         <text-layer>
         </text-layer>
