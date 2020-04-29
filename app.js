@@ -2537,7 +2537,12 @@ __webpack_require__.r(__webpack_exports__);
  | A Hoverer holds a message until it is replaced by another call to `hover()`
  | or cleared by a call to `unhover()`.
  |
- | It exposes a property `message`.
+ | It exposes a property `message`. Whatever code you write to set a message
+ | should agree with whatever code you write to read `message`.
+ |
+ | For our purposes the passive `message` property works great.
+ | In non-Vue environments, you might choose to add an event system so client
+ | code knows when there's a new message.
  */
 
 class Hoverer {
@@ -2678,7 +2683,12 @@ __webpack_require__.r(__webpack_exports__);
  | for `time` milliseconds, and then the next one in the queue will replace it.
  | Finally it will equal null.
  |
- | It exposes a property `message`.
+ | It exposes a property `message`. Whatever code you write to queue messages
+ | should agree with whatever code you write to read `message`.
+ |
+ | For our purposes the passive `message` property works great.
+ | In non-Vue environments, you might choose to add an event system so client
+ | code knows when there's a new message.
  */
 
 class Messager {
@@ -2697,11 +2707,12 @@ class Messager {
      * Add a message to the queue and ensure the queue is running. Return a
      * Promise that resolves when the message has finished showing.
      * @param  {any} message
+     * @param  {n} optional, Custom milliseconds to show the message
      * @return {Promise}
      */
-    queue(message) {
+    queue(message, time = null) {
         return new Promise(resolve => {
-            this.messages.push({ message, resolve });
+            this.messages.push({ message, resolve, time });
             this.start();
         });
     }
@@ -2729,13 +2740,13 @@ class Messager {
             this.message = null;
             return;
         }
-        const { message, resolve } = this.messages.shift();
+        const { message, resolve, time } = this.messages.shift();
         this.message = message;
         this.timeout = setTimeout(() => {
             resolve();
             this.timeout = null;
             this.start();
-        }, this.time);
+        }, time === null ? this.time : time);
     }
 
     /**
@@ -3211,17 +3222,17 @@ __webpack_require__.r(__webpack_exports__);
         removeFromHoverRing() {
             this.textLayer.mobileHoverRing.remove(this.hoverCallback);
         },
-        queueMessage(text, x, y, color = null) {
-            return this.textLayer.messager.queue({ text, x, y, color });
+        queueMessage(text, x, y, color = null, speed = null) {
+            return this.textLayer.messager.queue({ text, x, y, color }, speed);
         },
-        queueMessageAt(x, y, color = null) {
-            return msg => this.queueMessage(msg, x, y, color = null);
+        queueMessageAt(x, y, color = null, speed = null) {
+            return msg => this.queueMessage(msg, x, y, color, speed);
         },
-        showMessage(text, x, y, color = null) {
+        showMessage(text, x, y, color = null, speed = null) {
             return this.textLayer.messager.clear().queue({ text, x, y, color });
         },
-        showMessageAt(x, y, color = null) {
-            return msg => this.showMessage(msg, x, y, color = null);
+        showMessageAt(x, y, color = null, speed = null) {
+            return msg => this.showMessage(msg, x, y, color, speed);
         },
         hover() {
             this.textLayer.hoverer.hover(this, this);
@@ -15682,11 +15693,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app', 'textLayer'],
     computed: {
-        messager() {
-            return this.textLayer.messager;
-        },
         message() {
-            return this.textLayer.messager.message || this.hovererMessage;
+            return this.messagerMessage || this.hovererMessage;
+        },
+        messagerMessage() {
+            return this.textLayer.messager.message;
         },
         hovererMessage() {
             if (!this.textLayer.hoverer.message) {
@@ -15699,6 +15710,9 @@ __webpack_require__.r(__webpack_exports__);
                     y: component.hoverY || component.y
                 };
             }
+        },
+        itsAHoverMessage() {
+            return !this.messagerMessage;
         }
     }
 });
@@ -22589,7 +22603,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          !_vm.textLayer.messager.message
+          _vm.itsAHoverMessage
             ? _c(
                 "easel-container",
                 [

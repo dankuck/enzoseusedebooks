@@ -27,7 +27,7 @@
         >
         </enzo-text>
         <easel-container
-            v-if="!textLayer.messager.message"
+            v-if="itsAHoverMessage"
         >
             <easel-shape
                 v-if="app.isMobile"
@@ -55,11 +55,11 @@
 export default {
     inject: ['app', 'textLayer'],
     computed: {
-        messager() {
-            return this.textLayer.messager;
-        },
         message() {
-            return this.textLayer.messager.message || this.hovererMessage;
+            return this.messagerMessage || this.hovererMessage;
+        },
+        messagerMessage() {
+            return this.textLayer.messager.message;
         },
         hovererMessage() {
             if (!this.textLayer.hoverer.message) {
@@ -72,6 +72,9 @@ export default {
                     y: component.hoverY || component.y,
                 };
             }
+        },
+        itsAHoverMessage() {
+            return !this.messagerMessage;
         },
     },
 };

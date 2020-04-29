@@ -55,4 +55,15 @@ describe('Messager', function () {
         messager.queue(message1)
             .then(done, done);
     });
+
+    it('should set a message with a custom time', function (done) {
+        const messager = new Messager(500);
+        messager.queue(message1, 10);
+        equal(message1, messager.message);
+        wait(15)
+            .then(() => {
+                equal(messager.message, null);
+            })
+            .then(done, done);
+    });
 });
