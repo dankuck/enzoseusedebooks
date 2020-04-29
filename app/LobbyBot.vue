@@ -98,7 +98,11 @@ const {after, always, everySession} = ChatBot;
 export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
+    props: ['cutscene'],
     mounted() {
+        if (this.cutscene) {
+            return;
+        }
         this.say(this.intro);
         setInterval(() => this.wanderEyes(), 1000);
         setInterval(() => this.moveEyes(), 100);

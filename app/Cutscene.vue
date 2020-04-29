@@ -1,6 +1,6 @@
 <template>
     <easel-container>
-        <lobby></lobby>
+        <component :is="vModel" @done="vModel = null"></component>
 
         <easel-shape
             form="rect"
@@ -17,14 +17,16 @@
 
 <script>
 import Lobby from '@app/Lobby';
+import DoorbellCutscene from '@app/DoorbellCutscene';
+import VModelMixin from '@app/VModelMixin';
 
 export default {
+    mixins: [
+        VModelMixin,
+    ],
     components: {
-        Lobby,
+        doorbell: DoorbellCutscene,
     },
     inject: ['window'],
-    mounted() {
-        setTimeout(() => this.$emit('done'), 5000);
-    },
 }
 </script>

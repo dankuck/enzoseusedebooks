@@ -7,9 +7,9 @@ export default class InventoryDoorbell {
         Object.assign(this, data);
     }
 
-    click({print}) {
+    click({print, world}) {
         if (this.hasBattery) {
-            print("DING DONG!");
+            world.cutscene = 'doorbell';
         } else {
             print("Nothing happened. It looks like it needs a battery.");
         }

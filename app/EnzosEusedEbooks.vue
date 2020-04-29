@@ -32,7 +32,7 @@
 
             <cutscene
                 v-if="app.world.cutscene"
-                @done="app.world.cutscene = null"
+                v-model="app.world.cutscene"
             >
             </cutscene>
 

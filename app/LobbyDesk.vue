@@ -5,7 +5,9 @@
         >
         </easel-bitmap>
 
-        <lobby-bot>
+        <lobby-bot
+            :cutscene="cutscene"
+        >
         </lobby-bot>
 
         <text-layer
@@ -24,5 +26,6 @@ export default {
     components: {
         LobbyBot,
     },
+    props: ['cutscene'],
 }
 </script>

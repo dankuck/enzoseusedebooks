@@ -431,6 +431,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/DoorbellCutscene.vue":
+/*!**********************************!*\
+  !*** ./app/DoorbellCutscene.vue ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DoorbellCutscene.vue?vue&type=template&id=7fdd9292& */ "./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292&");
+/* harmony import */ var _DoorbellCutscene_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DoorbellCutscene.vue?vue&type=script&lang=js& */ "./app/DoorbellCutscene.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DoorbellCutscene_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/DoorbellCutscene.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./app/DoorbellCutscene.vue?vue&type=script&lang=js&":
+/*!***********************************************************!*\
+  !*** ./app/DoorbellCutscene.vue?vue&type=script&lang=js& ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DoorbellCutscene_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./DoorbellCutscene.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/DoorbellCutscene.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DoorbellCutscene_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292&":
+/*!*****************************************************************!*\
+  !*** ./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292& ***!
+  \*****************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./DoorbellCutscene.vue?vue&type=template&id=7fdd9292& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DoorbellCutscene_vue_vue_type_template_id_7fdd9292___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./app/EnzoClickSpot.vue":
 /*!*******************************!*\
   !*** ./app/EnzoClickSpot.vue ***!
@@ -1601,6 +1670,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StackRoom_vue_vue_type_template_id_0d0c6bd7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./app/VModelMixin.js":
+/*!****************************!*\
+  !*** ./app/VModelMixin.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ |--------------------
+ | VModelMixin
+ |--------------------
+ | Treat v-model as a writable prop called vModel
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['value'],
+    computed: {
+        vModel: {
+            get() {
+                return this.value;
+            },
+            set(value) {
+                this.$emit('input', value);
+            }
+        }
+    }
+});
 
 /***/ }),
 
@@ -3366,9 +3467,9 @@ class InventoryDoorbell {
         Object.assign(this, data);
     }
 
-    click({ print }) {
+    click({ print, world }) {
         if (this.hasBattery) {
-            print("DING DONG!");
+            world.cutscene = 'doorbell';
         } else {
             print("Nothing happened. It looks like it needs a battery.");
         }
@@ -13481,6 +13582,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_Lobby__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/Lobby */ "./app/Lobby.vue");
+/* harmony import */ var _app_DoorbellCutscene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/DoorbellCutscene */ "./app/DoorbellCutscene.vue");
+/* harmony import */ var _app_VModelMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/VModelMixin */ "./app/VModelMixin.js");
 //
 //
 //
@@ -13498,16 +13601,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [_app_VModelMixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
     components: {
-        Lobby: _app_Lobby__WEBPACK_IMPORTED_MODULE_0__["default"]
+        doorbell: _app_DoorbellCutscene__WEBPACK_IMPORTED_MODULE_1__["default"]
     },
-    inject: ['window'],
+    inject: ['window']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/DoorbellCutscene.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/DoorbellCutscene.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/LobbyDesk */ "./app/LobbyDesk.vue");
+/* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    inject: ['app'],
+    mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
+    components: {
+        LobbyDesk: _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__["default"]
+    },
     mounted() {
-        setTimeout(() => this.$emit('done'), 5000);
+        this.showMessage('DING DONG!', 10, 10, 'cyan').then(() => this.showMessage("I'll get it!", 100, 100)).then(() => this.bounceFromDesk()).then(() => this.$emit('done'));
+    },
+    methods: {
+        /**
+         * If we're currently at the desk, leave, because we don't want to
+         * animate the robot when he goes to answer the door.
+         */
+        bounceFromDesk() {
+            if (this.app.world.location === 'lobby-desk') {
+                this.app.world.goTo('lobby');
+            }
+        }
     }
 });
 
@@ -14466,7 +14619,11 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app', 'window'],
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
+    props: ['cutscene'],
     mounted() {
+        if (this.cutscene) {
+            return;
+        }
         this.say(this.intro);
         setInterval(() => this.wanderEyes(), 1000);
         setInterval(() => this.moveEyes(), 100);
@@ -14623,6 +14780,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -14632,7 +14791,8 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
     components: {
         LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__["default"]
-    }
+    },
+    props: ['cutscene']
 });
 
 /***/ }),
@@ -20836,7 +20996,14 @@ var render = function() {
   return _c(
     "easel-container",
     [
-      _c("lobby"),
+      _c(_vm.vModel, {
+        tag: "component",
+        on: {
+          done: function($event) {
+            _vm.vModel = null
+          }
+        }
+      }),
       _vm._v(" "),
       _c("easel-shape", {
         attrs: {
@@ -20856,6 +21023,38 @@ var render = function() {
           }
         }
       })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292&":
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/DoorbellCutscene.vue?vue&type=template&id=7fdd9292& ***!
+  \***********************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "easel-container",
+    [
+      _c("lobby-desk", { attrs: { cutscene: true } }),
+      _vm._v(" "),
+      _c("text-layer")
     ],
     1
   )
@@ -21089,10 +21288,12 @@ var render = function() {
               _vm._v(" "),
               _vm.app.world.cutscene
                 ? _c("cutscene", {
-                    on: {
-                      done: function($event) {
-                        _vm.app.world.cutscene = null
-                      }
+                    model: {
+                      value: _vm.app.world.cutscene,
+                      callback: function($$v) {
+                        _vm.$set(_vm.app.world, "cutscene", $$v)
+                      },
+                      expression: "app.world.cutscene"
                     }
                   })
                 : _vm._e(),
@@ -21603,7 +21804,7 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "images/desk.gif" } }),
       _vm._v(" "),
-      _c("lobby-bot"),
+      _c("lobby-bot", { attrs: { cutscene: _vm.cutscene } }),
       _vm._v(" "),
       _c("text-layer")
     ],
