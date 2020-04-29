@@ -117,7 +117,7 @@ describe('World', function () {
             if (!world.lobbyPlant.ruffled) {
                 world.ruffleLobbyPlant(msg => msgs.push(msg));
                 assert(world.lobbyPlant.name, 'Ruffled Plant');
-                assert(msgs.includes("You ruffled the plant. It's messy now."));
+                assert(msgs.includes("You ruffled the plant. Something fell out."));
                 assert(world.lobbyPlant.ruffled, true);
             }
             world.ruffleLobbyPlant(msg => msgs.push(msg));
