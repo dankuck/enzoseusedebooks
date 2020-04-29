@@ -5,12 +5,11 @@ import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
 import version_8_minimized_save from '../fixtures/version_8_minimized_save.json';
+import delay from '@libs/wait';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
 } = assert;
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const shuffle = function (arr) {
     const copy = [].concat(arr);

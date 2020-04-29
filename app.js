@@ -3022,6 +3022,28 @@ function sizeText(text, maxLength, maxLines = Infinity) {
 
 /***/ }),
 
+/***/ "./app/libs/wait.js":
+/*!**************************!*\
+  !*** ./app/libs/wait.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ |------------------
+ | wait(ms)
+ |------------------
+ | Call `wait(ms)` to get a Promise that resolves after `ms` seconds.
+ |
+ | In the future, it would be cool to be able to cancel() it.
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (ms => new Promise(resolve => setTimeout(resolve, ms)));
+
+/***/ }),
+
 /***/ "./app/reviver.js":
 /*!************************!*\
   !*** ./app/reviver.js ***!
@@ -3229,7 +3251,7 @@ __webpack_require__.r(__webpack_exports__);
             return msg => this.queueMessage(msg, x, y, color, speed);
         },
         showMessage(text, x, y, color = null, speed = null) {
-            return this.textLayer.messager.clear().queue({ text, x, y, color });
+            return this.textLayer.messager.clear().queue({ text, x, y, color }, speed);
         },
         showMessageAt(x, y, color = null, speed = null) {
             return msg => this.showMessage(msg, x, y, color, speed);
@@ -13638,6 +13660,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/LobbyDesk */ "./app/LobbyDesk.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
+/* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
 //
 //
 //
@@ -13649,6 +13672,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -13660,7 +13684,7 @@ __webpack_require__.r(__webpack_exports__);
         LobbyDesk: _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
-        this.showMessage('DING DONG!', 10, 10, 'cyan').then(() => this.showMessage("I'll get it!", 100, 100)).then(() => this.bounceFromDesk()).then(() => this.$emit('done'));
+        this.showMessage('~ DING ~', 10, 50, 'white', 750).then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000)).then(() => Object(_libs_wait__WEBPACK_IMPORTED_MODULE_2__["default"])(500)).then(() => this.showMessage("I'll get it!", 100, 100)).then(() => this.bounceFromDesk()).then(() => this.$emit('done'));
     },
     methods: {
         /**

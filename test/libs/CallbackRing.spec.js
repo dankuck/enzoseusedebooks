@@ -1,7 +1,7 @@
 import CallbackRing from '@libs/CallbackRing';
 import assert from 'assert';
+import wait from '@libs/wait';
 const {deepStrictEqual: equal} = assert;
-const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('CallbackRing', function () {
 

@@ -1,11 +1,10 @@
 import Collection from '@world/Collection';
 import assert from 'assert';
+import delay from '@libs/wait';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
 } = assert;
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('Collection', function () {
 

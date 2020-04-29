@@ -24,7 +24,7 @@ export default {
             return msg => this.queueMessage(msg, x, y, color, speed);
         },
         showMessage(text, x, y, color = null, speed = null) {
-            return this.textLayer.messager.clear().queue({text, x, y, color});
+            return this.textLayer.messager.clear().queue({text, x, y, color}, speed);
         },
         showMessageAt(x, y, color = null, speed = null) {
             return msg => this.showMessage(msg, x, y, color, speed);

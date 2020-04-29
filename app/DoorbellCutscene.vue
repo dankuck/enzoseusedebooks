@@ -12,6 +12,7 @@
 <script>
 import LobbyDesk from '@app/LobbyDesk';
 import HasTextLayer from '@textLayer/HasTextLayer';
+import wait from '@libs/wait';
 
 export default {
     inject: ['app'],
@@ -20,7 +21,9 @@ export default {
         LobbyDesk,
     },
     mounted() {
-        this.showMessage('DING DONG!', 10, 10, 'cyan')
+        this.showMessage('~ DING ~', 10, 50, 'white', 750)
+            .then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000))
+            .then(() => wait(500))
             .then(() => this.showMessage("I'll get it!", 100, 100))
             .then(() => this.bounceFromDesk())
             .then(() => this.$emit('done'));
