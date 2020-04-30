@@ -48,6 +48,7 @@ window.VueEaseljs = require('vue-easeljs');
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios;
 window.reviver = reviver;
+window.JsonStorage = JsonStorage;
 
 if (config.sentry && config.sentry.on) {
     Sentry.init({

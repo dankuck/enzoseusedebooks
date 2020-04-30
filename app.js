@@ -1758,6 +1758,7 @@ window.VueEaseljs = __webpack_require__(/*! vue-easeljs */ "./node_modules/vue-e
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios__WEBPACK_IMPORTED_MODULE_9___default.a;
 window.reviver = _app_reviver__WEBPACK_IMPORTED_MODULE_8__["default"];
+window.JsonStorage = _libs_JsonStorage__WEBPACK_IMPORTED_MODULE_6__["default"];
 
 if (_config__WEBPACK_IMPORTED_MODULE_5__["default"].sentry && _config__WEBPACK_IMPORTED_MODULE_5__["default"].sentry.on) {
     _sentry_browser__WEBPACK_IMPORTED_MODULE_12__["init"]({
@@ -2542,20 +2543,89 @@ __webpack_require__.r(__webpack_exports__);
  |
  | It was written to be used with window.localStorage, but it can work on any
  | object.
+ |
+ | Example:
+ |
+ |   const store = {}
+ |   const js = new JsonStorage(store, 'myKey');
+ |   js.write('item', 123);
+ |   console.log(js.read('item'));
+ |   // 123
+ |   console.log(store);
+ |   // {myKey: "{item:123}"}
+ |
+ | Not all data converts to JSON and back cleanly. So you may want to convert
+ | some parts of your structure to a special format. For that, supply any of
+ | the optional functions:
+ |  replace - a function that accepts a part of the structure you're
+ |            serializing and returns a value you want back when unserializing.
+ |            This is passed directly to `JSON.stringify`
+ |  revive -  a function that accepts a value from `replace` and returns the
+ |            recreated original value. Passed directly to `JSON.parse`
+ |  beforeReplace - a function that does whatever prep work you may need before
+ |            the replacements
+ |  afterReplace  - a function that resets anything you may have changed in
+ |            `beforeReplace`.
+ |
+ | JSON will pass each part of the structures you store to `replace` and
+ | `revive` as needed. The parameters will be (`key`, `value`). Return either
+ | the same value or a suitable replacement.
+ |
+ | Hint: The Revive class does a great job supplying those exact functions
+ | when you want objects to keep their classes after reload.
+ |
+ | In this ridiculous example we add an egg emoji to the beginning of every
+ | string, for storage, then remove it again on read, so no one is the wiser.
+ | We make sure to return the same value for all non-strings:
+ |
+ |   // Put An Egg On It
+ |   const store = {}
+ |   const js = new JsonStorage(store, 'myKey', {
+ |       revive(k, v) {
+ |           return typeof v === 'string'
+ |               ? v.replace(/^🥚/, '')
+ |               : v
+ |       },
+ |       replace(k, v) {
+ |           return typeof v === 'string'
+ |               ? '🥚' + v
+ |               : v
+ |       },
+ |   });
+ |   js.write('title', 'The Hound of the Baskervilles');
+ |   console.log(js.read('title'));
+ |   // The Hound of the Baskervilles
+ |   console.log(store)
+ |   // {myKey: "{title:\"🥚The Hound of the Baskervilles\"}"}
  */
-const replacing = [];
+
+const justReturnTheValue = (k, v) => v;
+const justReturnNull = () => null;
+
 class JsonStorage {
-    constructor(storage, rootKey, transformer = null) {
+    constructor(storage, rootKey, {
+        revive,
+        replace,
+        beforeReplace,
+        afterReplace,
+        beforeRevive,
+        afterRevives
+    } = {}) {
         this.storage = storage;
         this.rootKey = rootKey;
-        this.reviver = (key, value) => transformer && transformer.revive ? transformer.revive(key, value) : value;
-        this.replacer = (key, value) => transformer && transformer.replace ? transformer.replace(key, value) : value;
-        this.beforeReplace = () => transformer && transformer.beforeReplace && transformer.beforeReplace();
-        this.afterReplace = () => transformer && transformer.afterReplace && transformer.afterReplace();
+        this.reviver = revive || justReturnTheValue;
+        this.replacer = replace || justReturnTheValue;
+        this.beforeReplace = beforeReplace || justReturnNull;
+        this.afterReplace = afterReplace || justReturnNull;
+        this.beforeRevive = beforeRevive || justReturnNull;
+        this.afterRevive = afterRevive || justReturnNull;
     }
 
     getRoot() {
-        return this.storage[this.rootKey] ? JSON.parse(this.storage[this.rootKey], this.reviver) : {};
+        this.beforeRevive();
+        const root = this.storage[this.rootKey] ? JSON.parse(this.storage[this.rootKey], this.reviver) : {};
+        this.afterRevive();
+        return root;
     }
 
     setRoot(root) {
@@ -2746,6 +2816,8 @@ class Reviver {
         this.registerBuiltIns();
         this.revive = this.revive.bind(this);
         this.replace = this.replace.bind(this);
+        this.beforeReplace = this.beforeReplace.bind(this);
+        this.afterReplace = this.afterReplace.bind(this);
     }
 
     /**
