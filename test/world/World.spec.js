@@ -314,18 +314,19 @@ describe('World', function () {
     describe('knows when all steps are completed', function () {
 
         const actions = [
-            world => world.takeBattery(() => {}),
             world => world.goTo('lobby-desk'),
             world => world.goTo('fiction-stack'),
             world => world.goTo('nonfiction-stack'),
             world => world.goTo('children-stack'),
+            world => world.takeBattery(() => {}),
+            world => world.takeCheese(() => {}),
         ];
 
         it('in order', function () {
             const world = new World();
 
             actions.forEach(action => {
-                assert(!world.completedAllSteps());
+                assert(!world.completedAllSteps(), 'Completed early. Still need to do this step: ' + action);
                 action(world);
             });
 

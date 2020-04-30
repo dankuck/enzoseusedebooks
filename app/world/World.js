@@ -265,6 +265,9 @@ export default class World
         if (this.battery.location === 'lobby-floor') {
             return false; // gotta pick up the battery
         }
+        if (this.theCheese.location === 'book') {
+            return false; // find that cheese!
+        }
         const beenEverywhereMan = this.hasGoneTo('lobby-desk')
             && this.hasGoneTo('lobby')
             && this.hasGoneTo('fiction-stack')
