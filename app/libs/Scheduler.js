@@ -33,10 +33,10 @@ export default class Scheduler {
         this.start();
     }
 
-    schedule(ms, routine) {
+    schedule(ms, routine, ...args) {
         const time = new Date();
         time.setMilliseconds(time.getMilliseconds() + ms);
-        this.scheduled.push({time, routine});
+        this.scheduled.push({time, routine, args});
         this.start();
     }
 
@@ -48,11 +48,11 @@ export default class Scheduler {
         this.scheduled
             .filter(scheduled => !this.timeouts.has(scheduled))
             .forEach(scheduled => {
-                const {routine, time} = scheduled;
+                const {routine, time, args} = scheduled;
                 const ms = time.valueOf() - now.valueOf();
                 const timeout = setTimeout(() => {
                     try {
-                        this.target[routine]();
+                        this.target[routine](...args);
                     } catch (error) {
                         console && console.error && console.error('Scheduler error:', error);
                     }

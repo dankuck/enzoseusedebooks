@@ -9,11 +9,11 @@ const {
 } = assert;
 
 const loadJSON = function (reviver, json) {
-    return JSON.parse(json, (k, v) => reviver.revive(k, v));
+    return JSON.parse(json, reviver.revive);
 };
 const saveJSON = function (reviver, object) {
     reviver.beforeReplace();
-    const json = JSON.stringify(object, (k, v) => reviver.replace(k, v));
+    const json = JSON.stringify(object, reviver.replace);
     reviver.afterReplace();
     return json;
 };
@@ -148,6 +148,16 @@ describe('Scheduler', function () {
                     equal(1, calls.length)
                     equal('Scheduler error:', calls[0].args[0]);
                 })
+                .then(done, done);
+        });
+
+        it('runs with args', function (done) {
+            let caught;
+            const scheduler = new Scheduler();
+            scheduler.setTarget({run(...args){caught = args}});
+            scheduler.schedule(5, 'run', 1, "two", {3: 4});
+            wait(10)
+                .then(() => equal([1, "two", {3: 4}], caught))
                 .then(done, done);
         });
     });

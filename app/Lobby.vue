@@ -53,13 +53,17 @@
         >
         </big-plant>
 
-        <battery
+        <enzo-named-container
             v-if="app.world.battery.location === 'lobby-floor'"
             :x="battery.x"
             :y="battery.y"
-            @click="takeBattery"
         >
-        </battery>
+            <easel-bitmap
+                image="images/battery.gif"
+                @click="takeBattery"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
 
         <enzo-click-spot
             v-for="book in books"
@@ -101,7 +105,6 @@
 import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
-import Battery from '@app/Battery';
 
 export default {
     inject: ['app'],
@@ -109,7 +112,6 @@ export default {
     components: {
         BigPlant,
         BookViewer,
-        Battery,
     },
     data() {
         this.app.world.collections.bargain.load();

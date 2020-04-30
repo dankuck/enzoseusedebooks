@@ -86,75 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./app/Battery.vue":
-/*!*************************!*\
-  !*** ./app/Battery.vue ***!
-  \*************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Battery.vue?vue&type=template&id=354b3061& */ "./app/Battery.vue?vue&type=template&id=354b3061&");
-/* harmony import */ var _Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Battery.vue?vue&type=script&lang=js& */ "./app/Battery.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "app/Battery.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./app/Battery.vue?vue&type=script&lang=js&":
-/*!**************************************************!*\
-  !*** ./app/Battery.vue?vue&type=script&lang=js& ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./Battery.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./app/Battery.vue?vue&type=template&id=354b3061&":
-/*!********************************************************!*\
-  !*** ./app/Battery.vue?vue&type=template&id=354b3061& ***!
-  \********************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./Battery.vue?vue&type=template&id=354b3061& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=template&id=354b3061&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Battery_vue_vue_type_template_id_354b3061___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./app/BigPlant.vue":
 /*!**************************!*\
   !*** ./app/BigPlant.vue ***!
@@ -2802,9 +2733,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  |      'created_at': new Date('1996-05-13'),
  |  };
  |  reviver.beforeReplace();
- |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
+ |  const JSON.stringify(data, reviver.replace)
  |  reviver.afterReplace();
- |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
+ |  const copy = JSON.parse(json, reviver.revive)
  |  console.log(data, copy);
  |  // Then you see the same thing twice.
  */
@@ -2865,7 +2796,7 @@ class Reviver {
     /**
      * Use this with JSON.parse() to load saved data.
      *
-     * Example: JSON.parse(data, (key, value) => reviver.revive(key, value))
+     * Example: JSON.parse(data, reviver.revive)
      *
      * @param  {string} key
      * @param  {any} value
@@ -2893,7 +2824,7 @@ class Reviver {
      *
      * Example:
      *     reviver.beforeReplace();
-     *     JSON.stringify(data, (key, value) => reviver.replace(key, value))
+     *     JSON.stringify(data, reviver.replace)
      *     reviver.afterReplace();
      *
      * @param  {string} key
@@ -3024,10 +2955,10 @@ class Scheduler {
         this.start();
     }
 
-    schedule(ms, routine) {
+    schedule(ms, routine, ...args) {
         const time = new Date();
         time.setMilliseconds(time.getMilliseconds() + ms);
-        this.scheduled.push({ time, routine });
+        this.scheduled.push({ time, routine, args });
         this.start();
     }
 
@@ -3037,11 +2968,11 @@ class Scheduler {
         }
         const now = new Date();
         this.scheduled.filter(scheduled => !this.timeouts.has(scheduled)).forEach(scheduled => {
-            const { routine, time } = scheduled;
+            const { routine, time, args } = scheduled;
             const ms = time.valueOf() - now.valueOf();
             const timeout = setTimeout(() => {
                 try {
-                    this.target[routine]();
+                    this.target[routine](...args);
                 } catch (error) {
                     console && console.error && console.error('Scheduler error:', error);
                 }
@@ -3983,17 +3914,17 @@ class World {
         return this.doorbell.location === null && (this.lastBooksViewed.length > 0 || this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack'));
     }
 
-    lobbyBotAnswerDoorbell(ms) {
+    lobbyBotAnswerDoorbell(ms, returnPollMs) {
         this.lobbyBot.location = 'door';
-        this.scheduler.schedule(ms, 'returnLobbyBot');
+        this.scheduler.schedule(ms, 'returnLobbyBot', returnPollMs);
     }
 
-    returnLobbyBot() {
+    returnLobbyBot(ms) {
         if (this.lobbyBot.location === 'door') {
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.scheduler.schedule(5, 'returnLobbyBot');
+                this.scheduler.schedule(ms, 'returnLobbyBot');
             }
         }
     }
@@ -13536,44 +13467,6 @@ module.exports = function isBuffer(obj) {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/Battery.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/UsesTextLayer */ "./app/textLayer/UsesTextLayer.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['x', 'y'],
-    data() {
-        return {
-            name: 'AA Battery'
-        };
-    }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=script&lang=js& ***!
@@ -13933,7 +13826,7 @@ __webpack_require__.r(__webpack_exports__);
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
                 return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
             } else {
-                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000));
+                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
         }
     }
@@ -14599,7 +14492,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/BigPlant */ "./app/BigPlant.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/BookViewer */ "./app/BookViewer.vue");
-/* harmony import */ var _app_Battery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/Battery */ "./app/Battery.vue");
 //
 //
 //
@@ -14699,7 +14591,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
 
 
 
@@ -14710,8 +14605,7 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         BigPlant: _app_BigPlant__WEBPACK_IMPORTED_MODULE_0__["default"],
-        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"],
-        Battery: _app_Battery__WEBPACK_IMPORTED_MODULE_3__["default"]
+        BookViewer: _app_BookViewer__WEBPACK_IMPORTED_MODULE_2__["default"]
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -21030,44 +20924,6 @@ function __importDefault(mod) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/Battery.vue?vue&type=template&id=354b3061&":
-/*!**************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/Battery.vue?vue&type=template&id=354b3061& ***!
-  \**************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("easel-bitmap", {
-    attrs: {
-      image: "images/battery.gif",
-      x: _vm.x,
-      y: _vm.y,
-      cursor: "pointer"
-    },
-    on: {
-      mouseover: _vm.hover,
-      mouseout: _vm.unhover,
-      click: function($event) {
-        return _vm.$emit("click", $event)
-      }
-    }
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./app/BigPlant.vue?vue&type=template&id=1eb8cba7&":
 /*!***************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/BigPlant.vue?vue&type=template&id=1eb8cba7& ***!
@@ -21863,10 +21719,17 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.app.world.battery.location === "lobby-floor"
-        ? _c("battery", {
-            attrs: { x: _vm.battery.x, y: _vm.battery.y },
-            on: { click: _vm.takeBattery }
-          })
+        ? _c(
+            "enzo-named-container",
+            { attrs: { x: _vm.battery.x, y: _vm.battery.y } },
+            [
+              _c("easel-bitmap", {
+                attrs: { image: "images/battery.gif" },
+                on: { click: _vm.takeBattery }
+              })
+            ],
+            1
+          )
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.books, function(book) {

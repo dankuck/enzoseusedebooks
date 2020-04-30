@@ -18,9 +18,9 @@
  |      'created_at': new Date('1996-05-13'),
  |  };
  |  reviver.beforeReplace();
- |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
+ |  const JSON.stringify(data, reviver.replace)
  |  reviver.afterReplace();
- |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
+ |  const copy = JSON.parse(json, reviver.revive)
  |  console.log(data, copy);
  |  // Then you see the same thing twice.
  */
@@ -32,6 +32,8 @@ export default class Reviver
         this.registerBuiltIns();
         this.revive = this.revive.bind(this);
         this.replace = this.replace.bind(this);
+        this.beforeReplace = this.beforeReplace.bind(this);
+        this.afterReplace = this.afterReplace.bind(this);
     }
 
     /**
@@ -86,7 +88,7 @@ export default class Reviver
     /**
      * Use this with JSON.parse() to load saved data.
      *
-     * Example: JSON.parse(data, (key, value) => reviver.revive(key, value))
+     * Example: JSON.parse(data, reviver.revive)
      *
      * @param  {string} key
      * @param  {any} value
@@ -114,7 +116,7 @@ export default class Reviver
      *
      * Example:
      *     reviver.beforeReplace();
-     *     JSON.stringify(data, (key, value) => reviver.replace(key, value))
+     *     JSON.stringify(data, reviver.replace)
      *     reviver.afterReplace();
      *
      * @param  {string} key

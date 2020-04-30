@@ -19,11 +19,11 @@ const buildWorldBuilder = function (plain_object) {
     return () => loadJSON(json).world;
 };
 const loadJSON = function (json) {
-    return JSON.parse(json, (k, v) => reviver.revive(k, v));
+    return JSON.parse(json, reviver.revive);
 };
 const saveJSON = function (world) {
     reviver.beforeReplace();
-    const json = JSON.stringify(world, (k, v) => reviver.replace(k, v));
+    const json = JSON.stringify(world, reviver.replace);
     reviver.afterReplace();
     return json;
 };
@@ -216,7 +216,7 @@ describe('World', function () {
         it('should bring the lobbyBot back eventually', function (done) {
             const world = builder();
 
-            world.lobbyBotAnswerDoorbell(5);
+            world.lobbyBotAnswerDoorbell(5, 5);
             equal('door', world.lobbyBot.location);
 
             wait(10)
@@ -230,7 +230,7 @@ describe('World', function () {
             const world = builder();
 
             world.goTo('lobby-desk');
-            world.lobbyBotAnswerDoorbell(5);
+            world.lobbyBotAnswerDoorbell(5, 5);
             equal('door', world.lobbyBot.location);
 
             wait(10)
@@ -244,7 +244,7 @@ describe('World', function () {
             const world = builder();
 
             world.goTo('lobby-desk');
-            world.lobbyBotAnswerDoorbell(5);
+            world.lobbyBotAnswerDoorbell(5, 5);
             equal('door', world.lobbyBot.location);
 
             wait(10)
@@ -266,7 +266,7 @@ describe('World', function () {
         it('should bring the lobby bot back even if world has been saved and reloaded', function (done) {
             let world = builder();
 
-            world.lobbyBotAnswerDoorbell(5);
+            world.lobbyBotAnswerDoorbell(5, 5);
             equal('door', world.lobbyBot.location);
 
             world = loadJSON(saveJSON(world));

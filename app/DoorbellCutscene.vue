@@ -42,7 +42,7 @@ export default {
             } else {
                 return this.showMessage("I'll get it!", 100, 100)
                     .then(() => this.app.world.leave('lobby-desk', 'lobby'))
-                    .then(() => this.app.world.lobbyBotAnswerDoorbell(20000));
+                    .then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
         },
     },

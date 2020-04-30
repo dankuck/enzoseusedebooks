@@ -295,17 +295,17 @@ export default class World
             );
     }
 
-    lobbyBotAnswerDoorbell(ms) {
+    lobbyBotAnswerDoorbell(ms, returnPollMs) {
         this.lobbyBot.location = 'door';
-        this.scheduler.schedule(ms, 'returnLobbyBot');
+        this.scheduler.schedule(ms, 'returnLobbyBot', returnPollMs);
     }
 
-    returnLobbyBot() {
+    returnLobbyBot(ms) {
         if (this.lobbyBot.location === 'door') {
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.scheduler.schedule(5, 'returnLobbyBot');
+                this.scheduler.schedule(ms, 'returnLobbyBot');
             }
         }
     }
