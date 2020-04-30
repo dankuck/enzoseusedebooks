@@ -1,9 +1,10 @@
 import CallbackRing from '@libs/CallbackRing';
 import assert from 'assert';
 import wait from '@libs/wait';
+import intercept from '../fixtures/intercept';
 const {deepStrictEqual: equal} = assert;
 
-describe('CallbackRing', function () {
+describe.only('CallbackRing', function () {
 
     it('should instantiate', function () {
         new CallbackRing(0); // no whammy
@@ -94,24 +95,24 @@ describe('CallbackRing', function () {
     });
 
     it('should recover and continue on error', function (done) {
-        const ring = new CallbackRing(0);
-        let ran = false;
-        let reportedError = null;
-        const consoleError = console.error;
-        console.error = err => reportedError = err;
-        ring.add(() => { throw '1st one errors' });
-        ring.add(() => ran = true);
-        ring.start();
-        wait(10)
-            .then(() => {
-                ring.stop();
-                assert(ran);
-                equal('1st one errors', reportedError);
+        intercept(console, 'error', function (done) {
+            const ring = new CallbackRing(0);
+            let ran = false;
+            ring.add(() => { throw '1st one errors' });
+            ring.add(() => ran = true);
+            ring.start();
+            wait(10)
+                .then(() => {
+                    ring.stop();
+                    assert(ran);
+                })
+                .then(done, done);
+        })
+            .then(calls => {
+                assert(calls.length > 0);
+                equal('1st one errors', calls[0].args[0]);
             })
-            .then(done, done)
-            .finally(() => {
-                console.error = consoleError;
-            });
+            .then(done, done);
     });
 
     it('should run once by stopping itself', function (done) {

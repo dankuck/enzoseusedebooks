@@ -2803,13 +2803,14 @@ __webpack_require__.r(__webpack_exports__);
  |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
  |  reviver.afterReplace();
  |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
- |  console(data, copy);
+ |  console.log(data, copy);
  |  // Then you see the same thing twice.
  */
 class Reviver {
     constructor() {
         this.classes = [];
         this.toJSONs = new Map();
+        this.registerBuiltIns();
     }
 
     /**
@@ -2944,6 +2945,11 @@ class Reviver {
      */
     register(classToRegister) {
         classToRegister.registerReviver(this);
+    }
+
+    registerBuiltIns() {
+        this.add('Date', Date, (key, value) => new Date(value), (key, value) => value);
+        this.add('Map', Map, (key, value) => value.reduce((map, entry) => map.set(...entry), new Map()), (key, value) => Array.from(value));
     }
 }
 
@@ -3152,10 +3158,6 @@ __webpack_require__.r(__webpack_exports__);
 const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_1__["default"]();
 
 reviver.register(_world_World__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-// Add a few built-ins
-reviver.add('Date', Date, (key, value) => new Date(value), (key, value) => value);
-reviver.add('Map', Map, (key, value) => value.reduce((map, entry) => map.set(...entry), new Map()), (key, value) => Array.from(value));
 
 /* harmony default export */ __webpack_exports__["default"] = (reviver);
 

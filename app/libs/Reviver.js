@@ -21,7 +21,7 @@
  |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
  |  reviver.afterReplace();
  |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
- |  console(data, copy);
+ |  console.log(data, copy);
  |  // Then you see the same thing twice.
  */
 export default class Reviver
@@ -29,6 +29,7 @@ export default class Reviver
     constructor() {
         this.classes = [];
         this.toJSONs = new Map();
+        this.registerBuiltIns();
     }
 
     /**
@@ -169,6 +170,21 @@ export default class Reviver
      */
     register(classToRegister) {
         classToRegister.registerReviver(this);
+    }
+
+    registerBuiltIns() {
+        this.add(
+            'Date',
+            Date,
+            (key, value) => new Date(value),
+            (key, value) => value
+        );
+        this.add(
+            'Map',
+            Map,
+            (key, value) => value.reduce((map, entry) => map.set(...entry), new Map()),
+            (key, value) => Array.from(value)
+        );
     }
 }
 

@@ -1,6 +1,6 @@
 import World from '@world/World';
 import Collection from '@world/Collection';
-import reviver from '@app/reviver';
+import Reviver from '@libs/Reviver';
 import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
@@ -20,6 +20,8 @@ const shuffle = function (arr) {
     return shuffled;
 };
 
+const reviver = new Reviver();
+reviver.register(World);
 const buildWorldBuilder = function (plain_object) {
     const json = JSON.stringify(plain_object);
     return () => loadJSON(json).world;
