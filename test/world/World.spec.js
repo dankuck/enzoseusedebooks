@@ -6,19 +6,11 @@ import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
 import version_8_minimized_save from '../fixtures/version_8_minimized_save.json';
 import wait from '@libs/wait';
+import shuffle from 'lodash.shuffle';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
 } = assert;
-
-const shuffle = function (arr) {
-    const copy = [].concat(arr);
-    const shuffled = [];
-    while (copy.length > 0) {
-        shuffled.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
-    }
-    return shuffled;
-};
 
 const reviver = new Reviver();
 reviver.register(World);

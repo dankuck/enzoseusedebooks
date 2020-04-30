@@ -18,7 +18,7 @@ const saveJSON = function (reviver, object) {
     return json;
 };
 
-describe.only('Scheduler', function () {
+describe('Scheduler', function () {
 
     describe('new, load, save', function () {
 

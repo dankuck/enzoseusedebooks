@@ -4,7 +4,7 @@ import wait from '@libs/wait';
 import intercept from '../fixtures/intercept';
 const {deepStrictEqual: equal} = assert;
 
-describe.only('CallbackRing', function () {
+describe('CallbackRing', function () {
 
     it('should instantiate', function () {
         new CallbackRing(0); // no whammy
