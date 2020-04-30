@@ -2780,6 +2780,8 @@ class Messager {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Reviver; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 /**
  |------------------------
  | Reviver
@@ -2811,6 +2813,8 @@ class Reviver {
         this.classes = [];
         this.toJSONs = new Map();
         this.registerBuiltIns();
+        this.revive = this.revive.bind(this);
+        this.replace = this.replace.bind(this);
     }
 
     /**
@@ -2897,15 +2901,23 @@ class Reviver {
      * @return {any}
      */
     replace(key, value) {
-        const { original, asJSON } = value instanceof ReviverStandin ? value : { original: value, asJSON: value };
+        const { original, asJSON } = value instanceof ReviverStandin ? value : { original: value, asJSON: COPY_VALUE };
         const match = this.findMatch(original);
         if (!match) {
             return original;
         } else {
-            const replaced = match.replace(key, original);
+            const replacement = match.replace(key, original);
             return {
                 __class__: match.name,
-                __data__: replaced === original ? asJSON : replaced
+                // If match.replace returned `original` itself, we need to
+                // ensure we don't pass the same value into __data__ and
+                // end up in a loop. So...
+                // If the replacement is a true replacement, use it
+                // If the asJSON was gathered from a ReviverStandin, use it
+                // If the asJSON is the special COPY_VALUE value, copy the
+                // object on the fly.
+                // This is fairly speedy.
+                __data__: replacement !== original ? replacement : asJSON !== COPY_VALUE ? asJSON : _extends({}, value)
             };
         }
     }
@@ -2960,6 +2972,93 @@ class ReviverStandin {
         this.asJSON = asJSON;
     }
 }
+
+const COPY_VALUE = {};
+
+/***/ }),
+
+/***/ "./app/libs/Scheduler.js":
+/*!*******************************!*\
+  !*** ./app/libs/Scheduler.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Scheduler; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/**
+ |-------------------
+ | Scheduler
+ |-------------------
+ | You want to schedule code to be executed later. You also want it to be
+ | JSON-safe. Well the Scheduler is for you, friend.
+ |
+ | After you create this object, you need to `setTarget` to the object you want
+ | to run calls on. Whenever you want to schedule an action, call `schedule`
+ | with the milliseconds delay time and the name of the method to run.
+ |
+ | Your method will be run after that amount of time (at least). If you save
+ | your scheduler and load it up again, the method will be run after you call
+ | `setTarget` again.
+ |
+ | Hint: If you change your target between save and load, make sure it is
+ | backwards compatible.
+ |
+ | Note: Catch your own errors if you need to. This won't do it for you
+ */
+
+class Scheduler {
+
+    constructor(data = {}) {
+        this.scheduled = [];
+        this.target = null;
+        this.timeouts = new Map();
+        Object.assign(this, data);
+    }
+
+    setTarget(target) {
+        this.target = target;
+        this.start();
+    }
+
+    schedule(ms, routine) {
+        const time = new Date();
+        time.setMilliseconds(time.getMilliseconds() + ms);
+        this.scheduled.push({ time, routine });
+        this.start();
+    }
+
+    start() {
+        if (!this.target) {
+            return;
+        }
+        const now = new Date();
+        this.scheduled.filter(scheduled => !this.timeouts.has(scheduled)).forEach(scheduled => {
+            const { routine, time } = scheduled;
+            const ms = time.valueOf() - now.valueOf();
+            const timeout = setTimeout(() => {
+                try {
+                    this.target[routine]();
+                } catch (error) {
+                    console && console.error && console.error('Scheduler error:', error);
+                }
+                this.timeouts.delete(scheduled);
+                const index = this.scheduled.indexOf(scheduled);
+                if (index >= 0) {
+                    this.scheduled.splice(index, 1);
+                }
+            }, ms);
+            this.timeouts.set(scheduled, timeout);
+        });
+    }
+};
+
+Scheduler.registerReviver = function (reviver) {
+    reviver.add('Scheduler', Scheduler, (key, value) => new Scheduler(value), (key, value) => _extends({}, value, { target: null, timeouts: new Map() }));
+};
 
 /***/ }),
 
@@ -3633,7 +3732,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @world/InventoryBattery */ "./app/world/InventoryBattery.js");
 /* harmony import */ var _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @world/InventoryDoorbell */ "./app/world/InventoryDoorbell.js");
 /* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
+/* harmony import */ var _libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @libs/Scheduler */ "./app/libs/Scheduler.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -3721,7 +3822,7 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
 }).version(17, world => {
     world.lobbyBot.location = 'lobby-desk';
 }).version(18, world => {
-    world.tasks = new Map();
+    world.scheduler = new _libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__["default"]();
 });
 ;
 
@@ -3729,6 +3830,7 @@ class World {
     constructor(data = {}) {
         Object.assign(this, data);
         this.version = upgrader.upgrade(this.version || 0, this);
+        this.scheduler.setTarget(this);
     }
 
     /**
@@ -3881,19 +3983,9 @@ class World {
         return this.doorbell.location === null && (this.lastBooksViewed.length > 0 || this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack'));
     }
 
-    addTask(ms, method) {
-        const time = new Date();
-        time.setMilliseconds(time.getMilliseconds() + ms);
-        // this.tasks.add(time,
-    }
-
     lobbyBotAnswerDoorbell(ms) {
         this.lobbyBot.location = 'door';
-        this.addTask(ms, 'returnLobbyBot');
-    }
-
-    getLobbyBotLocation() {
-        return this.lobbyBot.location;
+        this.scheduler.schedule(ms, 'returnLobbyBot');
     }
 
     returnLobbyBot() {
@@ -3901,7 +3993,7 @@ class World {
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.addTask(100, 'returnLobbyBot');
+                this.scheduler.schedule(5, 'returnLobbyBot');
             }
         }
     }
@@ -3924,6 +4016,7 @@ World.registerReviver = function (reviver) {
     reviver.register(_world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]);
     reviver.register(_world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]);
     reviver.register(_world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    reviver.register(_libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__["default"]);
 };
 
 /***/ }),
@@ -13837,10 +13930,10 @@ __webpack_require__.r(__webpack_exports__);
             return this.showMessage('~ DING ~', 10, 50, 'white', 750).then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000));
         },
         respondToBell() {
-            if (this.app.world.getLobbyBotLocation() !== 'lobby-desk') {
+            if (this.app.world.lobbyBot.location !== 'lobby-desk') {
                 return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
             } else {
-                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell());
+                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000));
             }
         }
     }
@@ -21992,7 +22085,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.app.world.getLobbyBotLocation() === "lobby-desk"
+      _vm.app.world.lobbyBot.location === "lobby-desk"
         ? _c("lobby-bot", { attrs: { "no-dialog": _vm.noDialog } })
         : _vm._e(),
       _vm._v(" "),

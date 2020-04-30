@@ -148,10 +148,47 @@ describe('Reviver', function () {
             (k, v) => v,
         );
         reviver.beforeReplace();
-        const json = JSON.stringify(new X(), (k, v) => reviver.replace(k, v));
+        const json = JSON.stringify(new X(), reviver.replace);
         reviver.afterReplace();
         assert(calledToJSON);
         equal({__class__: 'X', __data__: 'i am json'}, JSON.parse(json));
+    });
+
+    it('works with classes that de-circularize themselves', function () {
+        class X {}
+        class Y {}
+        const x = new X();
+        const y = new Y();
+        x.y = y;
+        y.x = x;
+        const reviver = new Reviver();
+        reviver.add(
+            'Y',
+            Y,
+            (k, v) => new Y(),
+            (k, v) => ({...v})
+        );
+        reviver.add(
+            'X',
+            X,
+            (k, v) => new X(),
+            (k, v) => ({...v, y: null})
+        );
+        JSON.stringify(y, reviver.replace);
+        // no whammy
+    });
+
+    it('does not re-re-...-replace if a replacer returns the same value', function () {
+        class X {}
+        const reviver = new Reviver();
+        reviver.add(
+            'X',
+            X,
+            (k, v) => new X(),
+            (k, v) => v
+        );
+        JSON.stringify(new X(), reviver.replace);
+        // no infinite recursion
     });
 
     describe('JS built-in types', function () {
@@ -166,7 +203,7 @@ describe('Reviver', function () {
             const expect = '{"__class__":"Date","__data__":"2020-01-16T05:00:00.000Z"}';
 
             reviver.beforeReplace();
-            equal(expect, JSON.stringify(date, (...args) => reviver.replace(...args)));
+            equal(expect, JSON.stringify(date, reviver.replace));
             reviver.afterReplace();
         });
 
@@ -174,7 +211,7 @@ describe('Reviver', function () {
             const date = '{"__class__":"Date","__data__":"2020-01-16T05:00:00.000Z"}';
             const expect = new Date('Jan 16, 2020');
 
-            equal(expect, JSON.parse(date, (...args) => reviver.revive(...args)));
+            equal(expect, JSON.parse(date, reviver.revive));
         });
 
         it('should save a Map correctly', function () {
@@ -183,7 +220,7 @@ describe('Reviver', function () {
             const expect = '{"__class__":"Map","__data__":[[["some","key","object"],"string value"]]}';
 
             reviver.beforeReplace();
-            equal(expect, JSON.stringify(map, (...args) => reviver.replace(...args)));
+            equal(expect, JSON.stringify(map, reviver.replace));
             reviver.afterReplace();
         });
 
@@ -194,7 +231,7 @@ describe('Reviver', function () {
             const unexpect = new Map();
             unexpect.set(['not the right array'], "even though this is a string");
 
-            const copy = JSON.parse(json, (...args) => reviver.revive(...args));
+            const copy = JSON.parse(json, reviver.revive);
 
             // We need to convert the maps to arrays before testing. It turns out
             // equal doesn't work right on Maps.

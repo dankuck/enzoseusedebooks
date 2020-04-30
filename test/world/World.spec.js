@@ -42,11 +42,6 @@ describe('World', function () {
         assert(new World({}).version);
     });
 
-    it('should not update a high version', function () {
-        const world = new World({version: Infinity});
-        equal(['version'], Object.keys(world).sort());
-    });
-
     const all_version_tests = function (builder) {
 
         it('should have a lobbyPlant', function () {
@@ -218,19 +213,15 @@ describe('World', function () {
             equal(['abcdef', '12345', 'XXXXX'], world.lastBooksViewed);
         });
 
-        it('should bring the lobby bot back eventually', function (done) {
+        it('should bring the lobbyBot back eventually', function (done) {
             const world = builder();
 
-            world.lobbyBotAnswerDoorbell();
-            equal('door', world.getLobbyBotLocation());
-
-            world.checkLobbyBotReturn(5);
-            equal('door', world.getLobbyBotLocation());
+            world.lobbyBotAnswerDoorbell(5);
+            equal('door', world.lobbyBot.location);
 
             wait(10)
                 .then(() => {
-                    world.checkLobbyBotReturn(5);
-                    equal('lobby-desk', world.getLobbyBotLocation());
+                    equal('lobby-desk', world.lobbyBot.location);
                 })
                 .then(done, done);
         });
@@ -239,13 +230,35 @@ describe('World', function () {
             const world = builder();
 
             world.goTo('lobby-desk');
-            world.lobbyBotAnswerDoorbell();
-            equal('door', world.getLobbyBotLocation());
+            world.lobbyBotAnswerDoorbell(5);
+            equal('door', world.lobbyBot.location);
 
             wait(10)
                 .then(() => {
-                    world.checkLobbyBotReturn(5);
-                    equal('door', world.getLobbyBotLocation());
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(done, done);
+        });
+
+        it('should bring the lobby bot back once the user leaves the desk', function (done) {
+            const world = builder();
+
+            world.goTo('lobby-desk');
+            world.lobbyBotAnswerDoorbell(5);
+            equal('door', world.lobbyBot.location);
+
+            wait(10)
+                .then(() => {
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(() => wait(10))
+                .then(() => {
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(() => world.goTo('lobby'))
+                .then(() => wait(10))
+                .then(() => {
+                    equal('lobby-desk', world.lobbyBot.location);
                 })
                 .then(done, done);
         });
@@ -253,15 +266,15 @@ describe('World', function () {
         it('should bring the lobby bot back even if world has been saved and reloaded', function (done) {
             let world = builder();
 
-            world.lobbyBotAnswerDoorbell();
-            equal('door', world.getLobbyBotLocation());
+            world.lobbyBotAnswerDoorbell(5);
+            equal('door', world.lobbyBot.location);
+
+            world = loadJSON(saveJSON(world));
+            assert(world);
 
             wait(10)
                 .then(() => {
-                    world = loadJSON(saveJSON(world));
-                    assert(world);
-                    world.checkLobbyBotReturn(5);
-                    equal('lobby-desk', world.getLobbyBotLocation());
+                    equal('lobby-desk', world.lobbyBot.location);
                 })
                 .then(done, done);
         });

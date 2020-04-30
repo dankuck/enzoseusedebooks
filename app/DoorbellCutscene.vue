@@ -37,12 +37,12 @@ export default {
                 .then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000));
         },
         respondToBell() {
-            if (this.app.world.getLobbyBotLocation() !== 'lobby-desk') {
+            if (this.app.world.lobbyBot.location !== 'lobby-desk') {
                 return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
             } else {
                 return this.showMessage("I'll get it!", 100, 100)
                     .then(() => this.app.world.leave('lobby-desk', 'lobby'))
-                    .then(() => this.app.world.lobbyBotAnswerDoorbell());
+                    .then(() => this.app.world.lobbyBotAnswerDoorbell(20000));
             }
         },
     },

@@ -3,6 +3,7 @@ import Collection from '@world/Collection';
 import InventoryBattery from '@world/InventoryBattery';
 import InventoryDoorbell from '@world/InventoryDoorbell';
 import wait from '@libs/wait';
+import Scheduler from '@libs/Scheduler';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -115,7 +116,7 @@ const upgrader = new VersionUpgrader()
         world.lobbyBot.location = 'lobby-desk';
     })
     .version(18, world => {
-        world.tasks = new Map();
+        world.scheduler = new Scheduler();
     });
     ;
 
@@ -124,6 +125,7 @@ export default class World
     constructor(data = {}) {
         Object.assign(this, data);
         this.version = upgrader.upgrade(this.version || 0, this);
+        this.scheduler.setTarget(this);
     }
 
     /**
@@ -293,19 +295,9 @@ export default class World
             );
     }
 
-    addTask(ms, method) {
-        const time = new Date();
-        time.setMilliseconds(time.getMilliseconds() + ms);
-        // this.tasks.add(time,
-    }
-
     lobbyBotAnswerDoorbell(ms) {
         this.lobbyBot.location = 'door';
-        this.addTask(ms, 'returnLobbyBot');
-    }
-
-    getLobbyBotLocation() {
-        return this.lobbyBot.location;
+        this.scheduler.schedule(ms, 'returnLobbyBot');
     }
 
     returnLobbyBot() {
@@ -313,7 +305,7 @@ export default class World
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.addTask(100, 'returnLobbyBot');
+                this.scheduler.schedule(5, 'returnLobbyBot');
             }
         }
     }
@@ -338,4 +330,5 @@ World.registerReviver = function (reviver) {
     reviver.register(Collection);
     reviver.register(InventoryBattery);
     reviver.register(InventoryDoorbell);
+    reviver.register(Scheduler);
 };

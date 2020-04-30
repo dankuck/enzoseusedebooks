@@ -30,6 +30,8 @@ export default class Reviver
         this.classes = [];
         this.toJSONs = new Map();
         this.registerBuiltIns();
+        this.revive = this.revive.bind(this);
+        this.replace = this.replace.bind(this);
     }
 
     /**
@@ -122,15 +124,27 @@ export default class Reviver
     replace(key, value) {
         const {original, asJSON} = value instanceof ReviverStandin
             ? value
-            : {original: value, asJSON: value};
+            : {original: value, asJSON: COPY_VALUE};
         const match = this.findMatch(original);
         if (!match) {
             return original;
         } else {
-            const replaced = match.replace(key, original);
+            const replacement = match.replace(key, original);
             return {
                 __class__: match.name,
-                __data__: replaced === original ? asJSON : replaced,
+                // If match.replace returned `original` itself, we need to
+                // ensure we don't pass the same value into __data__ and
+                // end up in a loop. So...
+                // If the replacement is a true replacement, use it
+                // If the asJSON was gathered from a ReviverStandin, use it
+                // If the asJSON is the special COPY_VALUE value, copy the
+                // object on the fly.
+                // This is fairly speedy.
+                __data__: replacement !== original
+                    ? replacement
+                    : asJSON !== COPY_VALUE
+                    ? asJSON
+                    : {...value},
             };
         }
     }
@@ -195,3 +209,5 @@ class ReviverStandin {
         this.asJSON = asJSON;
     }
 }
+
+const COPY_VALUE = {};

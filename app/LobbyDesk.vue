@@ -18,7 +18,7 @@
         </enzo-named-container>
 
         <lobby-bot
-            v-if="app.world.getLobbyBotLocation() === 'lobby-desk'"
+            v-if="app.world.lobbyBot.location === 'lobby-desk'"
             :no-dialog="noDialog"
         >
         </lobby-bot>
