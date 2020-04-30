@@ -3717,6 +3717,34 @@ InventoryBattery.registerReviver = function (reviver) {
 
 /***/ }),
 
+/***/ "./app/world/InventoryCheese.js":
+/*!**************************************!*\
+  !*** ./app/world/InventoryCheese.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InventoryCheese; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+class InventoryCheese {
+
+    constructor(data) {
+        this.image = 'images/cheese.gif';
+        Object.assign(this, data);
+    }
+};
+
+InventoryCheese.registerReviver = function (reviver) {
+    reviver.add('InventoryCheese', InventoryCheese, (key, value) => new InventoryCheese(value), (key, value) => {
+        return _extends({}, value);
+    });
+};
+
+/***/ }),
+
 /***/ "./app/world/InventoryDoorbell.js":
 /*!****************************************!*\
   !*** ./app/world/InventoryDoorbell.js ***!
@@ -3775,7 +3803,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @world/InventoryDoorbell */ "./app/world/InventoryDoorbell.js");
 /* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
 /* harmony import */ var _libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @libs/Scheduler */ "./app/libs/Scheduler.js");
+/* harmony import */ var _world_InventoryCheese__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @world/InventoryCheese */ "./app/world/InventoryCheese.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -4042,6 +4072,12 @@ class World {
             }
         }
     }
+
+    takeCheese(print) {
+        this.theCheese.location = 'inventory';
+        this.inventory.push(new _world_InventoryCheese__WEBPACK_IMPORTED_MODULE_6__["default"]({ name: 'The Cheese' }));
+        print("You've got the cheese, now.");
+    }
 };
 
 World.registerReviver = function (reviver) {
@@ -4061,6 +4097,7 @@ World.registerReviver = function (reviver) {
     reviver.register(_world_Collection__WEBPACK_IMPORTED_MODULE_1__["default"]);
     reviver.register(_world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__["default"]);
     reviver.register(_world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    reviver.register(_world_InventoryCheese__WEBPACK_IMPORTED_MODULE_6__["default"]);
     reviver.register(_libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__["default"]);
 };
 
@@ -13902,7 +13939,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/LobbyDesk */ "./app/LobbyDesk.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
-/* harmony import */ var _app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @app/doorAnswerPhrases */ "./app/doorAnswerPhrases.js");
+/* harmony import */ var _app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/doorAnswerPhrases */ "./app/doorAnswerPhrases.js");
 //
 //
 //
@@ -13952,7 +13989,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         respondToBell() {
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
-                return this.showMessage(_app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_4__["default"].pull(), 10, 75);
+                return this.showMessage(_app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_3__["default"].pull(), 10, 75);
             } else {
                 return this.robotSay("I'll get it!").then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
@@ -14543,7 +14580,7 @@ __webpack_require__.r(__webpack_exports__);
             if (this.useWith) {
                 this.useWith.callback(item);
                 this.useWith = null;
-            } else {
+            } else if (item.click) {
                 item.click({
                     world: this.app.world,
                     print: this.showMessageAt(x, y),
@@ -14555,6 +14592,8 @@ __webpack_require__.r(__webpack_exports__);
                         this.showMessage(this.labelFor(item), x, y);
                     }
                 });
+            } else {
+                this.showMessage(`Nothing happens.`, x, y);
             }
         },
         labelFor(item) {
@@ -14973,7 +15012,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('Q6', "Is there anything else to do?", [after('Q3'), () => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime], () => this.say(["I have been ordered by Mr. Enzo to protect the cheese book."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q6', "Is there anything else to do?", [() => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime], () => this.say(["I have been ordered by Mr. Enzo to protect the cheese book."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;

@@ -7,6 +7,8 @@ import version_4_save from '../fixtures/version_4_save.json';
 import version_8_minimized_save from '../fixtures/version_8_minimized_save.json';
 import wait from '@libs/wait';
 import shuffle from 'lodash.shuffle';
+import find from 'lodash.find';
+import InventoryCheese from '@world/InventoryCheese';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
@@ -277,6 +279,19 @@ describe('World', function () {
                     equal('lobby-desk', world.lobbyBot.location);
                 })
                 .then(done, done);
+        });
+
+        it('should take the cheese', function () {
+            const world = builder();
+            let caughtWords;
+
+            equal('book', world.theCheese.location);
+
+            world.takeCheese((words) => caughtWords = words);
+            equal('inventory', world.theCheese.location);
+
+            assert(find(world.inventory, item => item instanceof InventoryCheese));
+            assert(caughtWords);
         });
     };
 

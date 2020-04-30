@@ -194,7 +194,6 @@ export default {
                 )
                 .add('Q6', "Is there anything else to do?",
                     [
-                        after('Q3'),
                         () => this.app.world.completedAllSteps(),
                     ],
                     () => this.say([

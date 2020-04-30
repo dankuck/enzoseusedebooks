@@ -70,7 +70,7 @@ export default {
             if (this.useWith) {
                 this.useWith.callback(item);
                 this.useWith = null;
-            } else {
+            } else if (item.click) {
                 item.click({
                     world: this.app.world,
                     print: this.showMessageAt(x, y),
@@ -82,6 +82,8 @@ export default {
                         this.showMessage(this.labelFor(item), x, y);
                     }
                 });
+            } else {
+                this.showMessage(`Nothing happens.`, x, y);
             }
         },
         labelFor(item) {

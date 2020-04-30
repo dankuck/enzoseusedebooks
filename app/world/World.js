@@ -4,6 +4,7 @@ import InventoryBattery from '@world/InventoryBattery';
 import InventoryDoorbell from '@world/InventoryDoorbell';
 import wait from '@libs/wait';
 import Scheduler from '@libs/Scheduler';
+import InventoryCheese from '@world/InventoryCheese';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -314,6 +315,12 @@ export default class World
             }
         }
     }
+
+    takeCheese(print) {
+        this.theCheese.location = 'inventory';
+        this.inventory.push(new InventoryCheese({name: 'The Cheese'}));
+        print("You've got the cheese, now.");
+    }
 };
 
 World.registerReviver = function (reviver) {
@@ -335,5 +342,6 @@ World.registerReviver = function (reviver) {
     reviver.register(Collection);
     reviver.register(InventoryBattery);
     reviver.register(InventoryDoorbell);
+    reviver.register(InventoryCheese);
     reviver.register(Scheduler);
 };
