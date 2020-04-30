@@ -17,6 +17,7 @@
 import LobbyDesk from '@app/LobbyDesk';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import wait from '@libs/wait';
+import doorAnswerPhrases from '@app/doorAnswerPhrases';
 
 export default {
     inject: ['app'],
@@ -50,7 +51,7 @@ export default {
         },
         respondToBell() {
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
-                return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
+                return this.showMessage(doorAnswerPhrases.pull(), 10, 75);
             } else {
                 return this.robotSay("I'll get it!")
                     .then(() => this.app.world.leave('lobby-desk', 'lobby'))

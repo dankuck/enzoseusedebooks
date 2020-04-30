@@ -2284,6 +2284,45 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/doorAnswerPhrases.js":
+/*!**********************************!*\
+  !*** ./app/doorAnswerPhrases.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ |------------------------
+ | doorAnswerPhrases.js
+ |------------------------
+ | Call pull() to get a random phrase that a robot might use when traveling to
+ | a door to answer it. It cycles and uses math to make it unlikely that you'll
+ | get the same phrase twice in a short succession.
+ */
+/* harmony default export */ __webpack_exports__["default"] = ({
+    pool: ["I'm coming!", "Hold your electric sheep!", "Don't get your wires in a knot!", "Keep your chassis on!", "I'm going as fast as my servos will work!", "Calm down, these books aren't going anywhere!", "Alan Turing's Ghost! What's your hurry?"],
+    used: [],
+    pull() {
+        if (this.pool.length === 0) {
+            this.pool = this.used;
+            this.used = [];
+        }
+        const { pool, used } = this;
+        // We want to favor the first half of the list so that it's less likely
+        // that you'll get the same phrase twice in a row at the moment the
+        // pool gets refilled. That's why we use random * random. In a list of
+        // 10, it gave the following distribution one time:
+        // [32%, 18%, 14%, 11%, 9%, 7%, 4%, 4%, 1%, <1%]
+        const [chosen] = pool.splice(Math.floor(Math.random() * Math.random() * pool.length), 1);
+        used.push(chosen);
+        return chosen;
+    }
+});
+
+/***/ }),
+
 /***/ "./app/libs/CallbackRing.js":
 /*!**********************************!*\
   !*** ./app/libs/CallbackRing.js ***!
@@ -13860,6 +13899,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @app/LobbyDesk */ "./app/LobbyDesk.vue");
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
+/* harmony import */ var _app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @app/doorAnswerPhrases */ "./app/doorAnswerPhrases.js");
 //
 //
 //
@@ -13875,6 +13915,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -13908,7 +13949,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         respondToBell() {
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
-                return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
+                return this.showMessage(_app_doorAnswerPhrases__WEBPACK_IMPORTED_MODULE_4__["default"].pull(), 10, 75);
             } else {
                 return this.robotSay("I'll get it!").then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
