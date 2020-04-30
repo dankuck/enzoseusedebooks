@@ -117,7 +117,12 @@ const upgrader = new VersionUpgrader()
     })
     .version(18, world => {
         world.scheduler = new Scheduler();
-    });
+    })
+    .version(19, world => {
+        world.theCheese = {
+            location: 'book',
+        };
+    })
     ;
 
 export default class World

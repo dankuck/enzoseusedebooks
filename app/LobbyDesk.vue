@@ -23,13 +23,26 @@
         </enzo-click-spot>
 
         <enzo-named-container
-            name="I Am The Cheese"
+            :name="cheeseIsVisible ? 'A slice of cheese in a book' : 'I Am The Cheese'"
             x="17"
             y="150"
         >
             <easel-bitmap
-                image="images/i-am-the-cheese-desk.gif"
-                @click="app.world.touchIAmTheCheese()"
+                :image="bookIsOpen ? 'images/i-am-the-cheese-open-desk.gif' : 'images/i-am-the-cheese-desk.gif'"
+                x="51"
+                y="15"
+                align="bottom-right"
+                @click="touchTheBook()"
+            >
+            </easel-bitmap>
+
+            <easel-bitmap
+                v-if="cheeseIsVisible"
+                image="images/i-am-the-cheese-desk-cheese.gif"
+                x="36"
+                y="6"
+                align="bottom-right"
+                @click="touchTheBook()"
             >
             </easel-bitmap>
         </enzo-named-container>
@@ -58,5 +71,37 @@ export default {
         LobbyBot,
     },
     props: ['noDialog', 'sayWords'],
+    data() {
+        return {
+            bookIsOpen: false,
+        };
+    },
+    computed: {
+        cheeseIsVisible() {
+            return this.bookIsOpen && this.app.world.theCheese.location === 'book';
+        },
+    },
+    watch: {
+        'app.world.lobbyBot.someoneTriedToGrabTheCheeseNow': {
+            handler() {
+                if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow
+                    && this.app.world.lobbyBot.location !== 'lobby-desk'
+                ) {
+                    this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+                    this.bookIsOpen = !this.bookIsOpen;
+                }
+            },
+            immediate: true,
+        },
+    },
+    methods: {
+        touchTheBook() {
+            if (this.cheeseIsVisible) {
+                this.app.world.takeCheese();
+            } else {
+                this.app.world.touchIAmTheCheese();
+            }
+        },
+    },
 }
 </script>

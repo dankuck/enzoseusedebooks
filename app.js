@@ -3865,8 +3865,11 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     world.lobbyBot.location = 'lobby-desk';
 }).version(18, world => {
     world.scheduler = new _libs_Scheduler__WEBPACK_IMPORTED_MODULE_5__["default"]();
+}).version(19, world => {
+    world.theCheese = {
+        location: 'book'
+    };
 });
-;
 
 class World {
     constructor(data = {}) {
@@ -15112,6 +15115,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15122,7 +15138,37 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__["default"]
     },
-    props: ['noDialog', 'sayWords']
+    props: ['noDialog', 'sayWords'],
+    data() {
+        return {
+            bookIsOpen: false
+        };
+    },
+    computed: {
+        cheeseIsVisible() {
+            return this.bookIsOpen && this.app.world.theCheese.location === 'book';
+        }
+    },
+    watch: {
+        'app.world.lobbyBot.someoneTriedToGrabTheCheeseNow': {
+            handler() {
+                if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow && this.app.world.lobbyBot.location !== 'lobby-desk') {
+                    this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+                    this.bookIsOpen = !this.bookIsOpen;
+                }
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        touchTheBook() {
+            if (this.cheeseIsVisible) {
+                this.app.world.takeCheese();
+            } else {
+                this.app.world.touchIAmTheCheese();
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -22121,16 +22167,47 @@ var render = function() {
       _vm._v(" "),
       _c(
         "enzo-named-container",
-        { attrs: { name: "I Am The Cheese", x: "17", y: "150" } },
+        {
+          attrs: {
+            name: _vm.cheeseIsVisible
+              ? "A slice of cheese in a book"
+              : "I Am The Cheese",
+            x: "17",
+            y: "150"
+          }
+        },
         [
           _c("easel-bitmap", {
-            attrs: { image: "images/i-am-the-cheese-desk.gif" },
+            attrs: {
+              image: _vm.bookIsOpen
+                ? "images/i-am-the-cheese-open-desk.gif"
+                : "images/i-am-the-cheese-desk.gif",
+              x: "51",
+              y: "15",
+              align: "bottom-right"
+            },
             on: {
               click: function($event) {
-                return _vm.app.world.touchIAmTheCheese()
+                return _vm.touchTheBook()
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _vm.cheeseIsVisible
+            ? _c("easel-bitmap", {
+                attrs: {
+                  image: "images/i-am-the-cheese-desk-cheese.gif",
+                  x: "36",
+                  y: "6",
+                  align: "bottom-right"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.touchTheBook()
+                  }
+                }
+              })
+            : _vm._e()
         ],
         1
       ),
