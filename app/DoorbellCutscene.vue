@@ -21,21 +21,28 @@ export default {
         LobbyDesk,
     },
     mounted() {
-        this.showMessage('~ DING ~', 10, 50, 'white', 750)
-            .then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000))
+        /**
+         * Make doorbell noises, make the robot say "I'll get it!", then if
+         * we're at the lobby-desk, leave so we don't have to animate the robot
+         * exiting lobby-desk.
+         */
+        this.ringBell()
             .then(() => wait(500))
-            .then(() => this.showMessage("I'll get it!", 100, 100))
-            .then(() => this.bounceFromDesk())
+            .then(() => this.respondToBell())
             .then(() => this.$emit('done'));
     },
     methods: {
-        /**
-         * If we're currently at the desk, leave, because we don't want to
-         * animate the robot when he goes to answer the door.
-         */
-        bounceFromDesk() {
-            if (this.app.world.location === 'lobby-desk') {
-                this.app.world.goTo('lobby');
+        ringBell() {
+            return this.showMessage('~ DING ~', 10, 50, 'white', 750)
+                .then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000));
+        },
+        respondToBell() {
+            if (this.app.world.getLobbyBotLocation() !== 'lobby-desk') {
+                return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
+            } else {
+                return this.showMessage("I'll get it!", 100, 100)
+                    .then(() => this.app.world.leave('lobby-desk', 'lobby'))
+                    .then(() => this.app.world.lobbyBotAnswerDoorbell());
             }
         },
     },

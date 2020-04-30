@@ -1,11 +1,11 @@
 import World from '@world/World';
 import Collection from '@world/Collection';
-import Reviver from '@libs/Reviver';
+import reviver from '@app/reviver';
 import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
 import version_8_minimized_save from '../fixtures/version_8_minimized_save.json';
-import delay from '@libs/wait';
+import wait from '@libs/wait';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
@@ -20,16 +20,18 @@ const shuffle = function (arr) {
     return shuffled;
 };
 
-const reviver = new Reviver();
-reviver.register(World);
-
 const buildWorldBuilder = function (plain_object) {
     const json = JSON.stringify(plain_object);
-    return function () {
-        return JSON
-            .parse(json, (k, v) => reviver.revive(k, v))
-            .world;
-    };
+    return () => loadJSON(json).world;
+};
+const loadJSON = function (json) {
+    return JSON.parse(json, (k, v) => reviver.revive(k, v));
+};
+const saveJSON = function (world) {
+    reviver.beforeReplace();
+    const json = JSON.stringify(world, (k, v) => reviver.replace(k, v));
+    reviver.afterReplace();
+    return json;
 };
 
 const build_version_3_world = buildWorldBuilder(version_3_save);
@@ -220,6 +222,54 @@ describe('World', function () {
 
             world.markBookViewed('XXXXX');
             equal(['abcdef', '12345', 'XXXXX'], world.lastBooksViewed);
+        });
+
+        it('should bring the lobby bot back eventually', function (done) {
+            const world = builder();
+
+            world.lobbyBotAnswerDoorbell();
+            equal('door', world.getLobbyBotLocation());
+
+            world.checkLobbyBotReturn(5);
+            equal('door', world.getLobbyBotLocation());
+
+            wait(10)
+                .then(() => {
+                    world.checkLobbyBotReturn(5);
+                    equal('lobby-desk', world.getLobbyBotLocation());
+                })
+                .then(done, done);
+        });
+
+        it('should not bring the lobby bot back if the user is at the desk', function (done) {
+            const world = builder();
+
+            world.goTo('lobby-desk');
+            world.lobbyBotAnswerDoorbell();
+            equal('door', world.getLobbyBotLocation());
+
+            wait(10)
+                .then(() => {
+                    world.checkLobbyBotReturn(5);
+                    equal('door', world.getLobbyBotLocation());
+                })
+                .then(done, done);
+        });
+
+        it('should bring the lobby bot back even if world has been saved and reloaded', function (done) {
+            let world = builder();
+
+            world.lobbyBotAnswerDoorbell();
+            equal('door', world.getLobbyBotLocation());
+
+            wait(10)
+                .then(() => {
+                    world = loadJSON(saveJSON(world));
+                    assert(world);
+                    world.checkLobbyBotReturn(5);
+                    equal('lobby-desk', world.getLobbyBotLocation());
+                })
+                .then(done, done);
         });
     };
 

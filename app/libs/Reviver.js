@@ -1,12 +1,29 @@
-
-class ReviverStandin {
-
-    constructor(original, asJSON) {
-        this.original = original;
-        this.asJSON = asJSON;
-    }
-}
-
+/**
+ |------------------------
+ | Reviver
+ |------------------------
+ | Use the reviver to save objects with their proper class data to a JSON
+ | string, or load them from one.
+ |
+ | Example:
+ |  const reviver = new Reviver();
+ |  reviver.add(
+ |      'Date',
+ |      Date,
+ |      (key, value) => new Date(value),
+ |      (key, value) => value
+ |  );
+ |  const data = {
+ |      'title': 'Champagne Supernova',
+ |      'created_at': new Date('1996-05-13'),
+ |  };
+ |  reviver.beforeReplace();
+ |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
+ |  reviver.afterReplace();
+ |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
+ |  console(data, copy);
+ |  // Then you see the same thing twice.
+ */
 export default class Reviver
 {
     constructor() {
@@ -14,6 +31,18 @@ export default class Reviver
         this.toJSONs = new Map();
     }
 
+    /**
+     * Provide the callbacks to revive or replace a given class.
+     *
+     * @param {string} name          What the class is called in string output
+     * @param {Class} classToRevive  The class itself
+     * @param {Function} revive      A function to turn a plain object into a
+     *                               class instance. Expect to receive the
+     *                               parameters `key`, `value`.
+     * @param {Function} replace     A function to turn a class instance into
+     *                               a plain object. Expect to receive the
+     *                               parameters `key`, `value`.
+     */
     add(name, classToRevive, revive, replace) {
         this.classes.push({
             name,
@@ -26,6 +55,12 @@ export default class Reviver
         }
     }
 
+    /**
+     * Used internally to find the right reviver or replacer to use
+     *
+     * @param  {any} value
+     * @return {Object|null}
+     */
     findMatch(value) {
         return this.classes
             .reduce(
@@ -45,6 +80,15 @@ export default class Reviver
             );
     }
 
+    /**
+     * Use this with JSON.parse() to load saved data.
+     *
+     * Example: JSON.parse(data, (key, value) => reviver.revive(key, value))
+     *
+     * @param  {string} key
+     * @param  {any} value
+     * @return {any}
+     */
     revive(key, value) {
         const match = this.findMatch(value);
         if (!match) {
@@ -58,6 +102,22 @@ export default class Reviver
         }
     }
 
+    /**
+     * Use this with JSON.stringify() to save data as JSON.
+     *
+     * You must use `beforeReplace` and `afterReplace` before and after the
+     * call to stringify to ensure that classes with toJSON methods are saved
+     * correctly.
+     *
+     * Example:
+     *     reviver.beforeReplace();
+     *     JSON.stringify(data, (key, value) => reviver.replace(key, value))
+     *     reviver.afterReplace();
+     *
+     * @param  {string} key
+     * @param  {any} value
+     * @return {any}
+     */
     replace(key, value) {
         const {original, asJSON} = value instanceof ReviverStandin
             ? value
@@ -74,6 +134,12 @@ export default class Reviver
         }
     }
 
+    /**
+     * toJSON gets in the way of what we need to do here. So we get rid of all
+     * the toJSONs before doing a save. Run afterReplace when you're done to
+     * ensure they all get put back where they belong.
+     * @return {void}
+     */
     beforeReplace() {
         this.toJSONs.forEach((toJSON, targetClass) => {
             targetClass.prototype.toJSON = function () {
@@ -83,13 +149,33 @@ export default class Reviver
         });
     }
 
+    /**
+     * After doing a save, be sure to run this so all the toJSON methods get
+     * put back on their classes.
+     * @return {void}
+     */
     afterReplace() {
         this.toJSONs.forEach((toJSON, targetClass) => {
             targetClass.prototype.toJSON = toJSON;
         });
     }
 
+    /**
+     * You should write classes with registryReviver() class methods and pass
+     * those classes to this method.
+     *
+     * @param  {Class} classToRegister
+     * @return {void}
+     */
     register(classToRegister) {
         classToRegister.registerReviver(this);
+    }
+}
+
+class ReviverStandin {
+
+    constructor(original, asJSON) {
+        this.original = original;
+        this.asJSON = asJSON;
     }
 }

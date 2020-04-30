@@ -1995,8 +1995,12 @@ class ChatBot {
         question.onAsk && question.onAsk();
     }
 
-    wasAsked(code) {
-        return this.askedCodes.includes(code);
+    wasAsked(code = null) {
+        if (!code) {
+            return this.askedCodes.length > 0;
+        } else {
+            return this.askedCodes.includes(code);
+        }
     }
 
     wasAskedThisSession(code) {
@@ -2608,6 +2612,7 @@ __webpack_require__.r(__webpack_exports__);
  | It was written to be used with window.localStorage, but it can work on any
  | object.
  */
+const replacing = [];
 class JsonStorage {
     constructor(storage, rootKey, transformer = null) {
         this.storage = storage;
@@ -2775,21 +2780,50 @@ class Messager {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Reviver; });
-
-class ReviverStandin {
-
-    constructor(original, asJSON) {
-        this.original = original;
-        this.asJSON = asJSON;
-    }
-}
-
+/**
+ |------------------------
+ | Reviver
+ |------------------------
+ | Use the reviver to save objects with their proper class data to a JSON
+ | string, or load them from one.
+ |
+ | Example:
+ |  const reviver = new Reviver();
+ |  reviver.add(
+ |      'Date',
+ |      Date,
+ |      (key, value) => new Date(value),
+ |      (key, value) => value
+ |  );
+ |  const data = {
+ |      'title': 'Champagne Supernova',
+ |      'created_at': new Date('1996-05-13'),
+ |  };
+ |  reviver.beforeReplace();
+ |  const JSON.stringify(data, (key, value) => reviver.replace(key, value))
+ |  reviver.afterReplace();
+ |  const copy = JSON.parse(json, (key, value) => reviver.revive(key, value))
+ |  console(data, copy);
+ |  // Then you see the same thing twice.
+ */
 class Reviver {
     constructor() {
         this.classes = [];
         this.toJSONs = new Map();
     }
 
+    /**
+     * Provide the callbacks to revive or replace a given class.
+     *
+     * @param {string} name          What the class is called in string output
+     * @param {Class} classToRevive  The class itself
+     * @param {Function} revive      A function to turn a plain object into a
+     *                               class instance. Expect to receive the
+     *                               parameters `key`, `value`.
+     * @param {Function} replace     A function to turn a class instance into
+     *                               a plain object. Expect to receive the
+     *                               parameters `key`, `value`.
+     */
     add(name, classToRevive, revive, replace) {
         this.classes.push({
             name,
@@ -2802,6 +2836,12 @@ class Reviver {
         }
     }
 
+    /**
+     * Used internally to find the right reviver or replacer to use
+     *
+     * @param  {any} value
+     * @return {Object|null}
+     */
     findMatch(value) {
         return this.classes.reduce((found, match) => {
             if (found) {
@@ -2817,6 +2857,15 @@ class Reviver {
         }, null);
     }
 
+    /**
+     * Use this with JSON.parse() to load saved data.
+     *
+     * Example: JSON.parse(data, (key, value) => reviver.revive(key, value))
+     *
+     * @param  {string} key
+     * @param  {any} value
+     * @return {any}
+     */
     revive(key, value) {
         const match = this.findMatch(value);
         if (!match) {
@@ -2830,6 +2879,22 @@ class Reviver {
         }
     }
 
+    /**
+     * Use this with JSON.stringify() to save data as JSON.
+     *
+     * You must use `beforeReplace` and `afterReplace` before and after the
+     * call to stringify to ensure that classes with toJSON methods are saved
+     * correctly.
+     *
+     * Example:
+     *     reviver.beforeReplace();
+     *     JSON.stringify(data, (key, value) => reviver.replace(key, value))
+     *     reviver.afterReplace();
+     *
+     * @param  {string} key
+     * @param  {any} value
+     * @return {any}
+     */
     replace(key, value) {
         const { original, asJSON } = value instanceof ReviverStandin ? value : { original: value, asJSON: value };
         const match = this.findMatch(original);
@@ -2844,6 +2909,12 @@ class Reviver {
         }
     }
 
+    /**
+     * toJSON gets in the way of what we need to do here. So we get rid of all
+     * the toJSONs before doing a save. Run afterReplace when you're done to
+     * ensure they all get put back where they belong.
+     * @return {void}
+     */
     beforeReplace() {
         this.toJSONs.forEach((toJSON, targetClass) => {
             targetClass.prototype.toJSON = function () {
@@ -2853,14 +2924,34 @@ class Reviver {
         });
     }
 
+    /**
+     * After doing a save, be sure to run this so all the toJSON methods get
+     * put back on their classes.
+     * @return {void}
+     */
     afterReplace() {
         this.toJSONs.forEach((toJSON, targetClass) => {
             targetClass.prototype.toJSON = toJSON;
         });
     }
 
+    /**
+     * You should write classes with registryReviver() class methods and pass
+     * those classes to this method.
+     *
+     * @param  {Class} classToRegister
+     * @return {void}
+     */
     register(classToRegister) {
         classToRegister.registerReviver(this);
+    }
+}
+
+class ReviverStandin {
+
+    constructor(original, asJSON) {
+        this.original = original;
+        this.asJSON = asJSON;
     }
 }
 
@@ -3061,7 +3152,10 @@ __webpack_require__.r(__webpack_exports__);
 const reviver = new _libs_Reviver__WEBPACK_IMPORTED_MODULE_1__["default"]();
 
 reviver.register(_world_World__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+// Add a few built-ins
 reviver.add('Date', Date, (key, value) => new Date(value), (key, value) => value);
+reviver.add('Map', Map, (key, value) => value.reduce((map, entry) => map.set(...entry), new Map()), (key, value) => Array.from(value));
 
 /* harmony default export */ __webpack_exports__["default"] = (reviver);
 
@@ -3536,7 +3630,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _world_Collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @world/Collection */ "./app/world/Collection.js");
 /* harmony import */ var _world_InventoryBattery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @world/InventoryBattery */ "./app/world/InventoryBattery.js");
 /* harmony import */ var _world_InventoryDoorbell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @world/InventoryDoorbell */ "./app/world/InventoryDoorbell.js");
+/* harmony import */ var _libs_wait__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @libs/wait */ "./app/libs/wait.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -3620,7 +3716,12 @@ const upgrader = new _libs_VersionUpgrader__WEBPACK_IMPORTED_MODULE_0__["default
     };
 }).version(16, world => {
     world.cutscene = null;
+}).version(17, world => {
+    world.lobbyBot.location = 'lobby-desk';
+}).version(18, world => {
+    world.tasks = new Map();
 });
+;
 
 class World {
     constructor(data = {}) {
@@ -3711,6 +3812,19 @@ class World {
     }
 
     /**
+     * If we're at `location`, go to `to`
+     *
+     * @param  {string} location
+     * @param  {string} to
+     * @return {void}
+     */
+    leave(location, to) {
+        if (this.location === location) {
+            this.goTo(to);
+        }
+    }
+
+    /**
      * Some old books were too large, and we respect our users' storage
      * restraints
      *
@@ -3763,6 +3877,31 @@ class World {
 
     canFindDoorbell() {
         return this.doorbell.location === null && (this.lastBooksViewed.length > 0 || this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack'));
+    }
+
+    addTask(ms, method) {
+        const time = new Date();
+        time.setMilliseconds(time.getMilliseconds() + ms);
+        // this.tasks.add(time,
+    }
+
+    lobbyBotAnswerDoorbell(ms) {
+        this.lobbyBot.location = 'door';
+        this.addTask(ms, 'returnLobbyBot');
+    }
+
+    getLobbyBotLocation() {
+        return this.lobbyBot.location;
+    }
+
+    returnLobbyBot() {
+        if (this.lobbyBot.location === 'door') {
+            if (this.location !== 'lobby-desk') {
+                this.lobbyBot.location = 'lobby-desk';
+            } else {
+                this.addTask(100, 'returnLobbyBot');
+            }
+        }
     }
 };
 
@@ -13684,16 +13823,22 @@ __webpack_require__.r(__webpack_exports__);
         LobbyDesk: _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__["default"]
     },
     mounted() {
-        this.showMessage('~ DING ~', 10, 50, 'white', 750).then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000)).then(() => Object(_libs_wait__WEBPACK_IMPORTED_MODULE_2__["default"])(500)).then(() => this.showMessage("I'll get it!", 100, 100)).then(() => this.bounceFromDesk()).then(() => this.$emit('done'));
+        /**
+         * Make doorbell noises, make the robot say "I'll get it!", then if
+         * we're at the lobby-desk, leave so we don't have to animate the robot
+         * exiting lobby-desk.
+         */
+        this.ringBell().then(() => Object(_libs_wait__WEBPACK_IMPORTED_MODULE_2__["default"])(500)).then(() => this.respondToBell()).then(() => this.$emit('done'));
     },
     methods: {
-        /**
-         * If we're currently at the desk, leave, because we don't want to
-         * animate the robot when he goes to answer the door.
-         */
-        bounceFromDesk() {
-            if (this.app.world.location === 'lobby-desk') {
-                this.app.world.goTo('lobby');
+        ringBell() {
+            return this.showMessage('~ DING ~', 10, 50, 'white', 750).then(() => this.showMessage('~ DONG ~', 20, 65, 'white', 1000));
+        },
+        respondToBell() {
+            if (this.app.world.getLobbyBotLocation() !== 'lobby-desk') {
+                return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
+            } else {
+                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell());
             }
         }
     }
@@ -14634,18 +14779,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -14682,7 +14815,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
     computed: {
         intro() {
             const cheeseRebuff = this.pullCheeseRebuff();
-            if (this.chatbot.wasAsked('Q1')) {
+            if (this.chatbot.wasAsked()) {
                 return cheeseRebuff.length === 0 ? ["Welcome back!"] : cheeseRebuff;
             } else {
                 return [...cheeseRebuff, "Welcome to Enzo's Eused Ebooks!", "How can I help you today?"];
@@ -14693,6 +14826,14 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
         },
         questionSlots() {
             return [this.slotDimensions(0), this.slotDimensions(1), this.slotDimensions(2), this.slotDimensions(3)];
+        }
+    },
+    watch: {
+        'app.world.lobbyBot.someoneTriedToGrabTheCheeseNow': function () {
+            const rebuff = this.pullCheeseRebuff();
+            if (rebuff.length > 0) {
+                this.say(rebuff);
+            }
         }
     },
     methods: {
@@ -14777,11 +14918,6 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
             } else {
                 return [];
             }
-        },
-        clickIAmTheCheese() {
-            this.app.world.touchIAmTheCheese();
-            const rebuff = this.pullCheeseRebuff();
-            this.say(rebuff);
         }
     }
 });
@@ -14799,6 +14935,18 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @textLayer/HasTextLayer */ "./app/textLayer/HasTextLayer.js");
 /* harmony import */ var _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @app/LobbyBot */ "./app/LobbyBot.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21755,22 +21903,6 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "enzo-named-container",
-        { attrs: { name: "I Am The Cheese", x: "17", y: "150" } },
-        [
-          _c("easel-bitmap", {
-            attrs: { image: "images/i-am-the-cheese-desk.gif" },
-            on: {
-              click: function($event) {
-                return _vm.clickIAmTheCheese()
-              }
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
       _vm._l(_vm.questions, function(question, i) {
         return _vm.showQuestions
           ? _c(
@@ -21842,7 +21974,25 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "images/desk.gif" } }),
       _vm._v(" "),
-      _c("lobby-bot", { attrs: { "no-dialog": _vm.noDialog } }),
+      _c(
+        "enzo-named-container",
+        { attrs: { name: "I Am The Cheese", x: "17", y: "150" } },
+        [
+          _c("easel-bitmap", {
+            attrs: { image: "images/i-am-the-cheese-desk.gif" },
+            on: {
+              click: function($event) {
+                return _vm.app.world.touchIAmTheCheese()
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.app.world.getLobbyBotLocation() === "lobby-desk"
+        ? _c("lobby-bot", { attrs: { "no-dialog": _vm.noDialog } })
+        : _vm._e(),
       _vm._v(" "),
       _c("text-layer")
     ],

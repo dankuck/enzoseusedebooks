@@ -50,18 +50,6 @@
             </easel-sprite-sheet>
         </easel-container>
 
-        <enzo-named-container
-            name="I Am The Cheese"
-            x="17"
-            y="150"
-        >
-            <easel-bitmap
-                image="images/i-am-the-cheese-desk.gif"
-                @click="clickIAmTheCheese()"
-            >
-            </easel-bitmap>
-        </enzo-named-container>
-
         <easel-container
             v-if="showQuestions"
             v-for="(question, i) in questions"
@@ -126,7 +114,7 @@ export default {
     computed: {
         intro() {
             const cheeseRebuff = this.pullCheeseRebuff();
-            if (this.chatbot.wasAsked('Q1')) {
+            if (this.chatbot.wasAsked()) {
                 return cheeseRebuff.length === 0
                     ? [
                         "Welcome back!",
@@ -150,6 +138,14 @@ export default {
                 this.slotDimensions(2),
                 this.slotDimensions(3),
             ];
+        },
+    },
+    watch: {
+        'app.world.lobbyBot.someoneTriedToGrabTheCheeseNow': function () {
+            const rebuff = this.pullCheeseRebuff();
+            if (rebuff.length > 0) {
+                this.say(rebuff);
+            }
         },
     },
     methods: {
@@ -307,11 +303,6 @@ export default {
             } else {
                 return [];
             }
-        },
-        clickIAmTheCheese() {
-            this.app.world.touchIAmTheCheese();
-            const rebuff = this.pullCheeseRebuff();
-            this.say(rebuff);
         },
     },
 };

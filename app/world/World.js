@@ -2,6 +2,7 @@ import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
 import InventoryBattery from '@world/InventoryBattery';
 import InventoryDoorbell from '@world/InventoryDoorbell';
+import wait from '@libs/wait';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -110,6 +111,12 @@ const upgrader = new VersionUpgrader()
     .version(16, world => {
         world.cutscene = null;
     })
+    .version(17, world => {
+        world.lobbyBot.location = 'lobby-desk';
+    })
+    .version(18, world => {
+        world.tasks = new Map();
+    });
     ;
 
 export default class World
@@ -203,6 +210,19 @@ export default class World
     }
 
     /**
+     * If we're at `location`, go to `to`
+     *
+     * @param  {string} location
+     * @param  {string} to
+     * @return {void}
+     */
+    leave(location, to) {
+        if (this.location === location) {
+            this.goTo(to);
+        }
+    }
+
+    /**
      * Some old books were too large, and we respect our users' storage
      * restraints
      *
@@ -271,6 +291,31 @@ export default class World
                     && this.hasGoneTo('children-stack')
                 )
             );
+    }
+
+    addTask(ms, method) {
+        const time = new Date();
+        time.setMilliseconds(time.getMilliseconds() + ms);
+        // this.tasks.add(time,
+    }
+
+    lobbyBotAnswerDoorbell(ms) {
+        this.lobbyBot.location = 'door';
+        this.addTask(ms, 'returnLobbyBot');
+    }
+
+    getLobbyBotLocation() {
+        return this.lobbyBot.location;
+    }
+
+    returnLobbyBot() {
+        if (this.lobbyBot.location === 'door') {
+            if (this.location !== 'lobby-desk') {
+                this.lobbyBot.location = 'lobby-desk';
+            } else {
+                this.addTask(100, 'returnLobbyBot');
+            }
+        }
     }
 };
 

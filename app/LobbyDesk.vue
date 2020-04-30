@@ -5,13 +5,25 @@
         >
         </easel-bitmap>
 
+        <enzo-named-container
+            name="I Am The Cheese"
+            x="17"
+            y="150"
+        >
+            <easel-bitmap
+                image="images/i-am-the-cheese-desk.gif"
+                @click="app.world.touchIAmTheCheese()"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
+
         <lobby-bot
+            v-if="app.world.getLobbyBotLocation() === 'lobby-desk'"
             :no-dialog="noDialog"
         >
         </lobby-bot>
 
-        <text-layer
-        >
+        <text-layer>
         </text-layer>
     </easel-container>
 </template>

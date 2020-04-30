@@ -7,6 +7,7 @@
  | It was written to be used with window.localStorage, but it can work on any
  | object.
  */
+const replacing = [];
 export default class JsonStorage
 {
     constructor(storage, rootKey, transformer = null)
