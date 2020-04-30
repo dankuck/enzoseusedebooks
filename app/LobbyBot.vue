@@ -86,7 +86,7 @@ const {after, always, everySession} = ChatBot;
 export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
-    props: ['noDialog'],
+    props: ['noDialog', 'sayWords'],
     mounted() {
         if (this.noDialog) {
             return;
@@ -145,6 +145,12 @@ export default {
             const rebuff = this.pullCheeseRebuff();
             if (rebuff.length > 0) {
                 this.say(rebuff);
+            }
+        },
+        sayWords() {
+            if (this.sayWords) {
+                this.say([].concat(this.sayWords))
+                    .then(() => this.$emit('words-said'));
             }
         },
     },

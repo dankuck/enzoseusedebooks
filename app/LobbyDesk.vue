@@ -5,6 +5,23 @@
         >
         </easel-bitmap>
 
+        <enzo-click-spot
+            v-if="app.world.lobbyBot.location !== 'lobby-desk'"
+            name="Lobby"
+            :x="15"
+            y="150"
+            @click="app.world.goTo('lobby')"
+        >
+            <easel-shape
+                form="rect"
+                x="-15"
+                y="-150"
+                :dimensions="[30, 255]"
+                fill="black"
+            >
+            </easel-shape>
+        </enzo-click-spot>
+
         <enzo-named-container
             name="I Am The Cheese"
             x="17"
@@ -20,6 +37,8 @@
         <lobby-bot
             v-if="app.world.lobbyBot.location === 'lobby-desk'"
             :no-dialog="noDialog"
+            :say-words="sayWords"
+            @words-said="$emit('words-said')"
         >
         </lobby-bot>
 
@@ -38,6 +57,6 @@ export default {
     components: {
         LobbyBot,
     },
-    props: ['noDialog'],
+    props: ['noDialog', 'sayWords'],
 }
 </script>

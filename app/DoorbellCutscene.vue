@@ -1,7 +1,11 @@
 <template>
     <easel-container>
 
-        <lobby-desk :no-dialog="true"></lobby-desk>
+        <lobby-desk
+            :no-dialog="true"
+            :say-words="say.words"
+            @words-said="robotSaid"
+        ></lobby-desk>
 
         <text-layer>
         </text-layer>
@@ -19,6 +23,14 @@ export default {
     mixins: [HasTextLayer],
     components: {
         LobbyDesk,
+    },
+    data() {
+        return {
+            say: {
+                words: null,
+                resolve: null,
+            },
+        };
     },
     mounted() {
         /**
@@ -40,10 +52,19 @@ export default {
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
                 return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
             } else {
-                return this.showMessage("I'll get it!", 100, 100)
+                return this.robotSay("I'll get it!")
                     .then(() => this.app.world.leave('lobby-desk', 'lobby'))
                     .then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
+        },
+        robotSay(text) {
+            return new Promise(resolve => {
+                this.say.words = text;
+                this.say.resolve = resolve;
+            });
+        },
+        robotSaid() {
+            this.say.resolve();
         },
     },
 };

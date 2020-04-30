@@ -305,7 +305,7 @@ export default class World
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.scheduler.schedule(ms, 'returnLobbyBot');
+                this.scheduler.schedule(ms, 'returnLobbyBot', ms);
             }
         }
     }

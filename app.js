@@ -2554,9 +2554,9 @@ __webpack_require__.r(__webpack_exports__);
  |   console.log(store);
  |   // {myKey: "{item:123}"}
  |
- | Not all data converts to JSON and back cleanly. So you may want to convert
- | some parts of your structure to a special format. For that, supply any of
- | the optional functions:
+ | Not all data converts to JSON and back seamlessly. So you may want to
+ | convert some parts of your structure to a special format. For that, supply
+ | any of the optional functions:
  |  replace - a function that accepts a part of the structure you're
  |            serializing and returns a value you want back when unserializing.
  |            This is passed directly to `JSON.stringify`
@@ -2576,7 +2576,7 @@ __webpack_require__.r(__webpack_exports__);
  |
  | In this ridiculous example we add an egg emoji to the beginning of every
  | string, for storage, then remove it again on read, so no one is the wiser.
- | We make sure to return the same value for all non-strings:
+ | We make sure to return the original value for all non-strings:
  |
  |   // Put An Egg On It
  |   const store = {}
@@ -2600,7 +2600,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 const justReturnTheValue = (k, v) => v;
-const justReturnNull = () => null;
+const justReturn = () => void 0;
 
 class JsonStorage {
     constructor(storage, rootKey, {
@@ -2609,16 +2609,16 @@ class JsonStorage {
         beforeReplace,
         afterReplace,
         beforeRevive,
-        afterRevives
+        afterRevive
     } = {}) {
         this.storage = storage;
         this.rootKey = rootKey;
         this.reviver = revive || justReturnTheValue;
         this.replacer = replace || justReturnTheValue;
-        this.beforeReplace = beforeReplace || justReturnNull;
-        this.afterReplace = afterReplace || justReturnNull;
-        this.beforeRevive = beforeRevive || justReturnNull;
-        this.afterRevive = afterRevive || justReturnNull;
+        this.beforeReplace = beforeReplace || justReturn;
+        this.afterReplace = afterReplace || justReturn;
+        this.beforeRevive = beforeRevive || justReturn;
+        this.afterRevive = afterRevive || justReturn;
     }
 
     getRoot() {
@@ -3996,7 +3996,7 @@ class World {
             if (this.location !== 'lobby-desk') {
                 this.lobbyBot.location = 'lobby-desk';
             } else {
-                this.scheduler.schedule(ms, 'returnLobbyBot');
+                this.scheduler.schedule(ms, 'returnLobbyBot', ms);
             }
         }
     }
@@ -13871,6 +13871,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -13881,6 +13885,14 @@ __webpack_require__.r(__webpack_exports__);
     mixins: [_textLayer_HasTextLayer__WEBPACK_IMPORTED_MODULE_1__["default"]],
     components: {
         LobbyDesk: _app_LobbyDesk__WEBPACK_IMPORTED_MODULE_0__["default"]
+    },
+    data() {
+        return {
+            say: {
+                words: null,
+                resolve: null
+            }
+        };
     },
     mounted() {
         /**
@@ -13898,8 +13910,17 @@ __webpack_require__.r(__webpack_exports__);
             if (this.app.world.lobbyBot.location !== 'lobby-desk') {
                 return this.showMessage(Math.random() < 0.5 ? "I'm coming!" : "Hold your electric sheep!", 10, 75);
             } else {
-                return this.showMessage("I'll get it!", 100, 100).then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
+                return this.robotSay("I'll get it!").then(() => this.app.world.leave('lobby-desk', 'lobby')).then(() => this.app.world.lobbyBotAnswerDoorbell(20000, 100));
             }
+        },
+        robotSay(text) {
+            return new Promise(resolve => {
+                this.say.words = text;
+                this.say.resolve = resolve;
+            });
+        },
+        robotSaid() {
+            this.say.resolve();
         }
     }
 });
@@ -14848,7 +14869,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
 /* harmony default export */ __webpack_exports__["default"] = ({
     inject: ['app', 'window'],
     mixins: [_textLayer_UsesTextLayer__WEBPACK_IMPORTED_MODULE_0__["default"]],
-    props: ['noDialog'],
+    props: ['noDialog', 'sayWords'],
     mounted() {
         if (this.noDialog) {
             return;
@@ -14894,6 +14915,11 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
             const rebuff = this.pullCheeseRebuff();
             if (rebuff.length > 0) {
                 this.say(rebuff);
+            }
+        },
+        sayWords() {
+            if (this.sayWords) {
+                this.say([].concat(this.sayWords)).then(() => this.$emit('words-said'));
             }
         }
     },
@@ -15026,6 +15052,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15036,7 +15081,7 @@ __webpack_require__.r(__webpack_exports__);
     components: {
         LobbyBot: _app_LobbyBot__WEBPACK_IMPORTED_MODULE_1__["default"]
     },
-    props: ['noDialog']
+    props: ['noDialog', 'sayWords']
 });
 
 /***/ }),
@@ -21261,7 +21306,10 @@ var render = function() {
   return _c(
     "easel-container",
     [
-      _c("lobby-desk", { attrs: { "no-dialog": true } }),
+      _c("lobby-desk", {
+        attrs: { "no-dialog": true, "say-words": _vm.say.words },
+        on: { "words-said": _vm.robotSaid }
+      }),
       _vm._v(" "),
       _c("text-layer")
     ],
@@ -22004,6 +22052,32 @@ var render = function() {
     [
       _c("easel-bitmap", { attrs: { image: "images/desk.gif" } }),
       _vm._v(" "),
+      _vm.app.world.lobbyBot.location !== "lobby-desk"
+        ? _c(
+            "enzo-click-spot",
+            {
+              attrs: { name: "Lobby", x: 15, y: "150" },
+              on: {
+                click: function($event) {
+                  return _vm.app.world.goTo("lobby")
+                }
+              }
+            },
+            [
+              _c("easel-shape", {
+                attrs: {
+                  form: "rect",
+                  x: "-15",
+                  y: "-150",
+                  dimensions: [30, 255],
+                  fill: "black"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "enzo-named-container",
         { attrs: { name: "I Am The Cheese", x: "17", y: "150" } },
@@ -22021,7 +22095,14 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.app.world.lobbyBot.location === "lobby-desk"
-        ? _c("lobby-bot", { attrs: { "no-dialog": _vm.noDialog } })
+        ? _c("lobby-bot", {
+            attrs: { "no-dialog": _vm.noDialog, "say-words": _vm.sayWords },
+            on: {
+              "words-said": function($event) {
+                return _vm.$emit("words-said")
+              }
+            }
+          })
         : _vm._e(),
       _vm._v(" "),
       _c("text-layer")
