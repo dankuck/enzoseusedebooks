@@ -1826,7 +1826,10 @@ const app = new Vue({
                 height: 50
             },
             storage,
-            world
+            world,
+            socialLinks: {
+                flashStage: 0
+            }
         };
     },
     computed: {
@@ -1864,6 +1867,13 @@ const app = new Vue({
         },
         onEvent(callback) {
             this.$on('event', callback);
+        },
+        flashSocialLinks() {
+            const flashing = setInterval(() => this.socialLinks.flashStage = (this.socialLinks.flashStage + 1) % 3, 500);
+            setTimeout(() => {
+                clearInterval(flashing);
+                this.socialLinks.flashStage = 0;
+            }, 4500);
         }
     }
 });
@@ -4031,11 +4041,8 @@ class World {
     }
 
     completedAllSteps() {
-        if (this.battery.location === 'plant') {
-            return false; // gotta shake the plant
-        }
-        if (this.battery.location === 'lobby-floor') {
-            return false; // gotta pick up the battery
+        if (this.theCheese.location === 'book') {
+            return false; // find that cheese!
         }
         const beenEverywhereMan = this.hasGoneTo('lobby-desk') && this.hasGoneTo('lobby') && this.hasGoneTo('fiction-stack') && this.hasGoneTo('nonfiction-stack') && this.hasGoneTo('children-stack');
         if (!beenEverywhereMan) {
@@ -14384,6 +14391,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -15008,11 +15018,17 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
     },
     methods: {
         buildChatBot() {
-            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say(["This is not a game; this is a bookstore.", "It is completely unpersonalized to you!", "Nothing at Enzo's was chosen to suit your interests.", "How refreshing!"])).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Well, there are some mysteries around here."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say(["This is not a game; this is a bookstore.", "It is completely unpersonalized to you!", "Nothing at Enzo's was chosen to suit your interests.", "How refreshing!"])).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Our doorbell is missing. Maybe you could find it."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Unfortunately, I am not allowed to eat it.');
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
                 this.say('Please retain the delicious item until a staff member can attend to you.');
-            }).add('Q6', "Is there anything else to do?", [() => this.app.world.completedAllSteps()], () => this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."])).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."])).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime], () => this.say(["I have been ordered by Mr. Enzo to protect the cheese book."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q6', "Is there anything else to do?", [() => this.app.world.completedAllSteps()], () => {
+                this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."]);
+                this.app.flashSocialLinks();
+            }).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => {
+                this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."]);
+                this.app.flashSocialLinks();
+            }).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime], () => this.say(["I have been ordered by Mr. Enzo to protect the cheese book."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -21707,7 +21723,18 @@ var render = function() {
             1
           ),
       _vm._v(" "),
-      _vm._m(0)
+      _c(
+        "div",
+        {
+          class: "stage" + _vm.app.socialLinks.flashStage,
+          attrs: { id: "footer" }
+        },
+        [
+          _c("div", { attrs: { id: "footer-background" } }),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      )
     ],
     1
   )
@@ -21717,8 +21744,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "footer" } }, [
-      _vm._v("\n        © 2019\n        "),
+    return _c("div", { staticStyle: { position: "absolute" } }, [
+      _vm._v("\n            © 2020\n            "),
       _c("a", { attrs: { href: "https://facebook.com/enzoseused" } }, [
         _vm._v("FB")
       ]),

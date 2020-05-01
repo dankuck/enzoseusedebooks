@@ -259,12 +259,6 @@ export default class World
     }
 
     completedAllSteps() {
-        if (this.battery.location === 'plant') {
-            return false; // gotta shake the plant
-        }
-        if (this.battery.location === 'lobby-floor') {
-            return false; // gotta pick up the battery
-        }
         if (this.theCheese.location === 'book') {
             return false; // find that cheese!
         }

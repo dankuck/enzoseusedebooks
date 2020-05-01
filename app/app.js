@@ -129,6 +129,9 @@ const app = new Vue({
             },
             storage,
             world,
+            socialLinks: {
+                flashStage: 0,
+            },
         };
     },
     computed: {
@@ -166,6 +169,13 @@ const app = new Vue({
         },
         onEvent(callback) {
             this.$on('event', callback);
+        },
+        flashSocialLinks() {
+            const flashing = setInterval(() => this.socialLinks.flashStage = (this.socialLinks.flashStage + 1) % 3, 500);
+            setTimeout(() => {
+                clearInterval(flashing);
+                this.socialLinks.flashStage = 0;
+            }, 4500);
         },
     },
 });

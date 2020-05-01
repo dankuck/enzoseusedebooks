@@ -29,6 +29,30 @@
             #footer a {
                 color: #CCC;
             }
+            #footer div {
+                position: absolute;
+            }
+            #footer #footer-background {
+                content: '&nbsp;';
+                width: 10%;
+                height: 100%;
+                background-color: #0F0;
+                margin-top: -0.25em;
+                transition: all 0.5s;
+                opacity: 0;
+            }
+            #footer.stage1, #footer.stage1 a {
+                color: black;
+            }
+            #footer.stage1 #footer-background {
+                opacity: 1;
+                width: 100%;
+            }
+            #footer.stage2 #footer-background {
+                opacity: 1;
+                width: 10%;
+                right: 0;
+            }
         </style>
         <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
         <meta charset="utf-8" />

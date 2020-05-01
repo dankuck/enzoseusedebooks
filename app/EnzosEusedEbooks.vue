@@ -55,10 +55,13 @@
             >
             </easel-text>
         </easel-canvas>
-        <div id="footer">
-            &copy; 2019
-            <a href="https://facebook.com/enzoseused">FB</a>
-            <a href="https://twitter.com/enzoseused">TW</a>
+        <div id="footer" :class="'stage' + app.socialLinks.flashStage">
+            <div id="footer-background"></div>
+            <div style="position: absolute">
+                &copy; 2020
+                <a href="https://facebook.com/enzoseused">FB</a>
+                <a href="https://twitter.com/enzoseused">TW</a>
+            </div>
         </div>
     </div>
 </template>

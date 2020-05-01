@@ -318,7 +318,6 @@ describe('World', function () {
             world => world.goTo('fiction-stack'),
             world => world.goTo('nonfiction-stack'),
             world => world.goTo('children-stack'),
-            world => world.takeBattery(() => {}),
             world => world.takeCheese(() => {}),
         ];
 
@@ -326,7 +325,7 @@ describe('World', function () {
             const world = new World();
 
             actions.forEach(action => {
-                assert(!world.completedAllSteps(), 'Completed early. Still need to do this step: ' + action);
+                assert(!world.completedAllSteps(), `Completed without step ${action}`);
                 action(world);
             });
 
@@ -337,7 +336,7 @@ describe('World', function () {
             const world = new World();
 
             shuffle(actions).forEach(action => {
-                assert(!world.completedAllSteps(), `did not need step ${action}`);
+                assert(!world.completedAllSteps(), `Completed without step ${action}`);
                 action(world);
             });
 
