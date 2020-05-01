@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/dankuck/bookstore#readme",
   "devDependencies": {
+    "@sentry/browser": "^5.7.1",
+    "@sentry/integrations": "^5.7.1",
     "axios": "^0.18.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
@@ -31,15 +33,13 @@
     "mocha": "^6.2.0",
     "mochapack": "^1.1.5",
     "vue": "^2.6.10",
-    "vue-easeljs": "^0.1.13",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8",
-    "@sentry/browser": "^5.7.1",
-    "@sentry/integrations": "^5.7.1"
+    "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "lodash.find": "^4.6.0"
+    "lodash.find": "^4.6.0",
+    "vue-easeljs": "^0.1.14"
   }
 }
