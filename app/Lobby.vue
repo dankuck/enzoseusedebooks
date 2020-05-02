@@ -55,6 +55,7 @@
 
         <enzo-named-container
             v-if="app.world.battery.location === 'lobby-floor'"
+            name="AA Battery"
             :x="battery.x"
             :y="battery.y"
         >

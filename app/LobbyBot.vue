@@ -161,8 +161,8 @@ export default {
                     [],
                     () => this.say([
                         "This is not a game; this is a bookstore.",
-                        "It is completely unpersonalized to you!",
-                        "Nothing at Enzo's was chosen to suit your interests.",
+                        "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!",
+                        "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!\nNothing at Enzo's was chosen to suit your interests.",
                         "How refreshing!",
                     ])
                 )
@@ -179,7 +179,10 @@ export default {
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        this.say('Unfortunately, I am not allowed to eat it.');
+                        this.say([
+                            "I know what you're thinking.",
+                            "I know what you're thinking.\nAnd, no, I am not allowed to eat it.",
+                        ]);
                     }
                 )
                 .add('Q3', "So... what should I do with this battery?",
@@ -189,7 +192,10 @@ export default {
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        this.say('Please retain the delicious item until a staff member can attend to you.');
+                        this.say([
+                            "First, stop trying to tempt me with that delicious battery.",
+                            "Please hold onto it until another associate can assist you.",
+                        ]);
                     },
                 )
                 .add('Q6', "Is there anything else to do?",
@@ -214,7 +220,7 @@ export default {
                         this.say([
                             "So far, just that thing I said...",
                             "Follow Enzo's on Facebook and Twitter.",
-                            "New developments will be announced there.",
+                            "Follow Enzo's on Facebook and Twitter.\nNew developments will be announced there.",
                         ]);
                         this.app.flashSocialLinks();
                     },
@@ -223,9 +229,10 @@ export default {
                     [
                         everySession(),
                         () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime,
+                        () => this.app.world.theCheese.location === 'book',
                     ],
                     () => this.say([
-                        "I have been ordered by Mr. Enzo to protect the cheese book.",
+                        "Mr. Enzo's orders.",
                     ])
                 )
                 .add('X1', "Ok, bye.",
@@ -309,7 +316,7 @@ export default {
             if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow) {
                 this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
                 return [
-                    "I'm sorry, no one is allowed to touch the cheese book.",
+                    "NO ONE TOUCHES THE CHEESE BOOK.",
                 ];
             } else {
                 return [];

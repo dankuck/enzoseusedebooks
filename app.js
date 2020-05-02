@@ -14781,6 +14781,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -15018,17 +15019,17 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
     },
     methods: {
         buildChatBot() {
-            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say(["This is not a game; this is a bookstore.", "It is completely unpersonalized to you!", "Nothing at Enzo's was chosen to suit your interests.", "How refreshing!"])).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Our doorbell is missing. Maybe you could find it."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
-                this.say('Unfortunately, I am not allowed to eat it.');
+            return new _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1__["default"](this.app.world.lobbyBot).add('Q1', "How do you play this game?", [], () => this.say(["This is not a game; this is a bookstore.", "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!", "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!\nNothing at Enzo's was chosen to suit your interests.", "How refreshing!"])).add('Q5', "How do you play this bookstore?", [after('Q1')], () => this.say(["Our doorbell is missing. Maybe you could find it."])).add('Q2', "I found this battery...", [() => this.app.world.battery.location === 'inventory'], () => {
+                this.say(["I know what you're thinking.", "I know what you're thinking.\nAnd, no, I am not allowed to eat it."]);
             }).add('Q3', "So... what should I do with this battery?", [after('Q2'), everySession(), () => this.app.world.battery.location === 'inventory'], () => {
-                this.say('Please retain the delicious item until a staff member can attend to you.');
+                this.say(["First, stop trying to tempt me with that delicious battery.", "Please hold onto it until another associate can assist you."]);
             }).add('Q6', "Is there anything else to do?", [() => this.app.world.completedAllSteps()], () => {
                 this.say(["You could follow Enzo's on Facebook and Twitter!", "Every time something new happens in the bookstore, it will be announced there."]);
                 this.app.flashSocialLinks();
             }).add('Q7', "Is there anything else to do?", [after('Q6'), everySession(), () => this.app.world.completedAllSteps()], () => {
-                this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "New developments will be announced there."]);
+                this.say(["So far, just that thing I said...", "Follow Enzo's on Facebook and Twitter.", "Follow Enzo's on Facebook and Twitter.\nNew developments will be announced there."]);
                 this.app.flashSocialLinks();
-            }).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime], () => this.say(["I have been ordered by Mr. Enzo to protect the cheese book."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
+            }).add('Q8', "Why can't I touch the cheese book?", [everySession(), () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime, () => this.app.world.theCheese.location === 'book'], () => this.say(["Mr. Enzo's orders."])).add('X1', "Ok, bye.", [always()], () => this.app.world.goTo('Lobby'));
         },
         slotDimensions(i) {
             const d = this.window.dimensions;
@@ -15100,7 +15101,7 @@ const { after, always, everySession } = _chat_ChatBot__WEBPACK_IMPORTED_MODULE_1
         pullCheeseRebuff() {
             if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow) {
                 this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
-                return ["I'm sorry, no one is allowed to touch the cheese book."];
+                return ["NO ONE TOUCHES THE CHEESE BOOK."];
             } else {
                 return [];
             }
@@ -22042,7 +22043,9 @@ var render = function() {
       _vm.app.world.battery.location === "lobby-floor"
         ? _c(
             "enzo-named-container",
-            { attrs: { x: _vm.battery.x, y: _vm.battery.y } },
+            {
+              attrs: { name: "AA Battery", x: _vm.battery.x, y: _vm.battery.y }
+            },
             [
               _c("easel-bitmap", {
                 attrs: { image: "images/battery.gif" },
