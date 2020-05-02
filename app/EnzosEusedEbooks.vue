@@ -27,7 +27,14 @@
             :viewport-height="app.viewport.height"
             :anti-alias="false"
         >
+
             <room></room>
+
+            <cutscene
+                v-if="app.world.cutscene"
+                v-model="app.world.cutscene"
+            >
+            </cutscene>
 
             <inventory
                 :x="0"
@@ -38,7 +45,9 @@
 
             <dev-elements v-if="app.config.developmentMode"></dev-elements>
         </easel-canvas>
-        <easel-canvas>
+        <easel-canvas
+            v-else
+        >
             <easel-text
                 color="#CCC"
                 text="A hack to induce the font to load."
@@ -46,10 +55,13 @@
             >
             </easel-text>
         </easel-canvas>
-        <div id="footer">
-            &copy; 2019
-            <a href="https://facebook.com/enzoseused">FB</a>
-            <a href="https://twitter.com/enzoseused">TW</a>
+        <div id="footer" :class="'stage' + app.socialLinks.flashStage">
+            <div id="footer-background"></div>
+            <div style="position: absolute">
+                &copy; 2020
+                <a href="https://facebook.com/enzoseused">FB</a>
+                <a href="https://twitter.com/enzoseused">TW</a>
+            </div>
         </div>
     </div>
 </template>
@@ -59,6 +71,7 @@ import DevTools from '@develop/Tools';
 import DevElements from '@develop/Elements';
 import Inventory from '@app/Inventory';
 import Room from '@app/Room';
+import Cutscene from '@app/Cutscene';
 
 export default {
     components: {
@@ -66,6 +79,7 @@ export default {
         DevElements,
         Inventory,
         Room,
+        Cutscene,
     },
     inject: ['app'],
     provide() {

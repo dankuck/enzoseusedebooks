@@ -86,17 +86,12 @@ const {after, always, everySession} = ChatBot;
 export default {
     inject: ['app', 'window'],
     mixins: [UsesTextLayer],
+    props: ['noDialog', 'sayWords'],
     mounted() {
-        this.say(
-            this.chatbot.wasAsked('Q1')
-            ? [
-                "Welcome back!",
-            ]
-            : [
-                "Welcome to Enzo's Eused Ebooks!",
-                "How can I help you today?",
-            ]
-        );
+        if (this.noDialog) {
+            return;
+        }
+        this.say(this.intro);
         setInterval(() => this.wanderEyes(), 1000);
         setInterval(() => this.moveEyes(), 100);
     },
@@ -117,6 +112,22 @@ export default {
         };
     },
     computed: {
+        intro() {
+            const cheeseRebuff = this.pullCheeseRebuff();
+            if (this.chatbot.wasAsked()) {
+                return cheeseRebuff.length === 0
+                    ? [
+                        "Welcome back!",
+                    ]
+                    : cheeseRebuff;
+            } else {
+                return [
+                    ...cheeseRebuff,
+                    "Welcome to Enzo's Eused Ebooks!",
+                    "How can I help you today?",
+                ];
+            }
+        },
         questions() {
             return this.chatbot.choose().slice(0, 4);
         },
@@ -129,6 +140,20 @@ export default {
             ];
         },
     },
+    watch: {
+        'app.world.lobbyBot.someoneTriedToGrabTheCheeseNow': function () {
+            const rebuff = this.pullCheeseRebuff();
+            if (rebuff.length > 0) {
+                this.say(rebuff);
+            }
+        },
+        sayWords() {
+            if (this.sayWords) {
+                this.say([].concat(this.sayWords))
+                    .then(() => this.$emit('words-said'));
+            }
+        },
+    },
     methods: {
         buildChatBot() {
             return new ChatBot(this.app.world.lobbyBot)
@@ -136,8 +161,8 @@ export default {
                     [],
                     () => this.say([
                         "This is not a game; this is a bookstore.",
-                        "It is completely unpersonalized to you!",
-                        "Nothing at Enzo's was chosen to suit your interests.",
+                        "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!",
+                        "This is not a game; this is a bookstore.\nIt is completely unpersonalized to you!\nNothing at Enzo's was chosen to suit your interests.",
                         "How refreshing!",
                     ])
                 )
@@ -146,7 +171,7 @@ export default {
                         after('Q1'),
                     ],
                     () => this.say([
-                        "Well, there are some mysteries around here.",
+                        "Our doorbell is missing. Maybe you could find it.",
                     ])
                 )
                 .add('Q2', "I found this battery...",
@@ -154,7 +179,10 @@ export default {
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        this.say('Unfortunately, I am not allowed to eat it.');
+                        this.say([
+                            "I know what you're thinking.",
+                            "I know what you're thinking.\nAnd, no, I am not allowed to eat it.",
+                        ]);
                     }
                 )
                 .add('Q3', "So... what should I do with this battery?",
@@ -164,18 +192,23 @@ export default {
                         () => this.app.world.battery.location === 'inventory',
                     ],
                     () => {
-                        this.say('Please retain the delicious item until a staff member can attend to you.');
+                        this.say([
+                            "First, stop trying to tempt me with that delicious battery.",
+                            "Please hold onto it until another associate can assist you.",
+                        ]);
                     },
                 )
                 .add('Q6', "Is there anything else to do?",
                     [
-                        after('Q3'),
                         () => this.app.world.completedAllSteps(),
                     ],
-                    () => this.say([
-                        "You could follow Enzo's on Facebook and Twitter!",
-                        "Every time something new happens in the bookstore, it will be announced there.",
-                    ]),
+                    () => {
+                        this.say([
+                            "You could follow Enzo's on Facebook and Twitter!",
+                            "Every time something new happens in the bookstore, it will be announced there.",
+                        ]);
+                        this.app.flashSocialLinks();
+                    },
                 )
                 .add('Q7', "Is there anything else to do?",
                     [
@@ -183,11 +216,24 @@ export default {
                         everySession(),
                         () => this.app.world.completedAllSteps(),
                     ],
+                    () => {
+                        this.say([
+                            "So far, just that thing I said...",
+                            "Follow Enzo's on Facebook and Twitter.",
+                            "Follow Enzo's on Facebook and Twitter.\nNew developments will be announced there.",
+                        ]);
+                        this.app.flashSocialLinks();
+                    },
+                )
+                .add('Q8', "Why can't I touch the cheese book?",
+                    [
+                        everySession(),
+                        () => this.app.world.lobbyBot.someoneTriedToGrabTheCheeseOneTime,
+                        () => this.app.world.theCheese.location === 'book',
+                    ],
                     () => this.say([
-                        "So far, just that thing I said...",
-                        "Follow Enzo's on Facebook and Twitter.",
-                        "New developments will be announced there.",
-                    ]),
+                        "Mr. Enzo's orders.",
+                    ])
                 )
                 .add('X1', "Ok, bye.",
                     [
@@ -259,6 +305,21 @@ export default {
             }
             if (dY !== 0) {
                 this.eyes.y += dY < 0 ? -1 : 1;
+            }
+        },
+        /**
+         * If someone tried to grab the cheese book, then the bot needs to
+         * rebuff them and reset the bit.
+         * @return array
+         */
+        pullCheeseRebuff() {
+            if (this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow) {
+                this.app.world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+                return [
+                    "NO ONE TOUCHES THE CHEESE BOOK.",
+                ];
+            } else {
+                return [];
             }
         },
     },

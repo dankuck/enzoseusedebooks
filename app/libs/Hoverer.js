@@ -5,7 +5,12 @@
  | A Hoverer holds a message until it is replaced by another call to `hover()`
  | or cleared by a call to `unhover()`.
  |
- | It exposes a property `message`.
+ | It exposes a property `message`. Whatever code you write to set a message
+ | should agree with whatever code you write to read `message`.
+ |
+ | For our purposes the passive `message` property works great.
+ | In non-Vue environments, you might choose to add an event system so client
+ | code knows when there's a new message.
  */
 
 export default class Hoverer

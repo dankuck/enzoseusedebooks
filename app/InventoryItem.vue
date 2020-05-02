@@ -2,9 +2,10 @@
     <easel-container
         :x="x + size / 2"
         :y="y + size / 2"
+        cursor="pointer"
         @mouseover="hover"
         @mouseout="unhover"
-        cursor="pointer"
+        @click="$emit('click')"
     >
         <easel-shape
             form="rect"
@@ -27,6 +28,6 @@ import UsesTextLayer from '@textLayer/UsesTextLayer';
 
 export default {
     mixins: [UsesTextLayer],
-    props: ['x', 'y', 'size', 'name', 'image'],
+    props: ['x', 'y', 'size', 'name', 'image', 'hoverName'],
 };
 </script>

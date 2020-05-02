@@ -1,6 +1,10 @@
 import VersionUpgrader from '@libs/VersionUpgrader';
 import Collection from '@world/Collection';
 import InventoryBattery from '@world/InventoryBattery';
+import InventoryDoorbell from '@world/InventoryDoorbell';
+import wait from '@libs/wait';
+import Scheduler from '@libs/Scheduler';
+import InventoryCheese from '@world/InventoryCheese';
 
 const upgrader = new VersionUpgrader()
     .version(1, world => {
@@ -94,6 +98,32 @@ const upgrader = new VersionUpgrader()
             askedCodes: [],
         };
     })
+    .version(13, world => {
+        world.lobbyBot.someoneTriedToGrabTheCheeseNow = false;
+        world.lobbyBot.someoneTriedToGrabTheCheeseOneTime = false;
+    })
+    .version(14, world => {
+        world.lastBooksViewed = [];
+    })
+    .version(15, world => {
+        world.doorbell = {
+            location: null,
+        };
+    })
+    .version(16, world => {
+        world.cutscene = null;
+    })
+    .version(17, world => {
+        world.lobbyBot.location = 'lobby-desk';
+    })
+    .version(18, world => {
+        world.scheduler = new Scheduler();
+    })
+    .version(19, world => {
+        world.theCheese = {
+            location: 'book',
+        };
+    })
     ;
 
 export default class World
@@ -101,6 +131,7 @@ export default class World
     constructor(data = {}) {
         Object.assign(this, data);
         this.version = upgrader.upgrade(this.version || 0, this);
+        this.scheduler.setTarget(this);
     }
 
     /**
@@ -111,19 +142,23 @@ export default class World
      * @return {void}
      */
     ruffleLobbyPlant(print) {
-        print(
-            this.lobbyPlant.ruffled
-                ? "Hasn't this plant been through enough?"
-                : "You ruffled the plant. It's messy now."
-        );
-
-        this.lobbyPlant.name = 'Ruffled Plant';
-        this.lobbyPlant.ruffled = true;
+        let somethingFellOut = false;
 
         if (this.battery.location === 'plant') {
             this.battery.location = 'lobby-floor';
-            print(`Something fell out of the ${this.lobbyPlant.name}.`);
+            somethingFellOut = true;
         }
+
+        if (this.lobbyPlant.ruffled) {
+            print("Hasn't this plant been through enough?");
+        } else if (somethingFellOut) {
+            print("You ruffled the plant. Something fell out.");
+        } else {
+            print("You ruffled the plant. You feel superior.");
+        };
+
+        this.lobbyPlant.name = 'Ruffled Plant';
+        this.lobbyPlant.ruffled = true;
     }
 
     /**
@@ -135,7 +170,27 @@ export default class World
     takeBattery(print) {
         this.battery.location = 'inventory';
         this.inventory.push(new InventoryBattery({name: 'AA Battery'}));
-        print("You've taken the AA Battery");
+        print("You've got the AA Battery, now.");
+    }
+
+    /**
+     * Move the doorbell into the inventory.
+     *
+     * @param {Function} print - accepts strings to echo to the user
+     * @return {void}
+     */
+    takeDoorbell(print) {
+        this.doorbell.location = 'inventory';
+        this.inventory.push(new InventoryDoorbell({name: 'Wireless Doorbell'}));
+        print("You've got the doorbell, now.");
+    }
+
+    removeInventory(item) {
+        const index = this.inventory.indexOf(item);
+        if (index < 0) {
+            return;
+        }
+        this.inventory.splice(index, 1);
     }
 
     /**
@@ -160,6 +215,19 @@ export default class World
     hasGoneTo(location) {
         return this.locationHistory
             .reduce((found, record) => found || record.location === location, false);
+    }
+
+    /**
+     * If we're at `location`, go to `to`
+     *
+     * @param  {string} location
+     * @param  {string} to
+     * @return {void}
+     */
+    leave(location, to) {
+        if (this.location === location) {
+            this.goTo(to);
+        }
     }
 
     /**
@@ -191,11 +259,8 @@ export default class World
     }
 
     completedAllSteps() {
-        if (this.battery.location === 'plant') {
-            return false; // gotta shake the plant
-        }
-        if (this.battery.location === 'lobby-floor') {
-            return false; // gotta pick up the battery
+        if (this.theCheese.location === 'book') {
+            return false; // find that cheese!
         }
         const beenEverywhereMan = this.hasGoneTo('lobby-desk')
             && this.hasGoneTo('lobby')
@@ -206,6 +271,52 @@ export default class World
             return false;
         }
         return true;
+    }
+
+    touchIAmTheCheese() {
+        this.goTo('lobby-desk');
+        this.lobbyBot.someoneTriedToGrabTheCheeseNow = true;
+        this.lobbyBot.someoneTriedToGrabTheCheeseOneTime = true;
+    }
+
+    markBookViewed(title) {
+        this.lastBooksViewed = Array.from(new Set([
+            ...this.lastBooksViewed,
+            title,
+        ].slice(-3)));
+    }
+
+    canFindDoorbell() {
+        return this.doorbell.location === null
+            && (
+                this.lastBooksViewed.length > 0
+                || (
+                    this.hasGoneTo('fiction-stack')
+                    && this.hasGoneTo('nonfiction-stack')
+                    && this.hasGoneTo('children-stack')
+                )
+            );
+    }
+
+    lobbyBotAnswerDoorbell(ms, returnPollMs) {
+        this.lobbyBot.location = 'door';
+        this.scheduler.schedule(ms, 'returnLobbyBot', returnPollMs);
+    }
+
+    returnLobbyBot(ms) {
+        if (this.lobbyBot.location === 'door') {
+            if (this.location !== 'lobby-desk') {
+                this.lobbyBot.location = 'lobby-desk';
+            } else {
+                this.scheduler.schedule(ms, 'returnLobbyBot', ms);
+            }
+        }
+    }
+
+    takeCheese(print) {
+        this.theCheese.location = 'inventory';
+        this.inventory.push(new InventoryCheese({name: 'The Cheese'}));
+        print("You've got the cheese, now.");
     }
 };
 
@@ -227,4 +338,7 @@ World.registerReviver = function (reviver) {
     );
     reviver.register(Collection);
     reviver.register(InventoryBattery);
+    reviver.register(InventoryDoorbell);
+    reviver.register(InventoryCheese);
+    reviver.register(Scheduler);
 };

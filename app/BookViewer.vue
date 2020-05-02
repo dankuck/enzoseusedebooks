@@ -37,11 +37,12 @@
             align="bottom-left"
             @click="goToAmazon"
             cursor="pointer"
+            alpha="0.01"
         >
         </easel-shape>
 
         <enzo-text
-            text="Buy It On Amazon"
+            text="> Buy It On Amazon"
             :x="window.dimensions.width / 2 - 1"
             :y="window.dimensions.height / 2 + book.image.height / 2"
         >
@@ -59,6 +60,7 @@ export default {
     mounted() {
         this.bookImage; // cause a load
         this.app.event('book', 'view');
+        this.app.world.markBookViewed(this.book.title);
     },
     data() {
         return {

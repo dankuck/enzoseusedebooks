@@ -53,13 +53,18 @@
         >
         </big-plant>
 
-        <battery
+        <enzo-named-container
             v-if="app.world.battery.location === 'lobby-floor'"
+            name="AA Battery"
             :x="battery.x"
             :y="battery.y"
-            @click="takeBattery"
         >
-        </battery>
+            <easel-bitmap
+                image="images/battery.gif"
+                @click="takeBattery"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
 
         <enzo-click-spot
             v-for="book in books"
@@ -69,6 +74,18 @@
             @click="viewBook = book.book"
         >
         </enzo-click-spot>
+
+        <enzo-named-container
+            name="I Am The Cheese"
+            x="90"
+            y="185"
+        >
+            <easel-bitmap
+                image="images/i-am-the-cheese-lobby.gif"
+                @click="clickIAmTheCheese()"
+            >
+            </easel-bitmap>
+        </enzo-named-container>
 
         <book-viewer
             v-if="viewBook"
@@ -89,7 +106,6 @@
 import BigPlant from '@app/BigPlant';
 import HasTextLayer from '@textLayer/HasTextLayer';
 import BookViewer from '@app/BookViewer';
-import Battery from '@app/Battery';
 
 export default {
     inject: ['app'],
@@ -97,7 +113,6 @@ export default {
     components: {
         BigPlant,
         BookViewer,
-        Battery,
     },
     data() {
         this.app.world.collections.bargain.load();
@@ -193,10 +208,13 @@ export default {
     methods: {
         checkPlant(vuePlant) {
             this.app.event('lobby-plant', 'shake');
-            this.app.world.ruffleLobbyPlant(msg => this.queueMessage(msg, vuePlant.x, vuePlant.y));
+            this.app.world.ruffleLobbyPlant(this.queueMessageAt(vuePlant.x, vuePlant.y));
         },
         takeBattery() {
-            this.app.world.takeBattery(msg => this.queueMessage(msg, this.battery.x, this.battery.y));
+            this.app.world.takeBattery(this.queueMessageAt(this.battery.x, this.battery.y));
+        },
+        clickIAmTheCheese() {
+            this.app.world.touchIAmTheCheese();
         },
     },
 };

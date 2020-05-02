@@ -46,8 +46,12 @@ export default class ChatBot {
         question.onAsk && question.onAsk();
     }
 
-    wasAsked(code) {
-        return this.askedCodes.includes(code);
+    wasAsked(code = null) {
+        if (!code) {
+            return this.askedCodes.length > 0;
+        } else {
+            return this.askedCodes.includes(code);
+        }
     }
 
     wasAskedThisSession(code) {

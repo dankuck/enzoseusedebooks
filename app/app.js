@@ -30,6 +30,7 @@
 import EnzoText from '@app/EnzoText.vue';
 import EnzoClickSpot from '@app/EnzoClickSpot.vue';
 import EnzoHoverSpot from '@app/EnzoHoverSpot.vue';
+import EnzoNamedContainer from '@app/EnzoNamedContainer.vue';
 import EnzosEusedEbooks from '@app/EnzosEusedEbooks.vue';
 import config from '@/config';
 import JsonStorage from '@libs/JsonStorage';
@@ -47,6 +48,7 @@ window.VueEaseljs = require('vue-easeljs');
 window.easeljs = window.VueEaseljs.easeljs;
 window.axios = axios;
 window.reviver = reviver;
+window.JsonStorage = JsonStorage;
 
 if (config.sentry && config.sentry.on) {
     Sentry.init({
@@ -67,6 +69,7 @@ VueEaseljs.registerFilter('ColorReducer', ColorReducer);
 Vue.component('enzo-text', EnzoText);
 Vue.component('enzo-click-spot', EnzoClickSpot);
 Vue.component('enzo-hover-spot', EnzoHoverSpot);
+Vue.component('enzo-named-container', EnzoNamedContainer);
 
 const storage = new JsonStorage(
     window.localStorage,
@@ -126,6 +129,9 @@ const app = new Vue({
             },
             storage,
             world,
+            socialLinks: {
+                flashStage: 0,
+            },
         };
     },
     computed: {
@@ -163,6 +169,13 @@ const app = new Vue({
         },
         onEvent(callback) {
             this.$on('event', callback);
+        },
+        flashSocialLinks() {
+            const flashing = setInterval(() => this.socialLinks.flashStage = (this.socialLinks.flashStage + 1) % 3, 500);
+            setTimeout(() => {
+                clearInterval(flashing);
+                this.socialLinks.flashStage = 0;
+            }, 4500);
         },
     },
 });

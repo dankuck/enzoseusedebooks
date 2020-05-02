@@ -6,6 +6,9 @@
  | Creates an invisible circle which emits at a given speed when its being
  | hovered over.
  |
+ | Use this if you want an invisible spot that reacts the same to a click OR
+ | hover.
+ |
  | If a slot is present, this uses that slot's contents instead of a circle.
  |
  | Emits a `hovering` event continuously until unhovered.

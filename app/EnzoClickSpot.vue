@@ -5,6 +5,8 @@
  |--------------------------
  | Creates an invisible circle which has hover and click events.
  |
+ | Use this whenever you want an invisible spot that reacts to a click.
+ |
  | If a slot is present, this uses that slot's contents instead of a circle.
  |
  | Emits a `click` event.

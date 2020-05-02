@@ -70,6 +70,15 @@ describe('ChatBot', function () {
         assert(!chatbot.wasAskedThisSession('Q2'));
     });
 
+    it('should tell if any question has been asked', function () {
+        const chatbot = new ChatBot()
+            .add('Q1', 'Do you?')
+            .add('Q2', 'Dont you?');
+        assert(!chatbot.wasAsked());
+        chatbot.ask('Q1');
+        assert(chatbot.wasAsked());
+    });
+
     it('should give unasked questions', function () {
         const chatbot = new ChatBot()
             .add('Q1', 'Do you?')

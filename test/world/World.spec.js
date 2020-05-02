@@ -5,32 +5,29 @@ import assert from 'assert';
 import version_3_save from '../fixtures/version_3_save.json';
 import version_4_save from '../fixtures/version_4_save.json';
 import version_8_minimized_save from '../fixtures/version_8_minimized_save.json';
+import wait from '@libs/wait';
+import shuffle from 'lodash.shuffle';
+import find from 'lodash.find';
+import InventoryCheese from '@world/InventoryCheese';
 const {
     deepStrictEqual: equal,
     notDeepStrictEqual: notEqual,
 } = assert;
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-const shuffle = function (arr) {
-    const copy = [].concat(arr);
-    const shuffled = [];
-    while (copy.length > 0) {
-        shuffled.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
-    }
-    return shuffled;
-};
-
 const reviver = new Reviver();
 reviver.register(World);
-
 const buildWorldBuilder = function (plain_object) {
     const json = JSON.stringify(plain_object);
-    return function () {
-        return JSON
-            .parse(json, (k, v) => reviver.revive(k, v))
-            .world;
-    };
+    return () => loadJSON(json).world;
+};
+const loadJSON = function (json) {
+    return JSON.parse(json, reviver.revive);
+};
+const saveJSON = function (world) {
+    reviver.beforeReplace();
+    const json = JSON.stringify(world, reviver.replace);
+    reviver.afterReplace();
+    return json;
 };
 
 const build_version_3_world = buildWorldBuilder(version_3_save);
@@ -45,11 +42,6 @@ describe('World', function () {
 
     it('should have a version', function () {
         assert(new World({}).version);
-    });
-
-    it('should not update a high version', function () {
-        const world = new World({version: Infinity});
-        equal(['version'], Object.keys(world).sort());
     });
 
     const all_version_tests = function (builder) {
@@ -117,7 +109,7 @@ describe('World', function () {
             if (!world.lobbyPlant.ruffled) {
                 world.ruffleLobbyPlant(msg => msgs.push(msg));
                 assert(world.lobbyPlant.name, 'Ruffled Plant');
-                assert(msgs.includes("You ruffled the plant. It's messy now."));
+                assert(msgs.includes("You ruffled the plant. Something fell out."));
                 assert(world.lobbyPlant.ruffled, true);
             }
             world.ruffleLobbyPlant(msg => msgs.push(msg));
@@ -203,6 +195,104 @@ describe('World', function () {
             assert(world.lobbyBot);
             assert(world.lobbyBot.askedCodes instanceof Array);
         });
+
+        it('should remember the last three books', function () {
+            const world = builder();
+
+            world.markBookViewed('lmnop');
+            equal(['lmnop'], world.lastBooksViewed);
+
+            world.markBookViewed('abcdef');
+            equal(['lmnop', 'abcdef'], world.lastBooksViewed);
+
+            world.markBookViewed('abcdef');
+            equal(['lmnop', 'abcdef'], world.lastBooksViewed);
+
+            world.markBookViewed('12345');
+            equal(['lmnop', 'abcdef', '12345'], world.lastBooksViewed);
+
+            world.markBookViewed('XXXXX');
+            equal(['abcdef', '12345', 'XXXXX'], world.lastBooksViewed);
+        });
+
+        it('should bring the lobbyBot back eventually', function (done) {
+            const world = builder();
+
+            world.lobbyBotAnswerDoorbell(5, 5);
+            equal('door', world.lobbyBot.location);
+
+            wait(10)
+                .then(() => {
+                    equal('lobby-desk', world.lobbyBot.location);
+                })
+                .then(done, done);
+        });
+
+        it('should not bring the lobby bot back if the user is at the desk', function (done) {
+            const world = builder();
+
+            world.goTo('lobby-desk');
+            world.lobbyBotAnswerDoorbell(5, 5);
+            equal('door', world.lobbyBot.location);
+
+            wait(10)
+                .then(() => {
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(done, done);
+        });
+
+        it('should bring the lobby bot back once the user leaves the desk', function (done) {
+            const world = builder();
+
+            world.goTo('lobby-desk');
+            world.lobbyBotAnswerDoorbell(5, 5);
+            equal('door', world.lobbyBot.location);
+
+            wait(10)
+                .then(() => {
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(() => wait(10))
+                .then(() => {
+                    equal('door', world.lobbyBot.location);
+                })
+                .then(() => world.goTo('lobby'))
+                .then(() => wait(10))
+                .then(() => {
+                    equal('lobby-desk', world.lobbyBot.location);
+                })
+                .then(done, done);
+        });
+
+        it('should bring the lobby bot back even if world has been saved and reloaded', function (done) {
+            let world = builder();
+
+            world.lobbyBotAnswerDoorbell(5, 5);
+            equal('door', world.lobbyBot.location);
+
+            world = loadJSON(saveJSON(world));
+            assert(world);
+
+            wait(10)
+                .then(() => {
+                    equal('lobby-desk', world.lobbyBot.location);
+                })
+                .then(done, done);
+        });
+
+        it('should take the cheese', function () {
+            const world = builder();
+            let caughtWords;
+
+            equal('book', world.theCheese.location);
+
+            world.takeCheese((words) => caughtWords = words);
+            equal('inventory', world.theCheese.location);
+
+            assert(find(world.inventory, item => item instanceof InventoryCheese));
+            assert(caughtWords);
+        });
     };
 
     describe('Fresh version', function () {
@@ -224,19 +314,18 @@ describe('World', function () {
     describe('knows when all steps are completed', function () {
 
         const actions = [
-            world => world.ruffleLobbyPlant(() => {}),
-            world => world.takeBattery(() => {}),
             world => world.goTo('lobby-desk'),
             world => world.goTo('fiction-stack'),
             world => world.goTo('nonfiction-stack'),
             world => world.goTo('children-stack'),
+            world => world.takeCheese(() => {}),
         ];
 
         it('in order', function () {
             const world = new World();
 
             actions.forEach(action => {
-                assert(!world.completedAllSteps());
+                assert(!world.completedAllSteps(), `Completed without step ${action}`);
                 action(world);
             });
 
@@ -247,11 +336,59 @@ describe('World', function () {
             const world = new World();
 
             shuffle(actions).forEach(action => {
-                assert(!world.completedAllSteps());
+                assert(!world.completedAllSteps(), `Completed without step ${action}`);
                 action(world);
             });
 
             assert(world.completedAllSteps());
+        });
+    });
+
+    describe('doorbell', function () {
+
+        it('is ready if all the stacks have been visited', function () {
+            const actions = [
+                world => world.goTo('fiction-stack'),
+                world => world.goTo('nonfiction-stack'),
+                world => world.goTo('children-stack'),
+            ];
+
+            const world = new World();
+
+            shuffle(actions).forEach(action => {
+                assert(!world.canFindDoorbell());
+                action(world)
+            });
+
+            assert(world.canFindDoorbell());
+        })
+
+        it('is ready if at least one book has been read', function () {
+            const world = new World();
+
+            assert(!world.canFindDoorbell());
+
+            world.markBookViewed('Desert Monkey 2');
+
+            assert(world.canFindDoorbell());
+
+            world.markBookViewed('Desert Monkey 3: The Forgotten');
+
+            assert(world.canFindDoorbell());
+        });
+
+        it('is only ready if its location is null', function () {
+            const world = new World();
+
+            assert(!world.canFindDoorbell());
+
+            world.markBookViewed('Desert Monkey 2');
+
+            assert(world.canFindDoorbell());
+
+            world.doorbell.location = 'shelf';
+
+            assert(!world.canFindDoorbell());
         });
     });
 });
