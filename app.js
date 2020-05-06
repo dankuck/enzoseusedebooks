@@ -15219,7 +15219,7 @@ __webpack_require__.r(__webpack_exports__);
     methods: {
         touchTheBook() {
             if (this.cheeseIsVisible) {
-                this.app.world.takeCheese();
+                this.app.world.takeCheese(this.showMessageAt(17, 150));
             } else {
                 this.app.world.touchIAmTheCheese();
             }
