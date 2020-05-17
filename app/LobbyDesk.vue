@@ -97,7 +97,7 @@ export default {
     methods: {
         touchTheBook() {
             if (this.cheeseIsVisible) {
-                this.app.world.takeCheese();
+                this.app.world.takeCheese(this.showMessageAt(17, 150));
             } else {
                 this.app.world.touchIAmTheCheese();
             }
