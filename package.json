@@ -30,7 +30,7 @@
     "babel-preset-latest": "^6.24.1",
     "css-loader": "^0.26.4",
     "lodash.shuffle": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "mochapack": "^1.1.5",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.1",
